@@ -17,7 +17,7 @@ export default function LoginPage() {
   const [error, setError] = useState('')
   const [formData, setFormData] = useState({
     email: '',
-    password: ''
+    password: '',
   })
   const router = useRouter()
 
@@ -30,13 +30,13 @@ export default function LoginPage() {
       const result = await signIn('credentials', {
         email: formData.email,
         password: formData.password,
-        redirect: false
+        redirect: false,
       })
 
       if (result?.error) {
         setError('Invalid email or password')
         toast.error('Login failed', {
-          description: 'Please check your credentials and try again'
+          description: 'Please check your credentials and try again',
         })
         return
       }
@@ -44,7 +44,7 @@ export default function LoginPage() {
       // Get user session to determine redirect
       const session = await getSession()
       toast.success('Login successful', {
-        description: 'Welcome back to Remedara'
+        description: 'Welcome back to Remedara',
       })
 
       // Redirect based on user role
@@ -67,7 +67,7 @@ export default function LoginPage() {
       console.error('Login error:', error)
       setError('An unexpected error occurred')
       toast.error('Login failed', {
-        description: 'An unexpected error occurred. Please try again.'
+        description: 'An unexpected error occurred. Please try again.',
       })
     } finally {
       setIsLoading(false)
@@ -78,12 +78,12 @@ export default function LoginPage() {
     setIsLoading(true)
     try {
       await signIn('google', {
-        callbackUrl: '/patient/dashboard'
+        callbackUrl: '/patient/dashboard',
       })
     } catch (error) {
       console.error('Google login error:', error)
       toast.error('Login failed', {
-        description: 'Failed to login with Google. Please try again.'
+        description: 'Failed to login with Google. Please try again.',
       })
     } finally {
       setIsLoading(false)
@@ -94,20 +94,14 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-900">
-            Sign in to Remedara
-          </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Access your healthcare scheduling portal
-          </p>
+          <h2 className="text-3xl font-bold text-gray-900">Sign in to Remedara</h2>
+          <p className="mt-2 text-sm text-gray-600">Access your healthcare scheduling portal</p>
         </div>
 
         <Card>
           <CardHeader>
             <CardTitle>Welcome Back</CardTitle>
-            <CardDescription>
-              Sign in to your account to continue
-            </CardDescription>
+            <CardDescription>Sign in to your account to continue</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -117,7 +111,7 @@ export default function LoginPage() {
                   id="email"
                   type="email"
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  onChange={e => setFormData({ ...formData, email: e.target.value })}
                   placeholder="Enter your email"
                   required
                   disabled={isLoading}
@@ -130,7 +124,7 @@ export default function LoginPage() {
                   id="password"
                   type="password"
                   value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  onChange={e => setFormData({ ...formData, password: e.target.value })}
                   placeholder="Enter your password"
                   required
                   disabled={isLoading}
@@ -174,14 +168,17 @@ export default function LoginPage() {
             </Button>
 
             <div className="text-center text-sm">
-              <span className="text-gray-600">Don't have an account? </span>
+              <span className="text-gray-600">Don&apos;t have an account? </span>
               <Link href="/register" className="text-gray-900 hover:underline font-medium">
                 Sign up
               </Link>
             </div>
 
             <div className="text-center text-sm">
-              <Link href="/forgot-password" className="text-gray-600 hover:text-gray-900 hover:underline">
+              <Link
+                href="/forgot-password"
+                className="text-gray-600 hover:text-gray-900 hover:underline"
+              >
                 Forgot your password?
               </Link>
             </div>
