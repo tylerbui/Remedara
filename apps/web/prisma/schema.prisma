@@ -1,0 +1,504 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  PATIENT
+  PROVIDER
+  FRONT_DESK
+  ADMIN
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  CONFIRMED
+  CHECKED_IN
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+enum IntakeFormStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
+
+// Authentication and User Management
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?   // For credentials authentication
+  role          Role      @default(PATIENT)
+  phone         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  accounts    Account[]
+  sessions    Session[]
+  patient     Patient?
+  provider    Provider?
+  auditLogs   AuditLog[]
+
+  @@map("users")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verificationtokens")
+}
+
+// Core Business Models
+model Patient {
+  id              String    @id @default(cuid())
+  userId          String    @unique
+  firstName       String
+  lastName        String
+  dateOfBirth     DateTime?
+  phone           String?
+  email           String?
+  address         String?
+  city            String?
+  state           String?
+  zipCode         String?
+  emergencyContact String?
+  emergencyPhone  String?
+  
+  // PHI - Encrypted fields
+  ssn             String?   // Should be encrypted
+  medicalHistory  String?   // Should be encrypted
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  appointments    Appointment[]
+  intakeForms     IntakeForm[]
+  insurancePolicies InsurancePolicy[]
+  consents        Consent[]
+  labResults      LabResult[]
+  imagingResults  ImagingResult[]
+  vaccinations    Vaccination[]
+  medicalDocuments MedicalDocument[]
+  transportationRequests TransportationRequest[]
+  medicalNotifications MedicalRecordNotification[]
+
+  @@map("patients")
+}
+
+model Provider {
+  id              String    @id @default(cuid())
+  userId          String    @unique
+  firstName       String
+  lastName        String
+  title           String?   // Dr., NP, PA, etc.
+  specialization  String?
+  licenseNumber   String?
+  npi             String?   // National Provider Identifier
+  phone           String?
+  email           String?
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  appointments    Appointment[]
+  availabilities  Availability[]
+
+  @@map("providers")
+}
+
+model Availability {
+  id          String    @id @default(cuid())
+  providerId  String
+  dayOfWeek   Int       // 0 = Sunday, 1 = Monday, etc.
+  startTime   String    // "09:00"
+  endTime     String    // "17:00"
+  isActive    Boolean   @default(true)
+  
+  // For specific date overrides
+  specificDate DateTime?
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  provider    Provider  @relation(fields: [providerId], references: [id], onDelete: Cascade)
+
+  @@map("availabilities")
+}
+
+model Appointment {
+  id              String            @id @default(cuid())
+  patientId       String
+  providerId      String
+  dateTime        DateTime
+  duration        Int               @default(30) // minutes
+  status          AppointmentStatus @default(SCHEDULED)
+  reason          String?
+  notes           String?
+  
+  // Reminder tracking
+  reminderSent    Boolean           @default(false)
+  reminderSentAt  DateTime?
+  
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  // Relations
+  patient         Patient           @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  provider        Provider          @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  intakeForm      IntakeForm?
+  transportationRequest TransportationRequest?
+
+  @@map("appointments")
+}
+
+model IntakeForm {
+  id              String            @id @default(cuid())
+  appointmentId   String?           @unique
+  patientId       String
+  formData        Json              // Flexible JSON storage for form fields
+  status          IntakeFormStatus  @default(PENDING)
+  completedAt     DateTime?
+  
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  // Relations
+  appointment     Appointment?      @relation(fields: [appointmentId], references: [id], onDelete: SetNull)
+  patient         Patient           @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  @@map("intake_forms")
+}
+
+model InsurancePolicy {
+  id              String    @id @default(cuid())
+  patientId       String
+  insuranceCompany String
+  policyNumber    String
+  groupNumber     String?
+  subscriberName  String
+  subscriberId    String
+  relationship    String    @default("self") // self, spouse, child, other
+  
+  // Additional details
+  copay           Decimal?  @db.Decimal(10, 2)
+  deductible      Decimal?  @db.Decimal(10, 2)
+  
+  isActive        Boolean   @default(true)
+  effectiveDate   DateTime?
+  expirationDate  DateTime?
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  patient         Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  @@map("insurance_policies")
+}
+
+model Consent {
+  id              String    @id @default(cuid())
+  patientId       String
+  consentType     String    // "treatment", "privacy", "financial", etc.
+  consentText     String    @db.Text
+  agreedAt        DateTime
+  ipAddress       String?
+  userAgent       String?
+  signatureData   String?   // Base64 encoded signature image
+  
+  createdAt       DateTime  @default(now())
+
+  // Relations
+  patient         Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  @@map("consents")
+}
+
+// Medical Records and External Integrations
+model LabResult {
+  id              String    @id @default(cuid())
+  patientId       String
+  orderId         String?   // External lab order ID
+  testName        String
+  testCode        String?   // LOINC or lab-specific code
+  result          String
+  referenceRange  String?
+  unit            String?
+  status          String    @default("COMPLETED") // PENDING, COMPLETED, ABNORMAL
+  resultDate      DateTime
+  labFacility     String    // Name of the lab facility
+  providerNotes   String?
+  flagged         Boolean   @default(false)
+  
+  // External integration tracking
+  externalId      String?   // Lab's internal ID
+  uploadedBy      String?   // API key or facility identifier
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  patient         Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  notifications   MedicalRecordNotification[]
+
+  @@map("lab_results")
+}
+
+model ImagingResult {
+  id              String    @id @default(cuid())
+  patientId       String
+  studyId         String?   // DICOM Study Instance UID
+  studyType       String    // X-Ray, CT, MRI, Ultrasound, etc.
+  bodyPart        String
+  findings        String    @db.Text
+  impression      String    @db.Text
+  studyDate       DateTime
+  radiologist     String
+  facility        String
+  urgency         String    @default("ROUTINE") // STAT, URGENT, ROUTINE
+  
+  // File attachments
+  dicomUrl        String?   // URL to DICOM viewer
+  reportPdfUrl    String?   // URL to PDF report
+  
+  // External integration
+  externalId      String?
+  uploadedBy      String?
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  patient         Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  notifications   MedicalRecordNotification[]
+
+  @@map("imaging_results")
+}
+
+model Vaccination {
+  id              String    @id @default(cuid())
+  patientId       String
+  vaccineName     String    // Tetanus, MMR, COVID-19, etc.
+  vaccineCode     String?   // CVX code
+  manufacturer    String?
+  lotNumber       String?
+  administrationDate DateTime
+  expirationDate  DateTime?
+  site            String?   // Left arm, right arm, etc.
+  route           String?   // IM, oral, etc.
+  dose            String?
+  
+  // Provider information
+  administeringProvider String?
+  facility        String?
+  
+  // Tracking and alerts
+  nextDueDate     DateTime?
+  isOverdue       Boolean   @default(false)
+  reminderSent    Boolean   @default(false)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  patient         Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  @@map("vaccinations")
+}
+
+model MedicalDocument {
+  id              String    @id @default(cuid())
+  patientId       String
+  documentType    String    // "LAB", "IMAGING", "VACCINE", "VISIT_NOTES", "REFERRAL", etc.
+  title           String
+  description     String?
+  fileUrl         String
+  fileName        String
+  fileSize        Int?
+  mimeType        String
+  
+  // Metadata
+  documentDate    DateTime
+  uploadedBy      String?   // User ID or external system
+  tags            String[]  // Searchable tags
+  isConfidential  Boolean   @default(false)
+  
+  // External source tracking
+  sourceSystem    String?   // "INTERNAL", "LAB_PARTNER", "IMAGING_CENTER", etc.
+  externalId      String?
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  patient         Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  @@map("medical_documents")
+}
+
+model ExternalFacility {
+  id              String    @id @default(cuid())
+  name            String
+  facilityType    String    // "LAB", "IMAGING", "PHARMACY", "SPECIALIST"
+  address         String
+  city            String
+  state           String
+  zipCode         String
+  phone           String?
+  email           String?
+  
+  // API Integration
+  apiKey          String?   @unique
+  isActive        Boolean   @default(true)
+  integrationConfig Json?
+  
+  // Services offered
+  services        String[]  // ["Blood Work", "X-Ray", "MRI", etc.]
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  transportationRequests TransportationRequest[]
+
+  @@map("external_facilities")
+}
+
+model TransportationRequest {
+  id              String    @id @default(cuid())
+  patientId       String
+  facilityId      String?
+  appointmentId   String?   @unique
+  
+  // Trip details
+  pickupAddress   String
+  destination     String
+  appointmentTime DateTime
+  estimatedDuration Int     // minutes
+  
+  // Transportation type
+  transportType   String    // "RIDESHARE", "MEDICAL_TRANSPORT", "FAMILY", "PUBLIC_TRANSIT"
+  specialNeeds    String?   // Wheelchair accessible, etc.
+  
+  // Status tracking
+  status          String    @default("REQUESTED") // REQUESTED, CONFIRMED, IN_PROGRESS, COMPLETED, CANCELLED
+  driverInfo      Json?     // Driver contact, vehicle info
+  
+  // Costs
+  estimatedCost   Decimal?  @db.Decimal(10, 2)
+  actualCost      Decimal?  @db.Decimal(10, 2)
+  insuranceCovered Boolean  @default(false)
+  
+  requestedBy     String    // User ID who requested
+  notes           String?
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  patient         Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  facility        ExternalFacility? @relation(fields: [facilityId], references: [id], onDelete: SetNull)
+  appointment     Appointment? @relation(fields: [appointmentId], references: [id], onDelete: SetNull)
+
+  @@map("transportation_requests")
+}
+
+model MedicalRecordNotification {
+  id              String    @id @default(cuid())
+  patientId       String
+  recordType      String    // "LAB", "IMAGING", "VACCINE", "DOCUMENT"
+  recordId        String    // ID of the related record
+  title           String
+  message         String
+  
+  // Notification status
+  isRead          Boolean   @default(false)
+  sentViaEmail    Boolean   @default(false)
+  sentViaSms      Boolean   @default(false)
+  
+  // Priority and categorization
+  priority        String    @default("NORMAL") // URGENT, HIGH, NORMAL, LOW
+  category        String?   // "ABNORMAL_RESULT", "NEW_RESULT", "OVERDUE_VACCINE", etc.
+  
+  createdAt       DateTime  @default(now())
+  readAt          DateTime?
+
+  // Relations
+  patient         Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  labResult       LabResult? @relation(fields: [recordId], references: [id], onDelete: Cascade)
+  imagingResult   ImagingResult? @relation(fields: [recordId], references: [id], onDelete: Cascade)
+
+  @@map("medical_record_notifications")
+}
+
+// Audit and Security
+model AuditLog {
+  id          String    @id @default(cuid())
+  userId      String?
+  action      String    // "CREATE", "UPDATE", "DELETE", "VIEW"
+  resource    String    // "Patient", "Appointment", etc.
+  resourceId  String?
+  oldValues   Json?
+  newValues   Json?
+  ipAddress   String?
+  userAgent   String?
+  
+  createdAt   DateTime  @default(now())
+
+  // Relations
+  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("audit_logs")
+}
