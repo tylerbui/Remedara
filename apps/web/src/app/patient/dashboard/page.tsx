@@ -32,6 +32,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { MessageProvider } from '@/components/MessageProvider'
+import AppointmentNotifications from '@/components/AppointmentNotifications'
 
 type DashboardSection = 'overview' | 'appointments' | 'records' | 'prescriptions' | 'results' | 'messages' | 'visits' | 'past-prescriptions' | 'providers'
 
@@ -182,6 +183,9 @@ export default function PatientDashboard() {
           </Button>
         </div>
       </div>
+      
+      {/* Appointment Notifications */}
+      <AppointmentNotifications />
       
       {/* Health Alerts */}
       {healthAlerts.length > 0 && (

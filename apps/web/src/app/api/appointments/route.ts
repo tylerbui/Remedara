@@ -6,9 +6,17 @@ import { z } from 'zod'
 
 // Validation schema for appointment booking
 const createAppointmentSchema = z.object({
-  providerId: z.string().uuid(),
-  dateTime: z.string().datetime(),
-  patientId: z.string().uuid().optional(), // Optional for guest bookings
+  providerId: z.string().uuid().optional(), // Optional for provider-initiated requests
+  patientId: z.string().uuid().optional(), // Patient ID for provider-initiated requests
+  dateTime: z.string().datetime().optional(), // For legacy support
+  date: z.string().optional(), // New format: separate date and time
+  time: z.string().optional(), // New format: HH:MM
+  appointmentType: z.string().min(1, 'Appointment type is required').optional(),
+  location: z.string().optional(),
+  duration: z.number().min(15).max(120).default(30), // Duration in minutes
+  notes: z.string().optional(),
+  isUrgent: z.boolean().optional(),
+  status: z.string().optional(), // For provider-initiated requests
   patientInfo: z.object({
     firstName: z.string().min(1, 'First name is required'),
     lastName: z.string().min(1, 'Last name is required'),
@@ -18,9 +26,7 @@ const createAppointmentSchema = z.object({
     reason: z.string().min(1, 'Reason for visit is required'),
     notes: z.string().optional()
   }).optional(),
-  reason: z.string().min(1, 'Reason for visit is required'),
-  notes: z.string().optional(),
-  duration: z.number().min(15).max(120).default(30), // Duration in minutes
+  reason: z.string().optional(), // Optional for new format
 })
 
 // GET /api/appointments - Get appointments (requires authentication)
@@ -114,28 +120,147 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
+    
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+    
     const body = await request.json()
     const validatedData = createAppointmentSchema.parse(body)
 
-    // Check if provider exists and is active
-    const provider = await prisma.provider.findUnique({
-      where: { 
-        id: validatedData.providerId,
-        isActive: true 
+    // Handle provider-initiated appointment requests
+    if (session.user.role === 'PROVIDER') {
+      return handleProviderInitiatedRequest(session, validatedData)
+    }
+    
+    // Handle patient-initiated appointment bookings (existing logic)
+    return handlePatientInitiatedBooking(session, validatedData)
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json({ 
+        error: 'Invalid input data', 
+        details: error.errors 
+      }, { status: 400 })
+    }
+    
+    console.error('Error creating appointment:', error)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+  }
+}
+
+// Handle provider-initiated appointment requests
+async function handleProviderInitiatedRequest(session: any, validatedData: any) {
+  // Get provider profile
+  const provider = await prisma.provider.findUnique({
+    where: { userId: session.user.id },
+    include: {
+      user: {
+        select: {
+          name: true,
+          email: true
+        }
+      }
+    }
+  })
+
+  if (!provider) {
+    return NextResponse.json({ error: 'Provider profile not found' }, { status: 404 })
+  }
+
+  // Validate required fields for provider requests
+  if (!validatedData.patientId || !validatedData.date || !validatedData.time || !validatedData.appointmentType) {
+    return NextResponse.json({ 
+      error: 'Patient ID, date, time, and appointment type are required' 
+    }, { status: 400 })
+  }
+
+  // Combine date and time
+  const appointmentDateTime = new Date(`${validatedData.date}T${validatedData.time}:00`)
+  
+  // Create appointment with PENDING_APPROVAL status
+  const appointment = await prisma.appointment.create({
+    data: {
+      patientId: validatedData.patientId,
+      providerId: provider.id,
+      dateTime: appointmentDateTime,
+      reason: validatedData.appointmentType,
+      notes: validatedData.notes || null,
+      status: 'PENDING_APPROVAL', // Patient needs to approve
+      duration: validatedData.duration,
+      location: validatedData.location || 'Main Office',
+      isUrgent: validatedData.isUrgent || false
+    },
+    include: {
+      provider: {
+        include: {
+          user: {
+            select: {
+              name: true,
+              email: true
+            }
+          }
+        }
       },
-      include: {
-        user: {
-          select: {
-            name: true,
-            email: true
+      patient: {
+        include: {
+          user: {
+            select: {
+              name: true,
+              email: true
+            }
           }
         }
       }
-    })
-
-    if (!provider) {
-      return NextResponse.json({ error: 'Provider not found or inactive' }, { status: 404 })
     }
+  })
+
+  // TODO: Send notification to patient
+  // TODO: Create message in patient's message system
+
+  return NextResponse.json({ 
+    appointment,
+    message: 'Appointment request sent to patient for approval' 
+  }, { status: 201 })
+}
+
+// Handle patient-initiated appointment bookings (existing logic)
+async function handlePatientInitiatedBooking(session: any, validatedData: any) {
+  // Legacy support - convert new format to old format if needed
+  let appointmentDateTime: Date
+  
+  if (validatedData.dateTime) {
+    appointmentDateTime = new Date(validatedData.dateTime)
+  } else if (validatedData.date && validatedData.time) {
+    appointmentDateTime = new Date(`${validatedData.date}T${validatedData.time}:00`)
+  } else {
+    return NextResponse.json({ 
+      error: 'Either dateTime or date+time is required' 
+    }, { status: 400 })
+  }
+
+  if (!validatedData.providerId) {
+    return NextResponse.json({ error: 'Provider ID is required' }, { status: 400 })
+  }
+
+  // Check if provider exists and is active
+  const provider = await prisma.provider.findUnique({
+    where: { 
+      id: validatedData.providerId,
+      isActive: true 
+    },
+    include: {
+      user: {
+        select: {
+          name: true,
+          email: true
+        }
+      }
+    }
+  })
+
+  if (!provider) {
+    return NextResponse.json({ error: 'Provider not found or inactive' }, { status: 404 })
+  }
 
     // Check if the requested time slot is available
     const appointmentDateTime = new Date(validatedData.dateTime)

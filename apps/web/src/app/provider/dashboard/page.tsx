@@ -37,12 +37,14 @@ import {
 import Link from 'next/link'
 import AvailabilityCalendar from '@/components/availability/AvailabilityCalendar'
 import { MessageProvider } from '@/components/MessageProvider'
+import AppointmentSchedulingModal from '@/components/AppointmentSchedulingModal'
 
 type DashboardSection = 'overview' | 'appointments' | 'patients' | 'availability' | 'prescriptions' | 'messages' | 'analytics' | 'settings'
 
 export default function ProviderDashboard() {
   const { data: session, status } = useSession()
   const [activeSection, setActiveSection] = useState<DashboardSection>('overview')
+  const [isSchedulingModalOpen, setIsSchedulingModalOpen] = useState(false)
   
   useEffect(() => {
     if (status === 'loading') return
@@ -63,6 +65,19 @@ export default function ProviderDashboard() {
   }
 
   if (!session) return null
+
+  const handleOpenSchedulingModal = () => {
+    setIsSchedulingModalOpen(true)
+  }
+
+  const handleCloseSchedulingModal = () => {
+    setIsSchedulingModalOpen(false)
+  }
+
+  const handleAppointmentScheduled = () => {
+    // Refresh appointments data if needed
+    // Could add state management here
+  }
 
   // Mock data - replace with API calls
   const todayAppointments = [
@@ -363,7 +378,7 @@ export default function ProviderDashboard() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-gray-900">Appointments</h2>
-        <Button>
+        <Button onClick={handleOpenSchedulingModal}>
           <Plus className="h-4 w-4 mr-2" />
           Schedule Appointment
         </Button>
@@ -629,6 +644,13 @@ export default function ProviderDashboard() {
           {renderContent()}
         </div>
       </div>
+      
+      {/* Appointment Scheduling Modal */}
+      <AppointmentSchedulingModal
+        isOpen={isSchedulingModalOpen}
+        onClose={handleCloseSchedulingModal}
+        onScheduled={handleAppointmentScheduled}
+      />
     </div>
   )
 }
