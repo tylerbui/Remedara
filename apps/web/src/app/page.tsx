@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Calendar, Users, FileText, Shield, MessageSquare, UserCheck } from 'lucide-react'
+import { Calendar, Users, FileText, Shield, MessageSquare, UserCheck, LayoutDashboard, User, Stethoscope } from 'lucide-react'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import { HomeNavbar } from '@/components/HomeNavbar'
@@ -16,20 +16,80 @@ export default function HomePage() {
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold text-gray-900 mb-4">
-            Remedara
+            {session ? `Welcome back, ${session.user.name?.split(' ')[0]}!` : 'Remedara'}
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Professional clinic scheduling and patient intake management system. 
-            Streamline your healthcare operations with our secure, compliant platform.
+            {session ? (
+              session.user.role === 'PATIENT' ? 
+                'Your health records and appointments are just a click away. Manage your care with ease.' :
+              session.user.role === 'PROVIDER' ? 
+                'Access your practice dashboard, patient records, and schedule management.' :
+                'Manage clinic operations, patient records, and administrative tasks.'
+            ) : (
+              'Professional clinic scheduling and patient intake management system. Streamline your healthcare operations with our secure, compliant platform.'
+            )}
           </p>
           <div className="mt-8 flex justify-center gap-4">
-            <Button asChild className="bg-gray-900 hover:bg-gray-800 text-lg px-12 py-4 h-auto">
-              <Link href="/login">Get Started</Link>
-            </Button>
-            {session && (
-              <Button variant="outline" asChild size="lg" className="border-gray-300 text-gray-700 hover:bg-gray-100">
-                <Link href="/book">Book Appointment</Link>
+            {!session ? (
+              <Button asChild className="bg-gray-900 hover:bg-gray-800 text-lg px-12 py-4 h-auto">
+                <Link href="/login">Get Started</Link>
               </Button>
+            ) : (
+              <>
+                {/* Patient Dashboard */}
+                {session.user.role === 'PATIENT' && (
+                  <>
+                    <Button asChild className="bg-gray-900 hover:bg-gray-800 text-lg px-12 py-4 h-auto">
+                      <Link href="/records">
+                        <User className="h-5 w-5 mr-2" />
+                        My Records
+                      </Link>
+                    </Button>
+                    <Button variant="outline" asChild className="border-gray-300 text-gray-700 hover:bg-gray-100 text-lg px-12 py-4 h-auto">
+                      <Link href="/book">
+                        <Calendar className="h-5 w-5 mr-2" />
+                        Book Appointment
+                      </Link>
+                    </Button>
+                  </>
+                )}
+                
+                {/* Provider Dashboard */}
+                {session.user.role === 'PROVIDER' && (
+                  <>
+                    <Button asChild className="bg-gray-900 hover:bg-gray-800 text-lg px-12 py-4 h-auto">
+                      <Link href="/provider">
+                        <Stethoscope className="h-5 w-5 mr-2" />
+                        Provider Dashboard
+                      </Link>
+                    </Button>
+                    <Button variant="outline" asChild className="border-gray-300 text-gray-700 hover:bg-gray-100 text-lg px-12 py-4 h-auto">
+                      <Link href="/records">
+                        <FileText className="h-5 w-5 mr-2" />
+                        Patient Records
+                      </Link>
+                    </Button>
+                  </>
+                )}
+                
+                {/* Admin Dashboard */}
+                {(session.user.role === 'ADMIN' || session.user.role === 'FRONT_DESK') && (
+                  <>
+                    <Button asChild className="bg-gray-900 hover:bg-gray-800 text-lg px-12 py-4 h-auto">
+                      <Link href="/provider">
+                        <LayoutDashboard className="h-5 w-5 mr-2" />
+                        Admin Dashboard
+                      </Link>
+                    </Button>
+                    <Button variant="outline" asChild className="border-gray-300 text-gray-700 hover:bg-gray-100 text-lg px-12 py-4 h-auto">
+                      <Link href="/records">
+                        <Users className="h-5 w-5 mr-2" />
+                        Manage Records
+                      </Link>
+                    </Button>
+                  </>
+                )}
+              </>
             )}
           </div>
         </div>
@@ -143,19 +203,87 @@ export default function HomePage() {
         <div className="text-center">
           <Card className="max-w-4xl mx-auto border-gray-200 p-8">
             <CardHeader className="pb-8">
-              <CardTitle className="text-3xl text-gray-900 mb-4">Ready to Transform Your Clinic?</CardTitle>
+              <CardTitle className="text-3xl text-gray-900 mb-4">
+                {session ? (
+                  session.user.role === 'PATIENT' ? 'Your Health, Simplified' :
+                  session.user.role === 'PROVIDER' ? 'Streamline Your Practice' :
+                  'Manage Your Clinic Efficiently'
+                ) : (
+                  'Ready to Transform Your Clinic?'
+                )}
+              </CardTitle>
               <CardDescription className="text-xl text-gray-600 leading-relaxed">
-                Join healthcare providers who trust Remedara for their scheduling needs
+                {session ? (
+                  session.user.role === 'PATIENT' ? 'Access your complete medical history, schedule appointments, and stay connected with your healthcare providers.' :
+                  session.user.role === 'PROVIDER' ? 'Manage patient records, appointments, and practice operations all in one secure platform.' :
+                  'Oversee clinic operations, manage staff, and ensure smooth patient care delivery.'
+                ) : (
+                  'Join healthcare providers who trust Remedara for their scheduling needs'
+                )}
               </CardDescription>
             </CardHeader>
-            <CardContent className="flex flex-col sm:flex-row justify-center gap-6">
-              <Button asChild size="lg" className="bg-gray-900 hover:bg-gray-800 px-8 py-4 text-lg font-medium">
-                <Link href="/register">Start Free Trial</Link>
-              </Button>
-              <Button variant="outline" asChild size="lg" className="border-gray-300 text-gray-700 hover:bg-gray-100 px-8 py-4 text-lg font-medium">
-                <Link href="/contact">Contact Sales</Link>
-              </Button>
-            </CardContent>
+            {!session && (
+              <CardContent className="flex flex-col sm:flex-row justify-center gap-6">
+                <Button asChild size="lg" className="bg-gray-900 hover:bg-gray-800 px-8 py-4 text-lg font-medium">
+                  <Link href="/register">Start Free Trial</Link>
+                </Button>
+                <Button variant="outline" asChild size="lg" className="border-gray-300 text-gray-700 hover:bg-gray-100 px-8 py-4 text-lg font-medium">
+                  <Link href="/contact">Contact Sales</Link>
+                </Button>
+              </CardContent>
+            )}
+            {session && (
+              <CardContent className="flex flex-col sm:flex-row justify-center gap-6">
+                {session.user.role === 'PATIENT' && (
+                  <>
+                    <Button asChild size="lg" className="bg-blue-600 hover:bg-blue-700 px-8 py-4 text-lg font-medium">
+                      <Link href="/records">
+                        <FileText className="h-5 w-5 mr-2" />
+                        View My Records
+                      </Link>
+                    </Button>
+                    <Button variant="outline" asChild size="lg" className="border-blue-300 text-blue-700 hover:bg-blue-50 px-8 py-4 text-lg font-medium">
+                      <Link href="/book">
+                        <Calendar className="h-5 w-5 mr-2" />
+                        Schedule Appointment
+                      </Link>
+                    </Button>
+                  </>
+                )}
+                {session.user.role === 'PROVIDER' && (
+                  <>
+                    <Button asChild size="lg" className="bg-green-600 hover:bg-green-700 px-8 py-4 text-lg font-medium">
+                      <Link href="/provider">
+                        <Stethoscope className="h-5 w-5 mr-2" />
+                        Go to Dashboard
+                      </Link>
+                    </Button>
+                    <Button variant="outline" asChild size="lg" className="border-green-300 text-green-700 hover:bg-green-50 px-8 py-4 text-lg font-medium">
+                      <Link href="/records">
+                        <Users className="h-5 w-5 mr-2" />
+                        Patient Records
+                      </Link>
+                    </Button>
+                  </>
+                )}
+                {(session.user.role === 'ADMIN' || session.user.role === 'FRONT_DESK') && (
+                  <>
+                    <Button asChild size="lg" className="bg-purple-600 hover:bg-purple-700 px-8 py-4 text-lg font-medium">
+                      <Link href="/provider">
+                        <LayoutDashboard className="h-5 w-5 mr-2" />
+                        Admin Dashboard
+                      </Link>
+                    </Button>
+                    <Button variant="outline" asChild size="lg" className="border-purple-300 text-purple-700 hover:bg-purple-50 px-8 py-4 text-lg font-medium">
+                      <Link href="/records">
+                        <FileText className="h-5 w-5 mr-2" />
+                        All Records
+                      </Link>
+                    </Button>
+                  </>
+                )}
+              </CardContent>
+            )}
           </Card>
         </div>
       </div>

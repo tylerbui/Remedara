@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
+import { LayoutDashboard, User, Stethoscope } from 'lucide-react'
 
 export function HomeNavbar() {
   const { data: session, status } = useSession()
@@ -44,6 +45,50 @@ export function HomeNavbar() {
                 <span className="text-base text-gray-600">
                   Welcome, {session.user.name || session.user.email}
                 </span>
+                
+                {/* Dashboard Link based on user role */}
+                {session.user.role === 'PATIENT' && (
+                  <Button
+                    variant="ghost"
+                    asChild
+                    size="lg"
+                    className="text-blue-700 hover:bg-blue-50 px-6 py-3 text-base font-medium"
+                  >
+                    <Link href="/records">
+                      <User className="h-4 w-4 mr-2" />
+                      My Records
+                    </Link>
+                  </Button>
+                )}
+                
+                {session.user.role === 'PROVIDER' && (
+                  <Button
+                    variant="ghost"
+                    asChild
+                    size="lg"
+                    className="text-green-700 hover:bg-green-50 px-6 py-3 text-base font-medium"
+                  >
+                    <Link href="/provider">
+                      <Stethoscope className="h-4 w-4 mr-2" />
+                      Dashboard
+                    </Link>
+                  </Button>
+                )}
+                
+                {(session.user.role === 'ADMIN' || session.user.role === 'FRONT_DESK') && (
+                  <Button
+                    variant="ghost"
+                    asChild
+                    size="lg"
+                    className="text-purple-700 hover:bg-purple-50 px-6 py-3 text-base font-medium"
+                  >
+                    <Link href="/provider">
+                      <LayoutDashboard className="h-4 w-4 mr-2" />
+                      Admin
+                    </Link>
+                  </Button>
+                )}
+                
                 <Button
                   variant="outline"
                   size="lg"
