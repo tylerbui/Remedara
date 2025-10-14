@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
+import { useSession, signOut } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -27,7 +27,8 @@ import {
   MessageSquare,
   History,
   ClipboardList,
-  Building2
+  Building2,
+  LogOut
 } from 'lucide-react'
 import Link from 'next/link'
 import { MessageProvider } from '@/components/MessageProvider'
@@ -537,7 +538,7 @@ export default function PatientDashboard() {
     <div className="min-h-screen bg-gray-50">
       <div className="flex">
         {/* Sidebar */}
-        <div className="w-64 bg-white shadow-sm border-r min-h-screen">
+        <div className="w-64 bg-white shadow-sm border-r min-h-screen flex flex-col">
           <div className="p-6">
             <h1 className="text-xl font-bold text-gray-900">Patient Portal</h1>
             <p className="text-sm text-gray-600 mt-1">
@@ -545,27 +546,43 @@ export default function PatientDashboard() {
             </p>
           </div>
           
-          <nav className="mt-6">
-            {sidebarNavigation.map((item) => {
-              const Icon = item.icon
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => setActiveSection(item.id as DashboardSection)}
-                  className={`w-full flex items-start space-x-3 px-6 py-4 text-left hover:bg-gray-50 transition-colors ${
-                    activeSection === item.id
-                      ? 'bg-blue-50 border-r-2 border-blue-500 text-blue-700'
-                      : 'text-gray-700'
-                  }`}
-                >
-                  <Icon className="h-5 w-5 mt-0.5 flex-shrink-0" />
-                  <div className="flex-1">
-                    <div className="font-medium">{item.label}</div>
-                    <div className="text-xs text-gray-500 mt-1">{item.description}</div>
-                  </div>
-                </button>
-              )
-            })}
+          <nav className="mt-6 flex-1 flex flex-col">
+            <div className="flex-1">
+              {sidebarNavigation.map((item) => {
+                const Icon = item.icon
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => setActiveSection(item.id as DashboardSection)}
+                    className={`w-full flex items-start space-x-3 px-6 py-4 text-left hover:bg-gray-50 transition-colors ${
+                      activeSection === item.id
+                        ? 'bg-blue-50 border-r-2 border-blue-500 text-blue-700'
+                        : 'text-gray-700'
+                    }`}
+                  >
+                    <Icon className="h-5 w-5 mt-0.5 flex-shrink-0" />
+                    <div className="flex-1">
+                      <div className="font-medium">{item.label}</div>
+                      <div className="text-xs text-gray-500 mt-1">{item.description}</div>
+                    </div>
+                  </button>
+                )
+              })}
+            </div>
+            
+            {/* Sign Out Button */}
+            <div className="border-t border-gray-200 pt-4">
+              <button
+                onClick={() => signOut({ callbackUrl: '/login' })}
+                className="w-full flex items-center space-x-3 px-6 py-4 text-left hover:bg-red-50 transition-colors text-red-600 hover:text-red-700"
+              >
+                <LogOut className="h-5 w-5 flex-shrink-0" />
+                <div className="flex-1">
+                  <div className="font-medium">Sign Out</div>
+                  <div className="text-xs text-red-500 mt-1">End your session</div>
+                </div>
+              </button>
+            </div>
           </nav>
         </div>
 
