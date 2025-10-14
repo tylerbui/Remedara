@@ -185,10 +185,8 @@ async function handleProviderInitiatedRequest(session: any, validatedData: any) 
       dateTime: appointmentDateTime,
       reason: validatedData.appointmentType,
       notes: validatedData.notes || null,
-      status: 'PENDING_APPROVAL', // Patient needs to approve
-      duration: validatedData.duration,
-      location: validatedData.location || 'Main Office',
-      isUrgent: validatedData.isUrgent || false
+      status: 'SCHEDULED', // Patient needs to approve
+      duration: validatedData.duration
     },
     include: {
       provider: {
@@ -225,45 +223,45 @@ async function handleProviderInitiatedRequest(session: any, validatedData: any) 
 
 // Handle patient-initiated appointment bookings (existing logic)
 async function handlePatientInitiatedBooking(session: any, validatedData: any) {
-  // Legacy support - convert new format to old format if needed
-  let appointmentDateTime: Date
+  try {
+    // Legacy support - convert new format to old format if needed
+    let appointmentDateTime: Date
   
-  if (validatedData.dateTime) {
-    appointmentDateTime = new Date(validatedData.dateTime)
-  } else if (validatedData.date && validatedData.time) {
-    appointmentDateTime = new Date(`${validatedData.date}T${validatedData.time}:00`)
-  } else {
-    return NextResponse.json({ 
-      error: 'Either dateTime or date+time is required' 
-    }, { status: 400 })
-  }
+    if (validatedData.dateTime) {
+      appointmentDateTime = new Date(validatedData.dateTime)
+    } else if (validatedData.date && validatedData.time) {
+      appointmentDateTime = new Date(`${validatedData.date}T${validatedData.time}:00`)
+    } else {
+      return NextResponse.json({ 
+        error: 'Either dateTime or date+time is required' 
+      }, { status: 400 })
+    }
 
-  if (!validatedData.providerId) {
-    return NextResponse.json({ error: 'Provider ID is required' }, { status: 400 })
-  }
+    if (!validatedData.providerId) {
+      return NextResponse.json({ error: 'Provider ID is required' }, { status: 400 })
+    }
 
-  // Check if provider exists and is active
-  const provider = await prisma.provider.findUnique({
-    where: { 
-      id: validatedData.providerId,
-      isActive: true 
-    },
-    include: {
-      user: {
-        select: {
-          name: true,
-          email: true
+    // Check if provider exists and is active
+    const provider = await prisma.provider.findUnique({
+      where: { 
+        id: validatedData.providerId,
+        isActive: true 
+      },
+      include: {
+        user: {
+          select: {
+            name: true,
+            email: true
+          }
         }
       }
-    }
-  })
+    })
 
-  if (!provider) {
-    return NextResponse.json({ error: 'Provider not found or inactive' }, { status: 404 })
-  }
+    if (!provider) {
+      return NextResponse.json({ error: 'Provider not found or inactive' }, { status: 404 })
+    }
 
     // Check if the requested time slot is available
-    const appointmentDateTime = new Date(validatedData.dateTime)
     const endDateTime = new Date(appointmentDateTime.getTime() + validatedData.duration * 60000)
 
     // Check for conflicts
@@ -393,7 +391,7 @@ async function handlePatientInitiatedBooking(session: any, validatedData: any) {
         patientId,
         providerId: validatedData.providerId,
         dateTime: appointmentDateTime,
-        reason: validatedData.reason,
+        reason: validatedData.reason || (validatedData.patientInfo ? validatedData.patientInfo.reason : ''),
         notes: validatedData.notes,
         status: 'SCHEDULED',
         duration: validatedData.duration

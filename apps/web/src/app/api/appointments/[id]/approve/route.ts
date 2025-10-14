@@ -55,10 +55,10 @@ export async function PUT(
       return NextResponse.json({ error: 'Only patients can approve appointments' }, { status: 403 })
     }
 
-    // Check if appointment is in the correct status
-    if (appointment.status !== 'PENDING_APPROVAL') {
+    // Check if appointment is in the correct status (scheduled by provider)
+    if (appointment.status !== 'SCHEDULED') {
       return NextResponse.json({ 
-        error: 'Appointment is not pending approval' 
+        error: 'Appointment is not available for approval' 
       }, { status: 400 })
     }
 
