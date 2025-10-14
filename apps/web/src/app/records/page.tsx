@@ -38,12 +38,15 @@ import {
   FolderOpen,
   ClipboardCheck,
   BarChart3,
-  Stethoscope
+  Stethoscope,
+  ArrowLeft,
+  LayoutDashboard
 } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { PDFExport } from '@/components/PDFExport'
 import { RecordSharing } from '@/components/RecordSharing'
+import Link from 'next/link'
 
 interface UserProfile {
   id: string
@@ -2133,6 +2136,21 @@ export default function RecordsPage() {
           <div className="p-6">
             <h1 className="text-xl font-bold text-gray-900">Medical Records</h1>
             <p className="text-sm text-gray-600 mt-1">Your health information</p>
+            
+            {/* Back to Dashboard Button - Only show for patients */}
+            {session?.user.role === 'PATIENT' && (
+              <Button
+                variant="outline"
+                size="sm"
+                asChild
+                className="mt-4 w-full justify-start"
+              >
+                <Link href="/patient/dashboard">
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Back to Dashboard
+                </Link>
+              </Button>
+            )}
           </div>
           
           <nav className="mt-6">

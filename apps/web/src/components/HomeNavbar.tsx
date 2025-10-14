@@ -46,19 +46,32 @@ export function HomeNavbar() {
                   Welcome, {session.user.name || session.user.email}
                 </span>
                 
-                {/* Dashboard Link based on user role */}
+                {/* Dashboard Links based on user role */}
                 {session.user.role === 'PATIENT' && (
-                  <Button
-                    variant="ghost"
-                    asChild
-                    size="lg"
-                    className="text-blue-700 hover:bg-blue-50 px-6 py-3 text-base font-medium"
-                  >
-                    <Link href="/records">
-                      <User className="h-4 w-4 mr-2" />
-                      My Records
-                    </Link>
-                  </Button>
+                  <>
+                    <Button
+                      variant="ghost"
+                      asChild
+                      size="lg"
+                      className="text-blue-700 hover:bg-blue-50 px-6 py-3 text-base font-medium"
+                    >
+                      <Link href="/patient/dashboard">
+                        <LayoutDashboard className="h-4 w-4 mr-2" />
+                        Dashboard
+                      </Link>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      asChild
+                      size="lg"
+                      className="text-gray-600 hover:bg-gray-50 px-6 py-3 text-base font-medium"
+                    >
+                      <Link href="/records">
+                        <User className="h-4 w-4 mr-2" />
+                        Records
+                      </Link>
+                    </Button>
+                  </>
                 )}
                 
                 {session.user.role === 'PROVIDER' && (

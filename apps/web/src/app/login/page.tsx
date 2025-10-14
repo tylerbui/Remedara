@@ -50,17 +50,15 @@ export default function LoginPage() {
       // Redirect based on user role
       switch (session?.user.role) {
         case 'ADMIN':
-          router.push('/admin/dashboard')
+        case 'FRONT_DESK':
+          router.push('/provider') // Use existing provider dashboard for admins
           break
         case 'PROVIDER':
-          router.push('/provider/dashboard')
-          break
-        case 'FRONT_DESK':
-          router.push('/front-desk/dashboard')
+          router.push('/provider')
           break
         case 'PATIENT':
         default:
-          router.push('/patient/dashboard')
+          router.push('/patient/dashboard') // Patient dashboard
           break
       }
     } catch (error) {
@@ -78,7 +76,7 @@ export default function LoginPage() {
     setIsLoading(true)
     try {
       await signIn('google', {
-        callbackUrl: '/patient/dashboard',
+        callbackUrl: '/patient/dashboard', // Patient dashboard route
       })
     } catch (error) {
       console.error('Google login error:', error)

@@ -23,13 +23,11 @@ import {
   Plus,
   Eye,
   Stethoscope,
-  BarChart3,
-  MessageSquare
+  BarChart3
 } from 'lucide-react'
 import Link from 'next/link'
-import { MessageProvider } from '@/components/MessageProvider'
 
-type DashboardSection = 'overview' | 'appointments' | 'records' | 'prescriptions' | 'results' | 'messages'
+type DashboardSection = 'overview' | 'appointments' | 'records' | 'prescriptions' | 'results'
 
 export default function PatientDashboard() {
   const { data: session, status } = useSession()
@@ -132,8 +130,7 @@ export default function PatientDashboard() {
     { id: 'appointments', label: 'Appointments', icon: Calendar, description: 'Schedule & history' },
     { id: 'records', label: 'Medical Records', icon: FileText, description: 'Health records' },
     { id: 'prescriptions', label: 'Prescriptions', icon: Pill, description: 'Medications' },
-    { id: 'results', label: 'Test Results', icon: TestTube, description: 'Lab & imaging' },
-    { id: 'messages', label: 'Message Provider', icon: MessageSquare, description: 'Contact your providers' }
+    { id: 'results', label: 'Test Results', icon: TestTube, description: 'Lab & imaging' }
   ] as const
 
   // Render different sections based on active selection
@@ -149,8 +146,6 @@ export default function PatientDashboard() {
         return renderPrescriptions()
       case 'results':
         return renderResults()
-      case 'messages':
-        return renderMessages()
       default:
         return renderOverview()
     }
@@ -391,10 +386,6 @@ export default function PatientDashboard() {
     </div>
   )
 
-  const renderMessages = () => (
-    <MessageProvider />
-  )
-
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="flex">
@@ -434,6 +425,163 @@ export default function PatientDashboard() {
         {/* Main Content */}
         <div className="flex-1 p-8">
           {renderContent()}
+        </div>
+      </div>
+  )
+}
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Lab Results</CardTitle>
+              <TestTube className="h-4 w-4 text-purple-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{quickStats.labResults}</div>
+              <p className="text-xs text-muted-foreground">1 new result</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Documents</CardTitle>
+              <FileText className="h-4 w-4 text-orange-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{quickStats.documents}</div>
+              <p className="text-xs text-muted-foreground">All up to date</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Upcoming Appointments */}
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center space-x-2">
+                  <Calendar className="h-5 w-5" />
+                  <span>Upcoming Appointments</span>
+                </CardTitle>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link href="/book">
+                    <Plus className="h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {upcomingAppointments.map((appointment) => (
+                <div key={appointment.id} className="flex items-center justify-between p-4 border rounded-lg">
+                  <div>
+                    <h3 className="font-semibold">{appointment.type}</h3>
+                    <p className="text-sm text-gray-600">{appointment.provider}</p>
+                    <p className="text-sm text-gray-500">
+                      {new Date(appointment.date).toLocaleDateString()} at {appointment.time}
+                    </p>
+                  </div>
+                  <Button variant="outline" size="sm">
+                    <Eye className="h-4 w-4 mr-1" />
+                    Details
+                  </Button>
+                </div>
+              ))}
+              <Button variant="outline" className="w-full" asChild>
+                <Link href="/book">
+                  <Plus className="h-4 w-4 mr-2" />
+                  Schedule New Appointment
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Recent Activity */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Activity className="h-5 w-5" />
+                <span>Recent Activity</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {recentActivity.map((activity) => (
+                <div key={activity.id} className="flex items-center space-x-3 p-3 border rounded-lg">
+                  <div className={`p-2 rounded-full ${
+                    activity.type === 'lab_result' ? 'bg-purple-100 text-purple-600' :
+                    activity.type === 'prescription' ? 'bg-green-100 text-green-600' :
+                    'bg-blue-100 text-blue-600'
+                  }`}>
+                    {activity.type === 'lab_result' ? <TestTube className="h-4 w-4" /> :
+                     activity.type === 'prescription' ? <Pill className="h-4 w-4" /> :
+                     <Calendar className="h-4 w-4" />}
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-medium">{activity.title}</h4>
+                    <p className="text-sm text-gray-600">{activity.description}</p>
+                    <p className="text-xs text-gray-500">{new Date(activity.date).toLocaleDateString()}</p>
+                  </div>
+                  <Badge variant={activity.status === 'new' ? 'default' : 'secondary'}>
+                    {activity.status}
+                  </Badge>
+                </div>
+              ))}
+              <Button variant="outline" className="w-full" asChild>
+                <Link href="/records">
+                  <FileText className="h-4 w-4 mr-2" />
+                  View All Records
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="mt-8">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Card className="hover:shadow-md transition-shadow cursor-pointer">
+              <CardContent className="pt-6">
+                <Link href="/records" className="block">
+                  <div className="text-center">
+                    <FileText className="h-8 w-8 text-blue-500 mx-auto mb-2" />
+                    <h3 className="font-semibold">Medical Records</h3>
+                    <p className="text-sm text-gray-600">View your complete health history</p>
+                  </div>
+                </Link>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-md transition-shadow cursor-pointer">
+              <CardContent className="pt-6">
+                <Link href="/book" className="block">
+                  <div className="text-center">
+                    <Calendar className="h-8 w-8 text-green-500 mx-auto mb-2" />
+                    <h3 className="font-semibold">Book Appointment</h3>
+                    <p className="text-sm text-gray-600">Schedule with your providers</p>
+                  </div>
+                </Link>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-md transition-shadow cursor-pointer">
+              <CardContent className="pt-6">
+                <div className="text-center">
+                  <Pill className="h-8 w-8 text-purple-500 mx-auto mb-2" />
+                  <h3 className="font-semibold">Prescriptions</h3>
+                  <p className="text-sm text-gray-600">Manage your medications</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-md transition-shadow cursor-pointer">
+              <CardContent className="pt-6">
+                <Link href="/support" className="block">
+                  <div className="text-center">
+                    <User className="h-8 w-8 text-orange-500 mx-auto mb-2" />
+                    <h3 className="font-semibold">Support</h3>
+                    <p className="text-sm text-gray-600">Get help and contact us</p>
+                  </div>
+                </Link>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </div>

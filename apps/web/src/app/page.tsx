@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Calendar, Users, FileText, Shield, MessageSquare, UserCheck, LayoutDashboard, User, Stethoscope } from 'lucide-react'
+import { Calendar, Users, FileText, Shield, MessageSquare, UserCheck, LayoutDashboard, User, Stethoscope, Activity } from 'lucide-react'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import { HomeNavbar } from '@/components/HomeNavbar'
@@ -40,15 +40,15 @@ export default function HomePage() {
                 {session.user.role === 'PATIENT' && (
                   <>
                     <Button asChild className="bg-gray-900 hover:bg-gray-800 text-lg px-12 py-4 h-auto">
-                      <Link href="/records">
-                        <User className="h-5 w-5 mr-2" />
-                        My Records
+                      <Link href="/patient/dashboard">
+                        <LayoutDashboard className="h-5 w-5 mr-2" />
+                        Dashboard
                       </Link>
                     </Button>
                     <Button variant="outline" asChild className="border-gray-300 text-gray-700 hover:bg-gray-100 text-lg px-12 py-4 h-auto">
-                      <Link href="/book">
-                        <Calendar className="h-5 w-5 mr-2" />
-                        Book Appointment
+                      <Link href="/records">
+                        <User className="h-5 w-5 mr-2" />
+                        My Records
                       </Link>
                     </Button>
                   </>
@@ -237,15 +237,15 @@ export default function HomePage() {
                 {session.user.role === 'PATIENT' && (
                   <>
                     <Button asChild size="lg" className="bg-blue-600 hover:bg-blue-700 px-8 py-4 text-lg font-medium">
-                      <Link href="/records">
-                        <FileText className="h-5 w-5 mr-2" />
-                        View My Records
+                      <Link href="/patient/dashboard">
+                        <LayoutDashboard className="h-5 w-5 mr-2" />
+                        Go to Dashboard
                       </Link>
                     </Button>
                     <Button variant="outline" asChild size="lg" className="border-blue-300 text-blue-700 hover:bg-blue-50 px-8 py-4 text-lg font-medium">
-                      <Link href="/book">
-                        <Calendar className="h-5 w-5 mr-2" />
-                        Schedule Appointment
+                      <Link href="/records">
+                        <FileText className="h-5 w-5 mr-2" />
+                        View Records
                       </Link>
                     </Button>
                   </>
