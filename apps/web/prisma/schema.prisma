@@ -133,6 +133,7 @@ model Patient {
   transportationRequests TransportationRequest[]
   medicalNotifications MedicalRecordNotification[]
   recordShares     RecordShare[]
+  providerConnections ProviderConnection[]
 
   @@map("patients")
 }
@@ -157,8 +158,45 @@ model Provider {
   user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   appointments    Appointment[]
   availabilities  Availability[]
+  providerConnections ProviderConnection[]
 
   @@map("providers")
+}
+
+enum ProviderConnectionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  REVOKED
+}
+
+enum ConnectionInitiator {
+  PATIENT
+  PROVIDER
+}
+
+model ProviderConnection {
+  id              String                    @id @default(auto()) @map("_id") @db.ObjectId
+  patientId       String                    @db.ObjectId
+  providerId      String                    @db.ObjectId
+  status          ProviderConnectionStatus  @default(PENDING)
+  initiatedBy     ConnectionInitiator       // Who initiated the connection request
+  requestMessage  String?                   // Optional message with the request
+  responseMessage String?                   // Optional response message from approver/rejecter
+  
+  requestedAt     DateTime                  @default(now())
+  respondedAt     DateTime?
+  
+  createdAt       DateTime                  @default(now())
+  updatedAt       DateTime                  @updatedAt
+  
+  // Relations
+  patient         Patient                   @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  provider        Provider                  @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  
+  // Ensure unique connection per patient-provider pair
+  @@unique([patientId, providerId])
+  @@map("provider_connections")
 }
 
 model Availability {

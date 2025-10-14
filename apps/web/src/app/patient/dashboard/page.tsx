@@ -28,7 +28,8 @@ import {
   History,
   ClipboardList,
   Building2,
-  LogOut
+  LogOut,
+  UserPlus
 } from 'lucide-react'
 import Link from 'next/link'
 import { MessageProvider } from '@/components/MessageProvider'
@@ -175,11 +176,17 @@ export default function PatientDashboard() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-gray-900">Health Overview</h2>
-        <div className="flex items-center space-x-2">
-          <Button variant="outline" asChild>
+        <div className="flex items-center space-x-4">
+          <Button variant="outline" size="lg" asChild className="px-6 py-3">
             <Link href="/book">
-              <Plus className="h-4 w-4 mr-2" />
+              <Plus className="h-5 w-5 mr-3" />
               Book Appointment
+            </Link>
+          </Button>
+          <Button variant="outline" size="lg" asChild className="px-6 py-3">
+            <Link href="/patient/connect-provider">
+              <UserPlus className="h-5 w-5 mr-3" />
+              Connect Provider
             </Link>
           </Button>
         </div>

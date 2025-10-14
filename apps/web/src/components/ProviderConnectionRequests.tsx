@@ -20,12 +20,19 @@ import { toast } from 'sonner'
 
 interface ProviderConnection {
   id: string
-  providerId: string
-  providerName: string
-  providerEmail: string
+  providerId?: string
+  patientId?: string
+  providerName?: string
+  patientName?: string
+  providerEmail?: string
+  patientEmail?: string
   specialization?: string
   status: 'pending' | 'approved' | 'rejected'
+  initiatedBy?: 'PATIENT' | 'PROVIDER'
   requestDate?: string
+  responseDate?: string
+  requestMessage?: string
+  responseMessage?: string
   totalAppointments?: number
   lastAppointment?: string
 }
@@ -60,19 +67,63 @@ export default function ProviderConnectionRequests() {
 
   const handleApproveConnection = async (connectionId: string) => {
     try {
-      // TODO: Implement approval logic
-      toast.success('Provider connection approved')
-    } catch (error) {
-      toast.error('Failed to approve connection')
+      const response = await fetch('/api/provider-connections', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          connectionId,
+          action: 'approve'
+        }),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to approve connection')
+      }
+
+      // Update local state
+      setConnections(prev => prev.map(conn => 
+        conn.id === connectionId 
+          ? { ...conn, status: 'approved' as const }
+          : conn
+      ))
+      
+      toast.success('Provider connection approved!')
+      fetchConnections() // Refresh the list
+    } catch (error: any) {
+      console.error('Error approving connection:', error)
+      toast.error(error.message || 'Failed to approve connection')
     }
   }
 
   const handleRejectConnection = async (connectionId: string) => {
     try {
-      // TODO: Implement rejection logic
+      const response = await fetch('/api/provider-connections', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          connectionId,
+          action: 'reject'
+        }),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to reject connection')
+      }
+
+      // Remove from local state or mark as rejected
+      setConnections(prev => prev.filter(conn => conn.id !== connectionId))
+      
       toast.success('Provider connection rejected')
-    } catch (error) {
-      toast.error('Failed to reject connection')
+      fetchConnections() // Refresh the list
+    } catch (error: any) {
+      console.error('Error rejecting connection:', error)
+      toast.error(error.message || 'Failed to reject connection')
     }
   }
 
@@ -132,42 +183,63 @@ export default function ProviderConnectionRequests() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {pendingConnections.map((connection) => (
-              <div key={connection.id} className="flex items-center justify-between p-4 border rounded-lg">
-                <div className="flex items-center space-x-4">
-                  <div className="h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center">
-                    <Stethoscope className="h-6 w-6 text-blue-600" />
+            {pendingConnections.map((connection) => {
+              const isFromProvider = connection.initiatedBy === 'PROVIDER'
+              const displayName = isFromProvider ? connection.providerName : connection.patientName
+              const displayEmail = isFromProvider ? connection.providerEmail : connection.patientEmail
+              const displayRole = isFromProvider ? connection.specialization || 'Healthcare Provider' : 'Patient'
+              
+              return (
+                <div key={connection.id} className="flex items-center justify-between p-4 border rounded-lg">
+                  <div className="flex items-center space-x-4">
+                    <div className="h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center">
+                      {isFromProvider ? (
+                        <Stethoscope className="h-6 w-6 text-blue-600" />
+                      ) : (
+                        <UserCheck className="h-6 w-6 text-green-600" />
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-2">
+                        <h3 className="font-semibold text-gray-900">{displayName}</h3>
+                        {connection.initiatedBy && (
+                          <span className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded">
+                            {connection.initiatedBy === 'PROVIDER' ? 'Provider Request' : 'Patient Request'}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-sm text-gray-600">{displayRole}</p>
+                      <p className="text-sm text-gray-500">{displayEmail}</p>
+                      {connection.requestMessage && (
+                        <p className="text-sm text-gray-600 mt-1 italic">"${connection.requestMessage}"</p>
+                      )}
+                      {connection.requestDate && (
+                        <p className="text-xs text-gray-400 mt-1">
+                          Requested: {new Date(connection.requestDate).toLocaleDateString()}
+                        </p>
+                      )}
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900">{connection.providerName}</h3>
-                    <p className="text-sm text-gray-600">{connection.specialization || 'Healthcare Provider'}</p>
-                    <p className="text-sm text-gray-500">{connection.providerEmail}</p>
-                    {connection.requestDate && (
-                      <p className="text-xs text-gray-400">
-                        Requested: {new Date(connection.requestDate).toLocaleDateString()}
-                      </p>
-                    )}
+                  <div className="flex items-center space-x-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleRejectConnection(connection.id)}
+                    >
+                      <X className="h-4 w-4 mr-1" />
+                      Decline
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={() => handleApproveConnection(connection.id)}
+                    >
+                      <CheckCircle className="h-4 w-4 mr-1" />
+                      Approve
+                    </Button>
                   </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleRejectConnection(connection.id)}
-                  >
-                    <X className="h-4 w-4 mr-1" />
-                    Decline
-                  </Button>
-                  <Button
-                    size="sm"
-                    onClick={() => handleApproveConnection(connection.id)}
-                  >
-                    <CheckCircle className="h-4 w-4 mr-1" />
-                    Approve
-                  </Button>
-                </div>
-              </div>
-            ))}
+              )
+            })}
           </CardContent>
         </Card>
       )}
@@ -187,38 +259,60 @@ export default function ProviderConnectionRequests() {
         <CardContent>
           {approvedConnections.length > 0 ? (
             <div className="space-y-4">
-              {approvedConnections.map((connection) => (
-                <div key={connection.id} className="flex items-center justify-between p-4 border rounded-lg">
-                  <div className="flex items-center space-x-4">
-                    <div className="h-12 w-12 bg-green-100 rounded-full flex items-center justify-center">
-                      <UserCheck className="h-6 w-6 text-green-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-900">{connection.providerName}</h3>
-                      <p className="text-sm text-gray-600">{connection.specialization || 'Healthcare Provider'}</p>
-                      <div className="flex items-center space-x-4 text-sm text-gray-500">
-                        {connection.totalAppointments && (
-                          <span className="flex items-center">
-                            <Calendar className="h-3 w-3 mr-1" />
-                            {connection.totalAppointments} appointments
-                          </span>
-                        )}
-                        {connection.lastAppointment && (
-                          <span>
-                            Last visit: {new Date(connection.lastAppointment).toLocaleDateString()}
-                          </span>
+              {approvedConnections.map((connection) => {
+                const isFromProvider = connection.initiatedBy === 'PROVIDER'
+                const displayName = isFromProvider ? connection.providerName : connection.patientName
+                const displayRole = isFromProvider ? connection.specialization || 'Healthcare Provider' : 'Patient'
+                
+                return (
+                  <div key={connection.id} className="flex items-center justify-between p-4 border rounded-lg">
+                    <div className="flex items-center space-x-4">
+                      <div className="h-12 w-12 bg-green-100 rounded-full flex items-center justify-center">
+                        {isFromProvider ? (
+                          <Stethoscope className="h-6 w-6 text-green-600" />
+                        ) : (
+                          <UserCheck className="h-6 w-6 text-green-600" />
                         )}
                       </div>
+                      <div>
+                        <div className="flex items-center space-x-2">
+                          <h3 className="font-semibold text-gray-900">{displayName}</h3>
+                          {connection.initiatedBy && (
+                            <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded">
+                              Connected via {connection.initiatedBy === 'PROVIDER' ? 'Provider' : 'Patient'} Request
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-sm text-gray-600">{displayRole}</p>
+                        <div className="flex items-center space-x-4 text-sm text-gray-500">
+                          {connection.totalAppointments && (
+                            <span className="flex items-center">
+                              <Calendar className="h-3 w-3 mr-1" />
+                              {connection.totalAppointments} appointments
+                            </span>
+                          )}
+                          {connection.lastAppointment && (
+                            <span>
+                              Last visit: {new Date(connection.lastAppointment).toLocaleDateString()}
+                            </span>
+                          )}
+                          {connection.responseDate && (
+                            <span>
+                              Connected: {new Date(connection.responseDate).toLocaleDateString()}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Badge variant="secondary">
+                        <CheckCircle className="h-3 w-3 mr-1" />
+                        Connected
+                      </Badge>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <Badge variant="secondary">
-                      <CheckCircle className="h-3 w-3 mr-1" />
-                      Connected
-                    </Badge>
-                  </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           ) : (
             <div className="text-center py-8">

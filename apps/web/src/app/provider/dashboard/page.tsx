@@ -38,6 +38,7 @@ import Link from 'next/link'
 import AvailabilityCalendar from '@/components/availability/AvailabilityCalendar'
 import { MessageProvider } from '@/components/MessageProvider'
 import AppointmentSchedulingModal from '@/components/AppointmentSchedulingModal'
+import ProviderPatientRequests from '@/components/ProviderPatientRequests'
 
 type DashboardSection = 'overview' | 'appointments' | 'patients' | 'availability' | 'prescriptions' | 'messages' | 'analytics' | 'settings'
 
@@ -244,6 +245,9 @@ export default function ProviderDashboard() {
           </CardContent>
         </Card>
       )}
+
+      {/* Patient Connection Requests */}
+      <ProviderPatientRequests />
 
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
