@@ -231,7 +231,7 @@ export class FHIRClient {
       .collection(COLLECTIONS.LINKED_PROVIDERS)
       .findOne({ _id: linkedProviderId }) as LinkedProvider
     
-    if (!provider?.tokens?.refresh_token) {
+    if (!provider || !JSON.parse(decrypt(provider.encryptedTokens)).refresh_token) {
       throw new Error('No refresh token available')
     }
     
@@ -499,10 +499,14 @@ export class FHIRClient {
    * Convert FHIR resources to timeline entries
    */
   private async convertToTimelineEntries(
-    entries: FHIRBundle['entry']!, 
+    entries: NonNullable<FHIRBundle['entry']>, 
     resourceType: string
   ): Promise<UnifiedTimelineEntry[]> {
     const timelineEntries: UnifiedTimelineEntry[] = []
+    
+    if (!entries || entries.length === 0) {
+      return timelineEntries
+    }
     
     for (const entry of entries) {
       if (!entry.resource) continue

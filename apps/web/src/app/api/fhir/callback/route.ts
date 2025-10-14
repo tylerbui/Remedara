@@ -89,7 +89,7 @@ export async function GET(request: NextRequest) {
       console.error('Token exchange error:', error)
       
       // Log audit event
-      await logAuditEvent(db, linkingSession._id!, userId, 'link_created', false, error.message)
+      await logAuditEvent(db, linkingSession._id!, userId, 'link_created', false, error instanceof Error ? error.message : 'Unknown error')
       
       return NextResponse.redirect(
         `${process.env.NEXTAUTH_URL}/patient/dashboard?error=token_exchange_failed`

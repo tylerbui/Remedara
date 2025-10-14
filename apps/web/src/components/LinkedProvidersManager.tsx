@@ -11,7 +11,7 @@ import {
   Shield,
   AlertCircle,
   CheckCircle,
-  Sync,
+  RotateCw,
   Unlink,
   MessageSquare,
   CalendarPlus,
@@ -200,7 +200,7 @@ export function LinkedProvidersManager() {
             disabled={syncing || providers.length === 0}
             variant="outline"
           >
-            <Sync className={`h-4 w-4 mr-2 ${syncing ? 'animate-spin' : ''}`} />
+            <RotateCw className={`h-4 w-4 mr-2 ${syncing ? 'animate-spin' : ''}`} />
             Sync All
           </Button>
           <Button onClick={handleLinkNewProvider}>
@@ -280,7 +280,7 @@ export function LinkedProvidersManager() {
             <CardContent className="p-6">
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-purple-100 rounded-lg">
-                  <Sync className="h-6 w-6 text-purple-600" />
+                  <RotateCw className="h-6 w-6 text-purple-600" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-600">Recent Syncs</p>
@@ -341,7 +341,7 @@ export function LinkedProvidersManager() {
                       </div>
                       {provider.lastSyncAt && (
                         <div className="flex items-center space-x-1">
-                          <Sync className="h-4 w-4" />
+            <RotateCw className="h-4 w-4" />
                           <span>
                             Last sync {provider.daysSinceLastSync === 0 
                               ? 'today' 
@@ -441,7 +441,7 @@ export function LinkedProvidersManager() {
                             onClick={() => handleSync(provider._id)}
                             disabled={syncing}
                           >
-                            <Sync className={`h-4 w-4 mr-2 ${syncing ? 'animate-spin' : ''}`} />
+                            <RotateCw className={`h-4 w-4 mr-2 ${syncing ? 'animate-spin' : ''}`} />
                             Sync
                           </Button>
                         </div>
