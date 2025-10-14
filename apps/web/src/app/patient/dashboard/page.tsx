@@ -24,12 +24,15 @@ import {
   Eye,
   Stethoscope,
   BarChart3,
-  MessageSquare
+  MessageSquare,
+  History,
+  ClipboardList,
+  Building2
 } from 'lucide-react'
 import Link from 'next/link'
 import { MessageProvider } from '@/components/MessageProvider'
 
-type DashboardSection = 'overview' | 'appointments' | 'records' | 'prescriptions' | 'results' | 'messages'
+type DashboardSection = 'overview' | 'appointments' | 'records' | 'prescriptions' | 'results' | 'messages' | 'visits' | 'past-prescriptions' | 'providers'
 
 export default function PatientDashboard() {
   const { data: session, status } = useSession()
@@ -130,10 +133,13 @@ export default function PatientDashboard() {
   const sidebarNavigation = [
     { id: 'overview', label: 'Dashboard', icon: LayoutDashboard, description: 'Health overview' },
     { id: 'appointments', label: 'Appointments', icon: Calendar, description: 'Schedule & history' },
+    { id: 'visits', label: 'Past Visits', icon: History, description: 'Visit history & notes' },
     { id: 'records', label: 'Medical Records', icon: FileText, description: 'Health records' },
     { id: 'prescriptions', label: 'Prescriptions', icon: Pill, description: 'Medications' },
+    { id: 'past-prescriptions', label: 'Past Prescriptions', icon: ClipboardList, description: 'Prescription history' },
     { id: 'results', label: 'Test Results', icon: TestTube, description: 'Lab & imaging' },
-    { id: 'messages', label: 'Message Provider', icon: MessageSquare, description: 'Contact your providers' }
+    { id: 'messages', label: 'Message Provider', icon: MessageSquare, description: 'Contact your providers' },
+    { id: 'providers', label: 'Linked Providers', icon: Building2, description: 'Manage provider connections' }
   ] as const
 
   // Render different sections based on active selection
@@ -151,6 +157,12 @@ export default function PatientDashboard() {
         return renderResults()
       case 'messages':
         return renderMessages()
+      case 'visits':
+        return renderVisits()
+      case 'past-prescriptions':
+        return renderPastPrescriptions()
+      case 'providers':
+        return renderProviders()
       default:
         return renderOverview()
     }
@@ -393,6 +405,132 @@ export default function PatientDashboard() {
 
   const renderMessages = () => (
     <MessageProvider />
+  )
+
+  const renderVisits = () => (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold text-gray-900">Past Visits</h2>
+        <Button asChild>
+          <Link href="/patient/visits">
+            <Eye className="h-4 w-4 mr-2" />
+            View All Visits
+          </Link>
+        </Button>
+      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent Visit History</CardTitle>
+          <CardDescription>
+            View your complete medical visit history with detailed summaries and provider notes
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-gray-600 mb-4">
+            Access detailed information about your past appointments including visit summaries, 
+            provider notes, and treatment plans.
+          </p>
+          <div className="space-y-2">
+            <div className="flex items-center text-sm text-gray-600">
+              <Calendar className="h-4 w-4 mr-2" />
+              <span>Visit dates and times</span>
+            </div>
+            <div className="flex items-center text-sm text-gray-600">
+              <User className="h-4 w-4 mr-2" />
+              <span>Doctor information and specialties</span>
+            </div>
+            <div className="flex items-center text-sm text-gray-600">
+              <FileText className="h-4 w-4 mr-2" />
+              <span>Visit summaries and provider notes</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+
+  const renderPastPrescriptions = () => (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold text-gray-900">Past Prescriptions</h2>
+        <Button asChild>
+          <Link href="/patient/prescriptions">
+            <Eye className="h-4 w-4 mr-2" />
+            View All Prescriptions
+          </Link>
+        </Button>
+      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Prescription History</CardTitle>
+          <CardDescription>
+            View your complete prescription history with detailed medication information
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-gray-600 mb-4">
+            Access detailed information about your past and current medications including 
+            dosages, instructions, and provider notes.
+          </p>
+          <div className="space-y-2">
+            <div className="flex items-center text-sm text-gray-600">
+              <Pill className="h-4 w-4 mr-2" />
+              <span>Medication names and dosages</span>
+            </div>
+            <div className="flex items-center text-sm text-gray-600">
+              <User className="h-4 w-4 mr-2" />
+              <span>Prescribing doctor information</span>
+            </div>
+            <div className="flex items-center text-sm text-gray-600">
+              <Clock className="h-4 w-4 mr-2" />
+              <span>Prescription dates and refill information</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+
+  const renderProviders = () => (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold text-gray-900">Linked Providers</h2>
+        <Button asChild>
+          <Link href="/patient/link-provider">
+            <Plus className="h-4 w-4 mr-2" />
+            Link New Provider
+          </Link>
+        </Button>
+      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Healthcare Provider Connections</CardTitle>
+          <CardDescription>
+            Connect to your healthcare providers to access your medical data in one place
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-gray-600 mb-4">
+            Link multiple healthcare providers to create a unified view of your medical history. 
+            Supports Epic, Cerner, and other FHIR-compliant systems.
+          </p>
+          <div className="space-y-2">
+            <div className="flex items-center text-sm text-gray-600">
+              <Building2 className="h-4 w-4 mr-2" />
+              <span>Epic MyChart, Cerner PowerChart, and more</span>
+            </div>
+            <div className="flex items-center text-sm text-gray-600">
+              <CheckCircle className="h-4 w-4 mr-2" />
+              <span>Secure OAuth 2.0 authentication</span>
+            </div>
+            <div className="flex items-center text-sm text-gray-600">
+              <Activity className="h-4 w-4 mr-2" />
+              <span>Automatic data synchronization</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   )
 
   return (

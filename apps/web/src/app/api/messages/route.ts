@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
-import { authOptions } from '../auth/[...nextauth]/route'
+import { authOptions } from '@/lib/auth'
 import nodemailer from 'nodemailer'
 
 // For demonstration purposes, we'll use nodemailer to send emails
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
     // For now, we'll simulate the email sending
     try {
       // Create a transporter (this would use your actual email service in production)
-      const transporter = nodemailer.createTransporter({
+      const transporter = nodemailer.createTransport({
         // This is just a mock configuration - replace with real SMTP settings
         host: process.env.SMTP_HOST || 'localhost',
         port: parseInt(process.env.SMTP_PORT || '587'),
