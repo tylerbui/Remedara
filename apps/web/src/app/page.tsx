@@ -1,11 +1,17 @@
+'use client'
+
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Calendar, Users, FileText, Shield, MessageSquare, UserCheck } from 'lucide-react'
 import Link from 'next/link'
+import { useSession } from 'next-auth/react'
+import { HomeNavbar } from '@/components/HomeNavbar'
 
 export default function HomePage() {
+  const { data: session } = useSession()
   return (
     <div className="min-h-screen bg-gray-50">
+      <HomeNavbar />
       <div className="container mx-auto px-4 py-16">
         {/* Header */}
         <div className="text-center mb-16">
@@ -17,12 +23,14 @@ export default function HomePage() {
             Streamline your healthcare operations with our secure, compliant platform.
           </p>
           <div className="mt-8 flex justify-center gap-4">
-            <Button asChild size="lg" className="bg-gray-900 hover:bg-gray-800">
+            <Button asChild className="bg-gray-900 hover:bg-gray-800 text-lg px-12 py-4 h-auto">
               <Link href="/login">Get Started</Link>
             </Button>
-            <Button variant="outline" asChild size="lg" className="border-gray-300 text-gray-700 hover:bg-gray-100">
-              <Link href="/book">Book Appointment</Link>
-            </Button>
+            {session && (
+              <Button variant="outline" asChild size="lg" className="border-gray-300 text-gray-700 hover:bg-gray-100">
+                <Link href="/book">Book Appointment</Link>
+              </Button>
+            )}
           </div>
         </div>
 
