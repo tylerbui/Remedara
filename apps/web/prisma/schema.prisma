@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
@@ -35,17 +35,17 @@ enum IntakeFormStatus {
 
 // Authentication and User Management
 model Account {
-  id                String  @id @default(cuid())
-  userId            String
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -55,9 +55,9 @@ model Account {
 }
 
 model Session {
-  id           String   @id @default(cuid())
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
   sessionToken String   @unique
-  userId       String
+  userId       String  @db.ObjectId
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -65,7 +65,7 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
   name          String?
   email         String    @unique
   emailVerified DateTime?
@@ -87,6 +87,7 @@ model User {
 }
 
 model VerificationToken {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
   identifier String
   token      String   @unique
   expires    DateTime
@@ -97,8 +98,8 @@ model VerificationToken {
 
 // Core Business Models
 model Patient {
-  id              String    @id @default(cuid())
-  userId          String    @unique
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String    @unique @db.ObjectId
   firstName       String
   lastName        String
   dateOfBirth     DateTime?
@@ -127,16 +128,18 @@ model Patient {
   labResults      LabResult[]
   imagingResults  ImagingResult[]
   vaccinations    Vaccination[]
+  allergies       Allergy[]
   medicalDocuments MedicalDocument[]
   transportationRequests TransportationRequest[]
   medicalNotifications MedicalRecordNotification[]
+  recordShares     RecordShare[]
 
   @@map("patients")
 }
 
 model Provider {
-  id              String    @id @default(cuid())
-  userId          String    @unique
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String    @unique @db.ObjectId
   firstName       String
   lastName        String
   title           String?   // Dr., NP, PA, etc.
@@ -159,8 +162,8 @@ model Provider {
 }
 
 model Availability {
-  id          String    @id @default(cuid())
-  providerId  String
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  providerId  String    @db.ObjectId
   dayOfWeek   Int       // 0 = Sunday, 1 = Monday, etc.
   startTime   String    // "09:00"
   endTime     String    // "17:00"
@@ -179,9 +182,9 @@ model Availability {
 }
 
 model Appointment {
-  id              String            @id @default(cuid())
-  patientId       String
-  providerId      String
+  id              String            @id @default(auto()) @map("_id") @db.ObjectId
+  patientId       String            @db.ObjectId
+  providerId      String            @db.ObjectId
   dateTime        DateTime
   duration        Int               @default(30) // minutes
   status          AppointmentStatus @default(SCHEDULED)
@@ -205,9 +208,9 @@ model Appointment {
 }
 
 model IntakeForm {
-  id              String            @id @default(cuid())
-  appointmentId   String?           @unique
-  patientId       String
+  id              String            @id @default(auto()) @map("_id") @db.ObjectId
+  appointmentId   String?           @unique @db.ObjectId
+  patientId       String            @db.ObjectId
   formData        Json              // Flexible JSON storage for form fields
   status          IntakeFormStatus  @default(PENDING)
   completedAt     DateTime?
@@ -223,8 +226,8 @@ model IntakeForm {
 }
 
 model InsurancePolicy {
-  id              String    @id @default(cuid())
-  patientId       String
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  patientId       String    @db.ObjectId
   insuranceCompany String
   policyNumber    String
   groupNumber     String?
@@ -233,8 +236,8 @@ model InsurancePolicy {
   relationship    String    @default("self") // self, spouse, child, other
   
   // Additional details
-  copay           Decimal?  @db.Decimal(10, 2)
-  deductible      Decimal?  @db.Decimal(10, 2)
+  copay           Float?
+  deductible      Float?
   
   isActive        Boolean   @default(true)
   effectiveDate   DateTime?
@@ -250,10 +253,10 @@ model InsurancePolicy {
 }
 
 model Consent {
-  id              String    @id @default(cuid())
-  patientId       String
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  patientId       String    @db.ObjectId
   consentType     String    // "treatment", "privacy", "financial", etc.
-  consentText     String    @db.Text
+  consentText     String
   agreedAt        DateTime
   ipAddress       String?
   userAgent       String?
@@ -269,8 +272,8 @@ model Consent {
 
 // Medical Records and External Integrations
 model LabResult {
-  id              String    @id @default(cuid())
-  patientId       String
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  patientId       String    @db.ObjectId
   orderId         String?   // External lab order ID
   testName        String
   testCode        String?   // LOINC or lab-specific code
@@ -292,19 +295,18 @@ model LabResult {
 
   // Relations
   patient         Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
-  notifications   MedicalRecordNotification[]
 
   @@map("lab_results")
 }
 
 model ImagingResult {
-  id              String    @id @default(cuid())
-  patientId       String
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  patientId       String    @db.ObjectId
   studyId         String?   // DICOM Study Instance UID
   studyType       String    // X-Ray, CT, MRI, Ultrasound, etc.
   bodyPart        String
-  findings        String    @db.Text
-  impression      String    @db.Text
+  findings        String
+  impression      String
   studyDate       DateTime
   radiologist     String
   facility        String
@@ -323,14 +325,13 @@ model ImagingResult {
 
   // Relations
   patient         Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
-  notifications   MedicalRecordNotification[]
 
   @@map("imaging_results")
 }
 
 model Vaccination {
-  id              String    @id @default(cuid())
-  patientId       String
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  patientId       String    @db.ObjectId
   vaccineName     String    // Tetanus, MMR, COVID-19, etc.
   vaccineCode     String?   // CVX code
   manufacturer    String?
@@ -359,9 +360,33 @@ model Vaccination {
   @@map("vaccinations")
 }
 
+model Allergy {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  patientId       String    @db.ObjectId
+  allergen        String    // Name of the allergen
+  allergenType    String    @default("OTHER") // MEDICATION, FOOD, ENVIRONMENTAL, OTHER
+  severity        String    @default("MILD") // MILD, MODERATE, SEVERE, LIFE_THREATENING
+  reaction        String    // Description of the reaction
+  onsetDate       DateTime?
+  notes           String?
+  status          String    @default("ACTIVE") // ACTIVE, RESOLVED, UNCONFIRMED
+  
+  // External integration
+  externalId      String?
+  uploadedBy      String?
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  patient         Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  @@map("allergies")
+}
+
 model MedicalDocument {
-  id              String    @id @default(cuid())
-  patientId       String
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  patientId       String    @db.ObjectId
   documentType    String    // "LAB", "IMAGING", "VACCINE", "VISIT_NOTES", "REFERRAL", etc.
   title           String
   description     String?
@@ -390,7 +415,7 @@ model MedicalDocument {
 }
 
 model ExternalFacility {
-  id              String    @id @default(cuid())
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
   name            String
   facilityType    String    // "LAB", "IMAGING", "PHARMACY", "SPECIALIST"
   address         String
@@ -418,10 +443,10 @@ model ExternalFacility {
 }
 
 model TransportationRequest {
-  id              String    @id @default(cuid())
-  patientId       String
-  facilityId      String?
-  appointmentId   String?   @unique
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  patientId       String    @db.ObjectId
+  facilityId      String?   @db.ObjectId
+  appointmentId   String?   @unique @db.ObjectId
   
   // Trip details
   pickupAddress   String
@@ -438,8 +463,8 @@ model TransportationRequest {
   driverInfo      Json?     // Driver contact, vehicle info
   
   // Costs
-  estimatedCost   Decimal?  @db.Decimal(10, 2)
-  actualCost      Decimal?  @db.Decimal(10, 2)
+  estimatedCost   Float?
+  actualCost      Float?
   insuranceCovered Boolean  @default(false)
   
   requestedBy     String    // User ID who requested
@@ -457,10 +482,10 @@ model TransportationRequest {
 }
 
 model MedicalRecordNotification {
-  id              String    @id @default(cuid())
-  patientId       String
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  patientId       String    @db.ObjectId
   recordType      String    // "LAB", "IMAGING", "VACCINE", "DOCUMENT"
-  recordId        String    // ID of the related record
+  recordId        String    @db.ObjectId // ID of the related record
   title           String
   message         String
   
@@ -478,16 +503,44 @@ model MedicalRecordNotification {
 
   // Relations
   patient         Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
-  labResult       LabResult? @relation(fields: [recordId], references: [id], onDelete: Cascade, map: "notification_lab_result_fkey")
-  imagingResult   ImagingResult? @relation(fields: [recordId], references: [id], onDelete: Cascade, map: "notification_imaging_result_fkey")
 
   @@map("medical_record_notifications")
 }
 
+model RecordShare {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  patientId       String    @db.ObjectId
+  recipientEmail  String
+  recipientName   String
+  recordTypes     String[]  // ["lab-results", "imaging", "vaccines", "allergies"]
+  message         String?
+  accessToken     String    @unique
+  
+  // Access control
+  allowDownload   Boolean   @default(false)
+  status          String    @default("ACTIVE") // ACTIVE, EXPIRED, REVOKED
+  expiryDate      DateTime?
+  
+  // Tracking
+  accessCount     Int       @default(0)
+  downloadCount   Int       @default(0)
+  lastAccessed    DateTime?
+  lastDownloaded  DateTime?
+  revokedAt       DateTime?
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  patient         Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  @@map("record_shares")
+}
+
 // Audit and Security
 model AuditLog {
-  id          String    @id @default(cuid())
-  userId      String?
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String?   @db.ObjectId
   action      String    // "CREATE", "UPDATE", "DELETE", "VIEW"
   resource    String    // "Patient", "Appointment", etc.
   resourceId  String?
