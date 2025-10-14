@@ -24,6 +24,16 @@ export function HomeNavbar() {
 
           {/* Navigation Items */}
           <div className="flex items-center space-x-4">
+            {/* Support Link - Always visible */}
+            <Button
+              variant="ghost"
+              asChild
+              size="lg"
+              className="text-gray-700 hover:bg-gray-100 px-6 py-3 text-base font-medium"
+            >
+              <Link href="/support">Support</Link>
+            </Button>
+            
             {status === 'loading' ? (
               <div className="flex space-x-4">
                 <div className="w-24 h-12 bg-gray-200 animate-pulse rounded"></div>
