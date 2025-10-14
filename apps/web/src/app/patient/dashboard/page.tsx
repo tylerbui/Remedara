@@ -590,7 +590,7 @@ export default function PatientDashboard() {
             {/* Sign Out Button */}
             <div className="border-t border-gray-200 pt-4">
               <button
-                onClick={() => signOut({ callbackUrl: '/login' })}
+                onClick={() => signOut({ callbackUrl: '/' })}
                 className="w-full flex items-center space-x-3 px-6 py-4 text-left hover:bg-red-50 transition-colors text-red-600 hover:text-red-700"
               >
                 <LogOut className="h-5 w-5 flex-shrink-0" />

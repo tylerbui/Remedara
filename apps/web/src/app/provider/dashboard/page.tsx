@@ -32,15 +32,17 @@ import {
   TrendingUp,
   AlertTriangle,
   Phone,
-  LogOut
+  LogOut,
+  Brain
 } from 'lucide-react'
 import Link from 'next/link'
 import AvailabilityCalendar from '@/components/availability/AvailabilityCalendar'
 import { MessageProvider } from '@/components/MessageProvider'
 import AppointmentSchedulingModal from '@/components/AppointmentSchedulingModal'
 import ProviderPatientRequests from '@/components/ProviderPatientRequests'
+import AILabAnalyzer from '@/components/AILabAnalyzer'
 
-type DashboardSection = 'overview' | 'appointments' | 'patients' | 'availability' | 'prescriptions' | 'messages' | 'analytics' | 'settings'
+type DashboardSection = 'overview' | 'appointments' | 'patients' | 'availability' | 'prescriptions' | 'lab-analysis' | 'messages' | 'analytics' | 'settings'
 
 export default function ProviderDashboard() {
   const { data: session, status } = useSession()
@@ -166,6 +168,7 @@ export default function ProviderDashboard() {
     { id: 'patients', label: 'Patients', icon: Users, description: 'Patient records' },
     { id: 'availability', label: 'Availability', icon: Clock, description: 'Schedule & time slots' },
     { id: 'prescriptions', label: 'Prescriptions', icon: Pill, description: 'Medication management' },
+    { id: 'lab-analysis', label: 'AI Lab Analysis', icon: Brain, description: 'AI-powered lab insights' },
     { id: 'messages', label: 'Messages', icon: MessageSquare, description: 'Patient communications' },
     { id: 'analytics', label: 'Analytics', icon: BarChart3, description: 'Practice insights' },
     { id: 'settings', label: 'Settings', icon: Settings, description: 'Practice preferences' }
@@ -184,6 +187,8 @@ export default function ProviderDashboard() {
         return renderAvailability()
       case 'prescriptions':
         return renderPrescriptions()
+      case 'lab-analysis':
+        return renderLabAnalysis()
       case 'messages':
         return renderMessages()
       case 'analytics':
@@ -501,6 +506,10 @@ export default function ProviderDashboard() {
     </div>
   )
 
+  const renderLabAnalysis = () => (
+    <AILabAnalyzer />
+  )
+
   const renderMessages = () => (
     <MessageProvider />
   )
@@ -630,7 +639,7 @@ export default function ProviderDashboard() {
             {/* Sign Out Button */}
             <div className="border-t border-gray-200 pt-4">
               <button
-                onClick={() => signOut({ callbackUrl: '/login' })}
+                onClick={() => signOut({ callbackUrl: '/' })}
                 className="w-full flex items-center space-x-3 px-6 py-4 text-left hover:bg-red-50 transition-colors text-red-600 hover:text-red-700"
               >
                 <LogOut className="h-5 w-5 flex-shrink-0" />

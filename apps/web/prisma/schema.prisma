@@ -25,6 +25,7 @@ enum AppointmentStatus {
   COMPLETED
   CANCELLED
   NO_SHOW
+  PENDING_APPROVAL
 }
 
 enum IntakeFormStatus {
