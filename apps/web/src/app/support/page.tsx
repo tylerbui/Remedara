@@ -21,8 +21,57 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { HomeNavbar } from '@/components/HomeNavbar'
+import { useEffect } from 'react'
 
 export default function SupportPage() {
+  // Initialize Hyro AI Chat
+  useEffect(() => {
+    // Load Hyro script if not already loaded
+    if (typeof window !== 'undefined' && !window.hyro) {
+      const script = document.createElement('script')
+      script.src = 'https://widget.hyro.ai/widget.js'
+      script.async = true
+      script.onload = () => {
+        // Initialize Hyro with your configuration
+        if (window.hyro) {
+          window.hyro.init({
+            // Replace with your actual Hyro widget ID
+            widgetId: process.env.NEXT_PUBLIC_HYRO_WIDGET_ID || 'your-hyro-widget-id',
+            // Customize appearance
+            theme: {
+              primaryColor: '#6366f1', // Purple color to match your design
+              fontFamily: 'Inter, sans-serif'
+            },
+            // Healthcare-specific configuration
+            metadata: {
+              industry: 'healthcare',
+              company: 'Remedara',
+              supportType: 'patient-care'
+            }
+          })
+        }
+      }
+      document.head.appendChild(script)
+    }
+  }, [])
+
+  const handleStartChat = () => {
+    // Open Hyro chat widget
+    if (typeof window !== 'undefined' && window.hyro) {
+      window.hyro.open()
+      // Track analytics event
+      if (typeof window.gtag !== 'undefined') {
+        window.gtag('event', 'chat_initiated', {
+          event_category: 'support',
+          event_label: 'hyro_ai_chat'
+        })
+      }
+    } else {
+      // Fallback to opening in new window if script hasn't loaded
+      window.open('https://remedara.hyro.ai', '_blank', 'width=400,height=600')
+    }
+  }
+
   const patientFAQs = [
     {
       icon: Calendar,
@@ -215,14 +264,17 @@ export default function SupportPage() {
                 <div className="w-20 h-20 bg-purple-100 rounded-full mx-auto mb-6 flex items-center justify-center">
                   <MessageSquare className="h-10 w-10 text-purple-600" />
                 </div>
-                <h3 className="text-2xl font-medium text-gray-900 mb-4">Live Chat</h3>
-                <p className="text-lg text-gray-600 mb-6">Chat with our support team</p>
-                <Button className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 text-lg font-medium">
-                  Start Chat
+                <h3 className="text-2xl font-medium text-gray-900 mb-4">AI Live Chat</h3>
+                <p className="text-lg text-gray-600 mb-6">Chat with our AI assistant powered by Hyro</p>
+                <Button 
+                  onClick={handleStartChat}
+                  className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 text-lg font-medium"
+                >
+                  Start AI Chat
                 </Button>
                 <div className="flex items-center justify-center mt-4">
                   <Clock className="h-5 w-5 text-gray-500 mr-2" />
-                  <span className="text-base text-gray-500">Mon-Fri, 8AM-8PM EST</span>
+                  <span className="text-base text-gray-500">Available 24/7</span>
                 </div>
               </div>
             </CardContent>
