@@ -219,29 +219,29 @@ export default function RegisterPage() {
   }
 
   const renderRoleSelection = () => (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="text-center">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Join Remedara</h2>
-        <p className="text-gray-600">Choose your account type to get started</p>
+        <h2 className="text-3xl font-bold text-gray-900 mb-3">Join Remedara</h2>
+        <p className="text-lg text-gray-600">Choose your account type to get started</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Patient Registration */}
         <Card 
-          className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:border-blue-300"
+          className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:border-blue-300 p-6"
           onClick={() => handleRoleSelect('PATIENT')}
         >
           <CardHeader className="text-center">
-            <div className="w-16 h-16 bg-blue-100 rounded-full mx-auto mb-4 flex items-center justify-center">
-              <User className="h-8 w-8 text-blue-600" />
+            <div className="w-20 h-20 bg-blue-100 rounded-full mx-auto mb-6 flex items-center justify-center">
+              <User className="h-10 w-10 text-blue-600" />
             </div>
-            <CardTitle className="text-xl">I&apos;m a Patient</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-2xl mb-2">I&apos;m a Patient</CardTitle>
+            <CardDescription className="text-base">
               Book appointments and manage your healthcare
             </CardDescription>
           </CardHeader>
           <CardContent className="text-center">
-            <div className="space-y-2 text-sm text-gray-600">
+            <div className="space-y-3 text-base text-gray-600">
               <div className="flex items-center justify-center space-x-2">
                 <CheckCircle2 className="h-4 w-4 text-green-600" />
                 <span>Book appointments online</span>
@@ -264,20 +264,20 @@ export default function RegisterPage() {
 
         {/* Provider Registration */}
         <Card 
-          className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:border-green-300"
+          className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:border-green-300 p-6"
           onClick={() => handleRoleSelect('PROVIDER')}
         >
           <CardHeader className="text-center">
-            <div className="w-16 h-16 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center">
-              <Stethoscope className="h-8 w-8 text-green-600" />
+            <div className="w-20 h-20 bg-green-100 rounded-full mx-auto mb-6 flex items-center justify-center">
+              <Stethoscope className="h-10 w-10 text-green-600" />
             </div>
-            <CardTitle className="text-xl">I&apos;m a Provider</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-2xl mb-2">I&apos;m a Provider</CardTitle>
+            <CardDescription className="text-base">
               Manage your practice and patient care
             </CardDescription>
           </CardHeader>
           <CardContent className="text-center">
-            <div className="space-y-2 text-sm text-gray-600">
+            <div className="space-y-3 text-base text-gray-600">
               <div className="flex items-center justify-center space-x-2">
                 <CheckCircle2 className="h-4 w-4 text-green-600" />
                 <span>Manage your schedule</span>
@@ -300,9 +300,9 @@ export default function RegisterPage() {
       </div>
 
       <div className="text-center">
-        <p className="text-sm text-gray-600">
+        <p className="text-base text-gray-600">
           Already have an account?{' '}
-          <Link href="/login" className="text-gray-900 hover:underline font-medium">
+          <Link href="/login" className="text-gray-900 hover:underline font-medium text-lg">
             Sign in here
           </Link>
         </p>
@@ -311,131 +311,142 @@ export default function RegisterPage() {
   )
 
   const renderPatientForm = () => (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 flex items-center space-x-2">
-            <User className="h-6 w-6" />
+          <h2 className="text-3xl font-bold text-gray-900 flex items-center space-x-2">
+            <User className="h-8 w-8" />
             <span>Patient Registration</span>
           </h2>
-          <p className="text-gray-600">Create your patient account</p>
+          <p className="text-lg text-gray-600 mt-2">Create your patient account</p>
         </div>
         <Button 
           type="button" 
           variant="outline" 
+          size="lg"
+          className="px-6 py-3 text-base"
           onClick={() => setCurrentStep('role')}
         >
           Back
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <Label htmlFor="firstName">First Name *</Label>
+          <Label htmlFor="firstName" className="text-base font-medium mb-2 block">First Name *</Label>
           <Input
             id="firstName"
             value={patientForm.firstName}
             onChange={(e) => setPatientForm({ ...patientForm, firstName: e.target.value })}
             placeholder="Enter your first name"
+            className="h-12 px-4 text-base"
             required
           />
         </div>
         <div>
-          <Label htmlFor="lastName">Last Name *</Label>
+          <Label htmlFor="lastName" className="text-base font-medium mb-2 block">Last Name *</Label>
           <Input
             id="lastName"
             value={patientForm.lastName}
             onChange={(e) => setPatientForm({ ...patientForm, lastName: e.target.value })}
             placeholder="Enter your last name"
+            className="h-12 px-4 text-base"
             required
           />
         </div>
       </div>
 
       <div>
-        <Label htmlFor="email">Email Address *</Label>
+        <Label htmlFor="email" className="text-base font-medium mb-2 block">Email Address *</Label>
         <Input
           id="email"
           type="email"
           value={patientForm.email}
           onChange={(e) => setPatientForm({ ...patientForm, email: e.target.value })}
           placeholder="Enter your email address"
+          className="h-12 px-4 text-base"
           required
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <Label htmlFor="password">Password *</Label>
+          <Label htmlFor="password" className="text-base font-medium mb-2 block">Password *</Label>
           <Input
             id="password"
             type="password"
             value={patientForm.password}
             onChange={(e) => setPatientForm({ ...patientForm, password: e.target.value })}
             placeholder="At least 8 characters"
+            className="h-12 px-4 text-base"
             required
           />
         </div>
         <div>
-          <Label htmlFor="confirmPassword">Confirm Password *</Label>
+          <Label htmlFor="confirmPassword" className="text-base font-medium mb-2 block">Confirm Password *</Label>
           <Input
             id="confirmPassword"
             type="password"
             value={patientForm.confirmPassword}
             onChange={(e) => setPatientForm({ ...patientForm, confirmPassword: e.target.value })}
             placeholder="Re-enter your password"
+            className="h-12 px-4 text-base"
             required
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <Label htmlFor="phone">Phone Number *</Label>
+          <Label htmlFor="phone" className="text-base font-medium mb-2 block">Phone Number *</Label>
           <Input
             id="phone"
             type="tel"
             value={patientForm.phone}
             onChange={(e) => setPatientForm({ ...patientForm, phone: e.target.value })}
             placeholder="(555) 123-4567"
+            className="h-12 px-4 text-base"
             required
           />
         </div>
         <div>
-          <Label htmlFor="dateOfBirth">Date of Birth</Label>
+          <Label htmlFor="dateOfBirth" className="text-base font-medium mb-2 block">Date of Birth</Label>
           <Input
             id="dateOfBirth"
             type="date"
             value={patientForm.dateOfBirth}
             onChange={(e) => setPatientForm({ ...patientForm, dateOfBirth: e.target.value })}
+            className="h-12 px-4 text-base"
           />
         </div>
       </div>
 
       <div>
-        <Label htmlFor="address">Address</Label>
+        <Label htmlFor="address" className="text-base font-medium mb-2 block">Address</Label>
         <Input
           id="address"
           value={patientForm.address}
           onChange={(e) => setPatientForm({ ...patientForm, address: e.target.value })}
           placeholder="Street address"
+          className="h-12 px-4 text-base"
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div>
-          <Label htmlFor="city">City</Label>
+          <Label htmlFor="city" className="text-base font-medium mb-2 block">City</Label>
           <Input
             id="city"
             value={patientForm.city}
             onChange={(e) => setPatientForm({ ...patientForm, city: e.target.value })}
             placeholder="City"
+            className="h-12 px-4 text-base"
           />
         </div>
         <div>
-          <Label htmlFor="state">State</Label>
+          <Label htmlFor="state" className="text-base font-medium mb-2 block">State</Label>
           <Select value={patientForm.state} onValueChange={(value) => setPatientForm({ ...patientForm, state: value })}>
-            <SelectTrigger>
+            <SelectTrigger className="h-12 text-base">
               <SelectValue placeholder="State" />
             </SelectTrigger>
             <SelectContent>
@@ -446,38 +457,41 @@ export default function RegisterPage() {
           </Select>
         </div>
         <div>
-          <Label htmlFor="zipCode">ZIP Code</Label>
+          <Label htmlFor="zipCode" className="text-base font-medium mb-2 block">ZIP Code</Label>
           <Input
             id="zipCode"
             value={patientForm.zipCode}
             onChange={(e) => setPatientForm({ ...patientForm, zipCode: e.target.value })}
             placeholder="12345"
+            className="h-12 px-4 text-base"
           />
         </div>
       </div>
 
       <Separator />
 
-      <div className="space-y-4">
-        <h3 className="text-lg font-medium">Emergency Contact</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="space-y-6">
+        <h3 className="text-xl font-medium">Emergency Contact</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <Label htmlFor="emergencyContact">Contact Name</Label>
+            <Label htmlFor="emergencyContact" className="text-base font-medium mb-2 block">Contact Name</Label>
             <Input
               id="emergencyContact"
               value={patientForm.emergencyContact}
               onChange={(e) => setPatientForm({ ...patientForm, emergencyContact: e.target.value })}
               placeholder="Emergency contact name"
+              className="h-12 px-4 text-base"
             />
           </div>
           <div>
-            <Label htmlFor="emergencyPhone">Contact Phone</Label>
+            <Label htmlFor="emergencyPhone" className="text-base font-medium mb-2 block">Contact Phone</Label>
             <Input
               id="emergencyPhone"
               type="tel"
               value={patientForm.emergencyPhone}
               onChange={(e) => setPatientForm({ ...patientForm, emergencyPhone: e.target.value })}
               placeholder="(555) 123-4567"
+              className="h-12 px-4 text-base"
             />
           </div>
         </div>
@@ -485,7 +499,8 @@ export default function RegisterPage() {
 
       <Button 
         type="submit" 
-        className="w-full bg-blue-600 hover:bg-blue-700"
+        size="lg"
+        className="w-full bg-blue-600 hover:bg-blue-700 h-14 text-lg font-medium"
         disabled={isLoading}
       >
         {isLoading ? 'Creating Account...' : 'Create Patient Account'}
@@ -494,29 +509,31 @@ export default function RegisterPage() {
   )
 
   const renderProviderForm = () => (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 flex items-center space-x-2">
-            <Stethoscope className="h-6 w-6" />
+          <h2 className="text-3xl font-bold text-gray-900 flex items-center space-x-2">
+            <Stethoscope className="h-8 w-8" />
             <span>Provider Registration</span>
           </h2>
-          <p className="text-gray-600">Create your healthcare provider account</p>
+          <p className="text-lg text-gray-600 mt-2">Create your healthcare provider account</p>
         </div>
         <Button 
           type="button" 
           variant="outline" 
+          size="lg"
+          className="px-6 py-3 text-base"
           onClick={() => setCurrentStep('role')}
         >
           Back
         </Button>
       </div>
 
-      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-        <div className="flex items-start space-x-3">
-          <AlertCircle className="h-5 w-5 text-yellow-600 mt-0.5" />
+      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+        <div className="flex items-start space-x-4">
+          <AlertCircle className="h-6 w-6 text-yellow-600 mt-1" />
           <div>
-            <p className="text-sm text-yellow-800">
+            <p className="text-base text-yellow-800">
               <strong>Provider Verification Required:</strong> Your account will be reviewed and verified 
               before activation. This process typically takes 1-2 business days.
             </p>
@@ -524,24 +541,25 @@ export default function RegisterPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <Label htmlFor="title">Title *</Label>
+          <Label htmlFor="title" className="text-base font-medium mb-2 block">Title *</Label>
           <Input
             id="title"
             value={providerForm.title}
             onChange={(e) => setProviderForm({ ...providerForm, title: e.target.value })}
             placeholder="Dr., NP, PA, etc."
+            className="h-12 px-4 text-base"
             required
           />
         </div>
         <div>
-          <Label htmlFor="specialization">Specialization *</Label>
+          <Label htmlFor="specialization" className="text-base font-medium mb-2 block">Specialization *</Label>
           <Select 
             value={providerForm.specialization} 
             onValueChange={(value) => setProviderForm({ ...providerForm, specialization: value })}
           >
-            <SelectTrigger>
+            <SelectTrigger className="h-12 text-base">
               <SelectValue placeholder="Select your specialization" />
             </SelectTrigger>
             <SelectContent>
@@ -553,133 +571,143 @@ export default function RegisterPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <Label htmlFor="firstName">First Name *</Label>
+          <Label htmlFor="firstName" className="text-base font-medium mb-2 block">First Name *</Label>
           <Input
             id="firstName"
             value={providerForm.firstName}
             onChange={(e) => setProviderForm({ ...providerForm, firstName: e.target.value })}
             placeholder="Enter your first name"
+            className="h-12 px-4 text-base"
             required
           />
         </div>
         <div>
-          <Label htmlFor="lastName">Last Name *</Label>
+          <Label htmlFor="lastName" className="text-base font-medium mb-2 block">Last Name *</Label>
           <Input
             id="lastName"
             value={providerForm.lastName}
             onChange={(e) => setProviderForm({ ...providerForm, lastName: e.target.value })}
             placeholder="Enter your last name"
+            className="h-12 px-4 text-base"
             required
           />
         </div>
       </div>
 
       <div>
-        <Label htmlFor="email">Email Address *</Label>
+        <Label htmlFor="email" className="text-base font-medium mb-2 block">Email Address *</Label>
         <Input
           id="email"
           type="email"
           value={providerForm.email}
           onChange={(e) => setProviderForm({ ...providerForm, email: e.target.value })}
           placeholder="Enter your email address"
+          className="h-12 px-4 text-base"
           required
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <Label htmlFor="password">Password *</Label>
+          <Label htmlFor="password" className="text-base font-medium mb-2 block">Password *</Label>
           <Input
             id="password"
             type="password"
             value={providerForm.password}
             onChange={(e) => setProviderForm({ ...providerForm, password: e.target.value })}
             placeholder="At least 8 characters"
+            className="h-12 px-4 text-base"
             required
           />
         </div>
         <div>
-          <Label htmlFor="confirmPassword">Confirm Password *</Label>
+          <Label htmlFor="confirmPassword" className="text-base font-medium mb-2 block">Confirm Password *</Label>
           <Input
             id="confirmPassword"
             type="password"
             value={providerForm.confirmPassword}
             onChange={(e) => setProviderForm({ ...providerForm, confirmPassword: e.target.value })}
             placeholder="Re-enter your password"
+            className="h-12 px-4 text-base"
             required
           />
         </div>
       </div>
 
       <div>
-        <Label htmlFor="phone">Phone Number *</Label>
+        <Label htmlFor="phone" className="text-base font-medium mb-2 block">Phone Number *</Label>
         <Input
           id="phone"
           type="tel"
           value={providerForm.phone}
           onChange={(e) => setProviderForm({ ...providerForm, phone: e.target.value })}
           placeholder="(555) 123-4567"
+          className="h-12 px-4 text-base"
           required
         />
       </div>
 
       <Separator />
 
-      <div className="space-y-4">
-        <h3 className="text-lg font-medium flex items-center space-x-2">
-          <Shield className="h-5 w-5" />
+      <div className="space-y-6">
+        <h3 className="text-xl font-medium flex items-center space-x-2">
+          <Shield className="h-6 w-6" />
           <span>Professional Credentials</span>
         </h3>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <Label htmlFor="licenseNumber">Medical License Number *</Label>
+            <Label htmlFor="licenseNumber" className="text-base font-medium mb-2 block">Medical License Number *</Label>
             <Input
               id="licenseNumber"
               value={providerForm.licenseNumber}
               onChange={(e) => setProviderForm({ ...providerForm, licenseNumber: e.target.value })}
               placeholder="Enter license number"
+              className="h-12 px-4 text-base"
               required
             />
           </div>
           <div>
-            <Label htmlFor="npi">NPI Number</Label>
+            <Label htmlFor="npi" className="text-base font-medium mb-2 block">NPI Number</Label>
             <Input
               id="npi"
               value={providerForm.npi}
               onChange={(e) => setProviderForm({ ...providerForm, npi: e.target.value })}
               placeholder="National Provider Identifier"
+              className="h-12 px-4 text-base"
             />
           </div>
         </div>
       </div>
 
       <div>
-        <Label htmlFor="address">Practice Address</Label>
+        <Label htmlFor="address" className="text-base font-medium mb-2 block">Practice Address</Label>
         <Input
           id="address"
           value={providerForm.address}
           onChange={(e) => setProviderForm({ ...providerForm, address: e.target.value })}
           placeholder="Street address"
+          className="h-12 px-4 text-base"
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div>
-          <Label htmlFor="city">City</Label>
+          <Label htmlFor="city" className="text-base font-medium mb-2 block">City</Label>
           <Input
             id="city"
             value={providerForm.city}
             onChange={(e) => setProviderForm({ ...providerForm, city: e.target.value })}
             placeholder="City"
+            className="h-12 px-4 text-base"
           />
         </div>
         <div>
-          <Label htmlFor="state">State</Label>
+          <Label htmlFor="state" className="text-base font-medium mb-2 block">State</Label>
           <Select value={providerForm.state} onValueChange={(value) => setProviderForm({ ...providerForm, state: value })}>
-            <SelectTrigger>
+            <SelectTrigger className="h-12 text-base">
               <SelectValue placeholder="State" />
             </SelectTrigger>
             <SelectContent>
@@ -690,19 +718,21 @@ export default function RegisterPage() {
           </Select>
         </div>
         <div>
-          <Label htmlFor="zipCode">ZIP Code</Label>
+          <Label htmlFor="zipCode" className="text-base font-medium mb-2 block">ZIP Code</Label>
           <Input
             id="zipCode"
             value={providerForm.zipCode}
             onChange={(e) => setProviderForm({ ...providerForm, zipCode: e.target.value })}
             placeholder="12345"
+            className="h-12 px-4 text-base"
           />
         </div>
       </div>
 
       <Button 
         type="submit" 
-        className="w-full bg-green-600 hover:bg-green-700"
+        size="lg"
+        className="w-full bg-green-600 hover:bg-green-700 h-14 text-lg font-medium"
         disabled={isLoading}
       >
         {isLoading ? 'Creating Account...' : 'Create Provider Account'}
@@ -787,13 +817,13 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Create Your Account</h1>
+          <h1 className="text-4xl font-bold text-gray-900">Create Your Account</h1>
         </div>
 
         <Card>
-          <CardContent className="p-8">
+          <CardContent className="p-10">
             {currentStep === 'role' && renderRoleSelection()}
             {currentStep === 'form' && selectedRole === 'PATIENT' && renderPatientForm()}
             {currentStep === 'form' && selectedRole === 'PROVIDER' && renderProviderForm()}
