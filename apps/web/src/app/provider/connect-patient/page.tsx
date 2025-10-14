@@ -27,7 +27,13 @@ import {
   Shield,
   Activity,
   Heart,
-  Pill
+  Pill,
+  TrendingUp,
+  BarChart3,
+  LineChart,
+  Zap,
+  Droplets,
+  Thermometer
 } from 'lucide-react'
 import Link from 'next/link'
 import { toast } from 'sonner'
@@ -49,6 +55,20 @@ interface Patient {
   appointments?: {
     upcoming: number
     completed: number
+  }
+  healthMetrics?: {
+    vitals: {
+      bloodPressure: { systolic: number; diastolic: number; date: string }[]
+      heartRate: { value: number; date: string }[]
+      temperature: { value: number; date: string }[]
+      weight: { value: number; date: string }[]
+      glucose: { value: number; date: string }[]
+    }
+    labResults: {
+      cholesterol: { total: number; hdl: number; ldl: number; date: string }[]
+      hemoglobin: { value: number; date: string }[]
+      creatinine: { value: number; date: string }[]
+    }
   }
 }
 
@@ -89,6 +109,53 @@ export default function ConnectPatientPage() {
         appointments: {
           upcoming: 1,
           completed: 5
+        },
+        healthMetrics: {
+          vitals: {
+            bloodPressure: [
+              { systolic: 140, diastolic: 90, date: '2024-01-15' },
+              { systolic: 135, diastolic: 88, date: '2024-01-10' },
+              { systolic: 138, diastolic: 92, date: '2024-01-05' },
+              { systolic: 142, diastolic: 89, date: '2023-12-28' }
+            ],
+            heartRate: [
+              { value: 78, date: '2024-01-15' },
+              { value: 82, date: '2024-01-10' },
+              { value: 75, date: '2024-01-05' },
+              { value: 80, date: '2023-12-28' }
+            ],
+            temperature: [
+              { value: 98.6, date: '2024-01-15' },
+              { value: 98.4, date: '2024-01-10' },
+              { value: 98.7, date: '2024-01-05' }
+            ],
+            weight: [
+              { value: 165, date: '2024-01-15' },
+              { value: 167, date: '2024-01-10' },
+              { value: 168, date: '2024-01-05' },
+              { value: 170, date: '2023-12-28' }
+            ],
+            glucose: [
+              { value: 145, date: '2024-01-15' },
+              { value: 138, date: '2024-01-10' },
+              { value: 142, date: '2024-01-05' },
+              { value: 150, date: '2023-12-28' }
+            ]
+          },
+          labResults: {
+            cholesterol: [
+              { total: 220, hdl: 45, ldl: 150, date: '2024-01-15' },
+              { total: 215, hdl: 48, ldl: 145, date: '2023-10-15' }
+            ],
+            hemoglobin: [
+              { value: 13.5, date: '2024-01-15' },
+              { value: 13.2, date: '2023-10-15' }
+            ],
+            creatinine: [
+              { value: 1.1, date: '2024-01-15' },
+              { value: 1.0, date: '2023-10-15' }
+            ]
+          }
         }
       },
       {
@@ -135,6 +202,48 @@ export default function ConnectPatientPage() {
         appointments: {
           upcoming: 0,
           completed: 8
+        },
+        healthMetrics: {
+          vitals: {
+            bloodPressure: [
+              { systolic: 125, diastolic: 80, date: '2024-01-05' },
+              { systolic: 128, diastolic: 82, date: '2023-12-15' },
+              { systolic: 130, diastolic: 85, date: '2023-11-20' }
+            ],
+            heartRate: [
+              { value: 68, date: '2024-01-05' },
+              { value: 72, date: '2023-12-15' },
+              { value: 70, date: '2023-11-20' }
+            ],
+            temperature: [
+              { value: 98.2, date: '2024-01-05' },
+              { value: 98.6, date: '2023-12-15' }
+            ],
+            weight: [
+              { value: 180, date: '2024-01-05' },
+              { value: 182, date: '2023-12-15' },
+              { value: 185, date: '2023-11-20' }
+            ],
+            glucose: [
+              { value: 95, date: '2024-01-05' },
+              { value: 92, date: '2023-12-15' },
+              { value: 98, date: '2023-11-20' }
+            ]
+          },
+          labResults: {
+            cholesterol: [
+              { total: 190, hdl: 55, ldl: 120, date: '2024-01-05' },
+              { total: 185, hdl: 58, ldl: 115, date: '2023-07-10' }
+            ],
+            hemoglobin: [
+              { value: 14.2, date: '2024-01-05' },
+              { value: 14.0, date: '2023-07-10' }
+            ],
+            creatinine: [
+              { value: 0.9, date: '2024-01-05' },
+              { value: 0.8, date: '2023-07-10' }
+            ]
+          }
         }
       }
     ]
@@ -534,6 +643,364 @@ export default function ConnectPatientPage() {
                 </CardContent>
               </Card>
             </div>
+
+            {/* Health Charts Section - Only for Connected Patients */}
+            {selectedPatient.connectionStatus === 'connected' && selectedPatient.healthMetrics && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <BarChart3 className="h-5 w-5" />
+                    <span>Health Charts & Trends</span>
+                  </CardTitle>
+                  <CardDescription>
+                    Visual representation of patient health metrics and trends over time
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {/* Vital Signs Charts */}
+                  <div className="space-y-8">
+                    <div>
+                      <h3 className="text-lg font-semibold mb-4 flex items-center">
+                        <Activity className="h-5 w-5 mr-2 text-blue-500" />
+                        Vital Signs
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* Blood Pressure Chart */}
+                        <Card>
+                          <CardHeader className="pb-2">
+                            <CardTitle className="text-sm flex items-center">
+                              <Heart className="h-4 w-4 mr-1 text-red-500" />
+                              Blood Pressure Trend
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="h-32 flex items-end space-x-2">
+                              {selectedPatient.healthMetrics.vitals.bloodPressure.map((reading, index) => {
+                                const maxSystolic = Math.max(...selectedPatient.healthMetrics!.vitals.bloodPressure.map(r => r.systolic))
+                                const systolicHeight = (reading.systolic / maxSystolic) * 100
+                                const diastolicHeight = (reading.diastolic / maxSystolic) * 100
+                                return (
+                                  <div key={index} className="flex-1 flex flex-col items-center">
+                                    <div className="w-full flex flex-col items-center space-y-1">
+                                      <div 
+                                        className="w-3 bg-red-500 rounded-t" 
+                                        style={{ height: `${systolicHeight}%` }}
+                                        title={`Systolic: ${reading.systolic}`}
+                                      />
+                                      <div 
+                                        className="w-3 bg-orange-400 rounded-b" 
+                                        style={{ height: `${diastolicHeight}%` }}
+                                        title={`Diastolic: ${reading.diastolic}`}
+                                      />
+                                    </div>
+                                    <div className="text-xs text-gray-500 mt-1">
+                                      {new Date(reading.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                                    </div>
+                                    <div className="text-xs font-medium text-center">
+                                      {reading.systolic}/{reading.diastolic}
+                                    </div>
+                                  </div>
+                                )
+                              })}
+                            </div>
+                            <div className="flex items-center justify-center mt-2 space-x-4 text-xs">
+                              <div className="flex items-center">
+                                <div className="w-2 h-2 bg-red-500 rounded mr-1"></div>
+                                <span>Systolic</span>
+                              </div>
+                              <div className="flex items-center">
+                                <div className="w-2 h-2 bg-orange-400 rounded mr-1"></div>
+                                <span>Diastolic</span>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+
+                        {/* Heart Rate Chart */}
+                        <Card>
+                          <CardHeader className="pb-2">
+                            <CardTitle className="text-sm flex items-center">
+                              <Zap className="h-4 w-4 mr-1 text-blue-500" />
+                              Heart Rate (BPM)
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="h-32 flex items-end space-x-3">
+                              {selectedPatient.healthMetrics.vitals.heartRate.map((reading, index) => {
+                                const maxRate = Math.max(...selectedPatient.healthMetrics!.vitals.heartRate.map(r => r.value))
+                                const height = (reading.value / maxRate) * 100
+                                return (
+                                  <div key={index} className="flex-1 flex flex-col items-center">
+                                    <div 
+                                      className="w-4 bg-blue-500 rounded-t" 
+                                      style={{ height: `${height}%` }}
+                                      title={`${reading.value} BPM`}
+                                    />
+                                    <div className="text-xs text-gray-500 mt-1">
+                                      {new Date(reading.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                                    </div>
+                                    <div className="text-xs font-medium">{reading.value}</div>
+                                  </div>
+                                )
+                              })}
+                            </div>
+                          </CardContent>
+                        </Card>
+
+                        {/* Weight Chart */}
+                        <Card>
+                          <CardHeader className="pb-2">
+                            <CardTitle className="text-sm flex items-center">
+                              <TrendingUp className="h-4 w-4 mr-1 text-green-500" />
+                              Weight Trend (lbs)
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="h-32 flex items-end space-x-3">
+                              {selectedPatient.healthMetrics.vitals.weight.map((reading, index) => {
+                                const maxWeight = Math.max(...selectedPatient.healthMetrics!.vitals.weight.map(r => r.value))
+                                const minWeight = Math.min(...selectedPatient.healthMetrics!.vitals.weight.map(r => r.value))
+                                const height = ((reading.value - minWeight) / (maxWeight - minWeight)) * 100 || 50
+                                return (
+                                  <div key={index} className="flex-1 flex flex-col items-center">
+                                    <div 
+                                      className="w-4 bg-green-500 rounded-t" 
+                                      style={{ height: `${height}%` }}
+                                      title={`${reading.value} lbs`}
+                                    />
+                                    <div className="text-xs text-gray-500 mt-1">
+                                      {new Date(reading.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                                    </div>
+                                    <div className="text-xs font-medium">{reading.value}</div>
+                                  </div>
+                                )
+                              })}
+                            </div>
+                          </CardContent>
+                        </Card>
+
+                        {/* Blood Glucose Chart */}
+                        <Card>
+                          <CardHeader className="pb-2">
+                            <CardTitle className="text-sm flex items-center">
+                              <Droplets className="h-4 w-4 mr-1 text-purple-500" />
+                              Blood Glucose (mg/dL)
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="h-32 flex items-end space-x-3">
+                              {selectedPatient.healthMetrics.vitals.glucose.map((reading, index) => {
+                                const maxGlucose = Math.max(...selectedPatient.healthMetrics!.vitals.glucose.map(r => r.value))
+                                const height = (reading.value / maxGlucose) * 100
+                                const isHigh = reading.value > 140
+                                return (
+                                  <div key={index} className="flex-1 flex flex-col items-center">
+                                    <div 
+                                      className={`w-4 rounded-t ${isHigh ? 'bg-red-500' : 'bg-purple-500'}`}
+                                      style={{ height: `${height}%` }}
+                                      title={`${reading.value} mg/dL`}
+                                    />
+                                    <div className="text-xs text-gray-500 mt-1">
+                                      {new Date(reading.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                                    </div>
+                                    <div className={`text-xs font-medium ${isHigh ? 'text-red-600' : ''}`}>
+                                      {reading.value}
+                                    </div>
+                                  </div>
+                                )
+                              })}
+                            </div>
+                            <div className="mt-2 text-xs text-gray-600 text-center">
+                              Target: &lt;140 mg/dL
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </div>
+
+                    {/* Lab Results Section */}
+                    <div>
+                      <h3 className="text-lg font-semibold mb-4 flex items-center">
+                        <FileText className="h-5 w-5 mr-2 text-indigo-500" />
+                        Laboratory Results
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {/* Cholesterol Chart */}
+                        <Card>
+                          <CardHeader className="pb-2">
+                            <CardTitle className="text-sm">Cholesterol Panel</CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            {selectedPatient.healthMetrics.labResults.cholesterol.map((result, index) => (
+                              <div key={index} className="mb-4 last:mb-0">
+                                <div className="text-xs text-gray-500 mb-2">
+                                  {new Date(result.date).toLocaleDateString()}
+                                </div>
+                                <div className="space-y-2">
+                                  <div className="flex justify-between items-center">
+                                    <span className="text-sm text-gray-600">Total</span>
+                                    <div className="flex items-center space-x-2">
+                                      <div className="w-16 h-2 bg-gray-200 rounded">
+                                        <div 
+                                          className={`h-2 rounded ${result.total > 200 ? 'bg-red-500' : result.total > 180 ? 'bg-orange-500' : 'bg-green-500'}`}
+                                          style={{ width: `${Math.min((result.total / 300) * 100, 100)}%` }}
+                                        />
+                                      </div>
+                                      <span className="text-sm font-medium w-8">{result.total}</span>
+                                    </div>
+                                  </div>
+                                  <div className="flex justify-between items-center">
+                                    <span className="text-sm text-gray-600">HDL</span>
+                                    <div className="flex items-center space-x-2">
+                                      <div className="w-16 h-2 bg-gray-200 rounded">
+                                        <div 
+                                          className={`h-2 rounded ${result.hdl < 40 ? 'bg-red-500' : result.hdl > 60 ? 'bg-green-500' : 'bg-orange-500'}`}
+                                          style={{ width: `${(result.hdl / 100) * 100}%` }}
+                                        />
+                                      </div>
+                                      <span className="text-sm font-medium w-8">{result.hdl}</span>
+                                    </div>
+                                  </div>
+                                  <div className="flex justify-between items-center">
+                                    <span className="text-sm text-gray-600">LDL</span>
+                                    <div className="flex items-center space-x-2">
+                                      <div className="w-16 h-2 bg-gray-200 rounded">
+                                        <div 
+                                          className={`h-2 rounded ${result.ldl > 130 ? 'bg-red-500' : result.ldl > 100 ? 'bg-orange-500' : 'bg-green-500'}`}
+                                          style={{ width: `${Math.min((result.ldl / 200) * 100, 100)}%` }}
+                                        />
+                                      </div>
+                                      <span className="text-sm font-medium w-8">{result.ldl}</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </CardContent>
+                        </Card>
+
+                        {/* Hemoglobin Chart */}
+                        <Card>
+                          <CardHeader className="pb-2">
+                            <CardTitle className="text-sm">Hemoglobin Levels</CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="h-32 flex items-end space-x-4">
+                              {selectedPatient.healthMetrics.labResults.hemoglobin.map((result, index) => {
+                                const maxHgb = Math.max(...selectedPatient.healthMetrics!.labResults.hemoglobin.map(r => r.value))
+                                const height = (result.value / maxHgb) * 100
+                                const isLow = result.value < 12
+                                return (
+                                  <div key={index} className="flex-1 flex flex-col items-center">
+                                    <div 
+                                      className={`w-6 rounded-t ${isLow ? 'bg-red-500' : 'bg-indigo-500'}`}
+                                      style={{ height: `${height}%` }}
+                                      title={`${result.value} g/dL`}
+                                    />
+                                    <div className="text-xs text-gray-500 mt-1">
+                                      {new Date(result.date).toLocaleDateString('en-US', { month: 'short' })}
+                                    </div>
+                                    <div className={`text-xs font-medium ${isLow ? 'text-red-600' : ''}`}>
+                                      {result.value}
+                                    </div>
+                                  </div>
+                                )
+                              })}
+                            </div>
+                            <div className="mt-2 text-xs text-gray-600 text-center">
+                              Normal: 12-15 g/dL
+                            </div>
+                          </CardContent>
+                        </Card>
+
+                        {/* Creatinine Chart */}
+                        <Card>
+                          <CardHeader className="pb-2">
+                            <CardTitle className="text-sm">Creatinine Levels</CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="h-32 flex items-end space-x-4">
+                              {selectedPatient.healthMetrics.labResults.creatinine.map((result, index) => {
+                                const maxCreat = Math.max(...selectedPatient.healthMetrics!.labResults.creatinine.map(r => r.value))
+                                const height = (result.value / maxCreat) * 100
+                                const isHigh = result.value > 1.2
+                                return (
+                                  <div key={index} className="flex-1 flex flex-col items-center">
+                                    <div 
+                                      className={`w-6 rounded-t ${isHigh ? 'bg-red-500' : 'bg-teal-500'}`}
+                                      style={{ height: `${height}%` }}
+                                      title={`${result.value} mg/dL`}
+                                    />
+                                    <div className="text-xs text-gray-500 mt-1">
+                                      {new Date(result.date).toLocaleDateString('en-US', { month: 'short' })}
+                                    </div>
+                                    <div className={`text-xs font-medium ${isHigh ? 'text-red-600' : ''}`}>
+                                      {result.value}
+                                    </div>
+                                  </div>
+                                )
+                              })}
+                            </div>
+                            <div className="mt-2 text-xs text-gray-600 text-center">
+                              Normal: 0.6-1.2 mg/dL
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </div>
+
+                    {/* Health Summary */}
+                    <div>
+                      <h3 className="text-lg font-semibold mb-4 flex items-center">
+                        <LineChart className="h-5 w-5 mr-2 text-emerald-500" />
+                        Health Trends Summary
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <Card className="bg-blue-50 border-blue-200">
+                          <CardContent className="pt-4">
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <p className="text-sm text-blue-800 font-medium">Blood Pressure Status</p>
+                                <p className="text-xs text-blue-600">
+                                  {selectedPatient.healthMetrics.vitals.bloodPressure[0]?.systolic > 140 || 
+                                   selectedPatient.healthMetrics.vitals.bloodPressure[0]?.diastolic > 90 
+                                    ? 'Above target range' : 'Within normal range'}
+                                </p>
+                              </div>
+                              <div className={`p-2 rounded-full ${
+                                selectedPatient.healthMetrics.vitals.bloodPressure[0]?.systolic > 140 || 
+                                selectedPatient.healthMetrics.vitals.bloodPressure[0]?.diastolic > 90
+                                  ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'
+                              }`}>
+                                <Heart className="h-4 w-4" />
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+
+                        <Card className="bg-green-50 border-green-200">
+                          <CardContent className="pt-4">
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <p className="text-sm text-green-800 font-medium">Weight Trend</p>
+                                <p className="text-xs text-green-600">
+                                  {selectedPatient.healthMetrics.vitals.weight[0]?.value < 
+                                   selectedPatient.healthMetrics.vitals.weight[1]?.value 
+                                    ? 'Decreasing trend' : 'Stable/Increasing'}
+                                </p>
+                              </div>
+                              <div className="p-2 rounded-full bg-green-100 text-green-600">
+                                <TrendingUp className="h-4 w-4" />
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Connection Actions */}
             {selectedPatient.connectionStatus !== 'connected' && (
