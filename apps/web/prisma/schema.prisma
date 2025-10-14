@@ -145,6 +145,7 @@ model Provider {
   npi             String?   // National Provider Identifier
   phone           String?
   email           String?
+  isActive        Boolean   @default(true)
   
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
@@ -477,8 +478,8 @@ model MedicalRecordNotification {
 
   // Relations
   patient         Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
-  labResult       LabResult? @relation(fields: [recordId], references: [id], onDelete: Cascade)
-  imagingResult   ImagingResult? @relation(fields: [recordId], references: [id], onDelete: Cascade)
+  labResult       LabResult? @relation(fields: [recordId], references: [id], onDelete: Cascade, map: "notification_lab_result_fkey")
+  imagingResult   ImagingResult? @relation(fields: [recordId], references: [id], onDelete: Cascade, map: "notification_imaging_result_fkey")
 
   @@map("medical_record_notifications")
 }

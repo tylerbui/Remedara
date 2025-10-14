@@ -4,7 +4,8 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import GoogleProvider from "next-auth/providers/google"
 import bcrypt from "bcryptjs"
 import { prisma } from "./prisma"
-import { Role } from "@prisma/client"
+// import { Role } from "@prisma/client"
+type Role = 'ADMIN' | 'FRONT_DESK' | 'PROVIDER' | 'PATIENT'
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -93,7 +94,7 @@ export const authOptions: NextAuthOptions = {
           await prisma.user.update({
             where: { email: user.email! },
             data: {
-              role: Role.PATIENT,
+              role: 'PATIENT',
               patient: {
                 create: {
                   firstName: user.name?.split(" ")[0] || "",
@@ -110,7 +111,6 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: "/login",
-    signUp: "/register",
     error: "/auth/error"
   }
 }
@@ -122,8 +122,8 @@ export function hasRequiredRole(userRole: Role, requiredRoles: Role[]): boolean 
 
 // Role hierarchy for permissions
 export const ROLE_PERMISSIONS = {
-  [Role.ADMIN]: ["*"], // Admin has all permissions
-  [Role.FRONT_DESK]: [
+  'ADMIN': ["*"], // Admin has all permissions
+  'FRONT_DESK': [
     "appointments:read",
     "appointments:create", 
     "appointments:update",
@@ -132,7 +132,7 @@ export const ROLE_PERMISSIONS = {
     "intake:read",
     "intake:update"
   ],
-  [Role.PROVIDER]: [
+  'PROVIDER': [
     "appointments:read",
     "appointments:update", 
     "patients:read",
@@ -140,7 +140,7 @@ export const ROLE_PERMISSIONS = {
     "availability:create",
     "availability:update"
   ],
-  [Role.PATIENT]: [
+  'PATIENT': [
     "appointments:create",
     "appointments:read:own",
     "intake:create:own",
