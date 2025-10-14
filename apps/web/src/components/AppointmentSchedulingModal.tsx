@@ -126,50 +126,19 @@ export default function AppointmentSchedulingModal({
   const fetchConnectedPatients = async () => {
     setIsLoading(true)
     try {
-      // Mock data - replace with actual API call
-      const mockPatients: Patient[] = [
-        {
-          id: '1',
-          name: 'Sarah Johnson',
-          email: 'sarah.johnson@email.com',
-          phone: '(555) 123-4567',
-          dateOfBirth: '1985-03-15',
-          lastVisit: '2024-01-10',
-          isConnected: true
-        },
-        {
-          id: '2',
-          name: 'Robert Chen',
-          email: 'robert.chen@email.com',
-          phone: '(555) 987-6543',
-          dateOfBirth: '1978-08-22',
-          lastVisit: '2023-12-18',
-          isConnected: true
-        },
-        {
-          id: '3',
-          name: 'Maria Garcia',
-          email: 'maria.garcia@email.com',
-          phone: '(555) 456-7890',
-          dateOfBirth: '1992-11-03',
-          lastVisit: '2024-01-05',
-          isConnected: true
-        },
-        {
-          id: '4',
-          name: 'John Smith',
-          email: 'john.smith@email.com',
-          phone: '(555) 321-0987',
-          dateOfBirth: '1965-06-14',
-          lastVisit: '2024-01-08',
-          isConnected: true
-        }
-      ]
+      // Fetch real patients from API - only connected ones for appointment scheduling
+      const response = await fetch('/api/patients?connected=true')
       
-      setPatients(mockPatients)
+      if (!response.ok) {
+        throw new Error('Failed to fetch patients')
+      }
+      
+      const data = await response.json()
+      setPatients(data.patients || [])
     } catch (error) {
       console.error('Error fetching patients:', error)
       toast.error('Failed to load patients')
+      setPatients([])
     } finally {
       setIsLoading(false)
     }

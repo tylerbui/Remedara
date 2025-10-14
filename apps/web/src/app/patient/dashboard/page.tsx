@@ -33,6 +33,7 @@ import {
 import Link from 'next/link'
 import { MessageProvider } from '@/components/MessageProvider'
 import AppointmentNotifications from '@/components/AppointmentNotifications'
+import ProviderConnectionRequests from '@/components/ProviderConnectionRequests'
 
 type DashboardSection = 'overview' | 'appointments' | 'records' | 'prescriptions' | 'results' | 'messages' | 'visits' | 'past-prescriptions' | 'providers'
 
@@ -499,25 +500,30 @@ export default function PatientDashboard() {
   const renderProviders = () => (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-gray-900">Linked Providers</h2>
+        <h2 className="text-2xl font-bold text-gray-900">Healthcare Providers</h2>
         <Button asChild>
           <Link href="/patient/link-provider">
             <Plus className="h-4 w-4 mr-2" />
-            Link New Provider
+            Link External Provider
           </Link>
         </Button>
       </div>
+      
+      {/* Provider Connection Requests and Connected Providers */}
+      <ProviderConnectionRequests />
+      
+      {/* External FHIR Provider Connections */}
       <Card>
         <CardHeader>
-          <CardTitle>Healthcare Provider Connections</CardTitle>
+          <CardTitle>External Provider Systems</CardTitle>
           <CardDescription>
-            Connect to your healthcare providers to access your medical data in one place
+            Connect to external healthcare systems to import your medical data
           </CardDescription>
         </CardHeader>
         <CardContent>
           <p className="text-gray-600 mb-4">
-            Link multiple healthcare providers to create a unified view of your medical history. 
-            Supports Epic, Cerner, and other FHIR-compliant systems.
+            Link to external systems like Epic, Cerner, and other FHIR-compliant platforms to 
+            import your existing medical history.
           </p>
           <div className="space-y-2">
             <div className="flex items-center text-sm text-gray-600">

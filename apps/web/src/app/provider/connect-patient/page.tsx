@@ -89,167 +89,34 @@ export default function ConnectPatientPage() {
     }
   }, [session, status])
 
-  // Mock patient data - replace with API call
+  // Fetch real patient data from API
   useEffect(() => {
-    const mockPatients: Patient[] = [
-      {
-        id: '1',
-        name: 'Sarah Johnson',
-        email: 'sarah.johnson@email.com',
-        phone: '(555) 123-4567',
-        dateOfBirth: '1985-03-15',
-        lastVisit: '2024-01-10',
-        isConnected: true,
-        connectionStatus: 'connected',
-        medicalRecords: {
-          conditions: ['Hypertension', 'Type 2 Diabetes'],
-          allergies: ['Penicillin'],
-          medications: ['Metformin', 'Lisinopril']
-        },
-        appointments: {
-          upcoming: 1,
-          completed: 5
-        },
-        healthMetrics: {
-          vitals: {
-            bloodPressure: [
-              { systolic: 140, diastolic: 90, date: '2024-01-15' },
-              { systolic: 135, diastolic: 88, date: '2024-01-10' },
-              { systolic: 138, diastolic: 92, date: '2024-01-05' },
-              { systolic: 142, diastolic: 89, date: '2023-12-28' }
-            ],
-            heartRate: [
-              { value: 78, date: '2024-01-15' },
-              { value: 82, date: '2024-01-10' },
-              { value: 75, date: '2024-01-05' },
-              { value: 80, date: '2023-12-28' }
-            ],
-            temperature: [
-              { value: 98.6, date: '2024-01-15' },
-              { value: 98.4, date: '2024-01-10' },
-              { value: 98.7, date: '2024-01-05' }
-            ],
-            weight: [
-              { value: 165, date: '2024-01-15' },
-              { value: 167, date: '2024-01-10' },
-              { value: 168, date: '2024-01-05' },
-              { value: 170, date: '2023-12-28' }
-            ],
-            glucose: [
-              { value: 145, date: '2024-01-15' },
-              { value: 138, date: '2024-01-10' },
-              { value: 142, date: '2024-01-05' },
-              { value: 150, date: '2023-12-28' }
-            ]
-          },
-          labResults: {
-            cholesterol: [
-              { total: 220, hdl: 45, ldl: 150, date: '2024-01-15' },
-              { total: 215, hdl: 48, ldl: 145, date: '2023-10-15' }
-            ],
-            hemoglobin: [
-              { value: 13.5, date: '2024-01-15' },
-              { value: 13.2, date: '2023-10-15' }
-            ],
-            creatinine: [
-              { value: 1.1, date: '2024-01-15' },
-              { value: 1.0, date: '2023-10-15' }
-            ]
-          }
+    const fetchPatients = async () => {
+      setIsLoading(true)
+      try {
+        // Fetch all patients (connected and not connected)
+        const response = await fetch('/api/patients')
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch patients')
         }
-      },
-      {
-        id: '2',
-        name: 'Robert Chen',
-        email: 'robert.chen@email.com',
-        phone: '(555) 987-6543',
-        dateOfBirth: '1978-08-22',
-        lastVisit: '2023-12-18',
-        isConnected: false,
-        connectionStatus: 'pending',
-        appointments: {
-          upcoming: 0,
-          completed: 2
-        }
-      },
-      {
-        id: '3',
-        name: 'Maria Garcia',
-        email: 'maria.garcia@email.com',
-        phone: '(555) 456-7890',
-        dateOfBirth: '1992-11-03',
-        isConnected: false,
-        connectionStatus: 'not_connected',
-        appointments: {
-          upcoming: 1,
-          completed: 0
-        }
-      },
-      {
-        id: '4',
-        name: 'John Smith',
-        email: 'john.smith@email.com',
-        phone: '(555) 321-0987',
-        dateOfBirth: '1965-06-14',
-        lastVisit: '2024-01-05',
-        isConnected: true,
-        connectionStatus: 'connected',
-        medicalRecords: {
-          conditions: ['Arthritis'],
-          allergies: ['Latex'],
-          medications: ['Ibuprofen']
-        },
-        appointments: {
-          upcoming: 0,
-          completed: 8
-        },
-        healthMetrics: {
-          vitals: {
-            bloodPressure: [
-              { systolic: 125, diastolic: 80, date: '2024-01-05' },
-              { systolic: 128, diastolic: 82, date: '2023-12-15' },
-              { systolic: 130, diastolic: 85, date: '2023-11-20' }
-            ],
-            heartRate: [
-              { value: 68, date: '2024-01-05' },
-              { value: 72, date: '2023-12-15' },
-              { value: 70, date: '2023-11-20' }
-            ],
-            temperature: [
-              { value: 98.2, date: '2024-01-05' },
-              { value: 98.6, date: '2023-12-15' }
-            ],
-            weight: [
-              { value: 180, date: '2024-01-05' },
-              { value: 182, date: '2023-12-15' },
-              { value: 185, date: '2023-11-20' }
-            ],
-            glucose: [
-              { value: 95, date: '2024-01-05' },
-              { value: 92, date: '2023-12-15' },
-              { value: 98, date: '2023-11-20' }
-            ]
-          },
-          labResults: {
-            cholesterol: [
-              { total: 190, hdl: 55, ldl: 120, date: '2024-01-05' },
-              { total: 185, hdl: 58, ldl: 115, date: '2023-07-10' }
-            ],
-            hemoglobin: [
-              { value: 14.2, date: '2024-01-05' },
-              { value: 14.0, date: '2023-07-10' }
-            ],
-            creatinine: [
-              { value: 0.9, date: '2024-01-05' },
-              { value: 0.8, date: '2023-07-10' }
-            ]
-          }
-        }
+        
+        const data = await response.json()
+        setPatients(data.patients || [])
+        setFilteredPatients(data.patients || [])
+      } catch (error) {
+        console.error('Error fetching patients:', error)
+        // Fallback to empty array
+        setPatients([])
+        setFilteredPatients([])
+      } finally {
+        setIsLoading(false)
       }
-    ]
-    setPatients(mockPatients)
-    setFilteredPatients(mockPatients)
+    }
+
+    fetchPatients()
   }, [])
+
 
   // Filter patients based on search query
   useEffect(() => {
@@ -268,9 +135,23 @@ export default function ConnectPatientPage() {
   const handleConnectPatient = async (patientId: string) => {
     setIsLoading(true)
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
+      // Send actual connection request via API
+      const response = await fetch('/api/provider-connections', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          patientId,
+          message: 'I would like to connect with you to manage your healthcare.'
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to send connection request')
+      }
+
+      // Update local state to show as pending
       setPatients(prev => prev.map(patient => 
         patient.id === patientId 
           ? { ...patient, connectionStatus: 'pending' as const }
@@ -279,6 +160,7 @@ export default function ConnectPatientPage() {
       
       toast.success('Connection request sent to patient')
     } catch (error) {
+      console.error('Error sending connection request:', error)
       toast.error('Failed to send connection request')
     } finally {
       setIsLoading(false)
