@@ -46,6 +46,7 @@ import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { PDFExport } from '@/components/PDFExport'
 import { RecordSharing } from '@/components/RecordSharing'
+import EnhancedLabResult from '@/components/EnhancedLabResult'
 import Link from 'next/link'
 
 interface UserProfile {
@@ -970,45 +971,34 @@ export default function RecordsPage() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          {labResults.map((result) => (
-            <div key={result.id} className="border rounded-lg p-4">
-              <div className="flex items-center justify-between mb-3">
-                <div>
-                  <h3 className="font-semibold">{result.testName}</h3>
-                  <p className="text-sm text-gray-600">
-                    {result.labFacility} • {new Date(result.resultDate).toLocaleDateString()}
-                  </p>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Badge className={getStatusColor(result.status)}>
-                    {result.status}
-                  </Badge>
-                  {result.flagged && (
-                    <Badge variant="destructive">Flagged</Badge>
-                  )}
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                <div>
-                  <span className="font-medium">Result:</span>
-                  <p className="text-gray-900">{result.result} {result.unit}</p>
-                </div>
-                {result.referenceRange && (
-                  <div>
-                    <span className="font-medium">Reference Range:</span>
-                    <p className="text-gray-600">{result.referenceRange}</p>
-                  </div>
-                )}
-                {result.providerNotes && (
-                  <div>
-                    <span className="font-medium">Provider Notes:</span>
-                    <p className="text-gray-600">{result.providerNotes}</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
+          {labResults.map((result, index) => {
+            // Create enhanced lab result with trend data (simulated)
+            const enhancedResult = {
+              ...result,
+              trend: index === 0 ? 'up' as const : index === 1 ? 'down' as const : 'stable' as const,
+              previousValue: index === 0 ? '85' : index === 1 ? '220' : result.result,
+              daysSinceLast: 30 + (index * 15)
+            }
+            
+            // Sample patient factors (in real app, get from user profile)
+            const patientFactors = {
+              age: userProfile?.dateOfBirth ? 
+                Math.floor((new Date().getTime() - new Date(userProfile.dateOfBirth).getTime()) / (1000 * 60 * 60 * 24 * 365)) : 35,
+              medications: ['Lisinopril', 'Metformin', 'Vitamin D'],
+              conditions: userProfile?.medicalHistory ? userProfile.medicalHistory.split(', ') : ['Hypertension', 'Type 2 Diabetes'],
+              lifestyle: ['Regular exercise', 'Non-smoker']
+            }
+            
+            return (
+              <EnhancedLabResult
+                key={result.id}
+                result={enhancedResult}
+                patientFactors={patientFactors}
+                showTrends={true}
+                showFactors={true}
+              />
+            )
+          })}
         </CardContent>
       </Card>
 
