@@ -42,8 +42,9 @@ import AppointmentSchedulingModal from '@/components/AppointmentSchedulingModal'
 import ProviderPatientRequests from '@/components/ProviderPatientRequests'
 import AILabAnalyzer from '@/components/AILabAnalyzer'
 import ProviderAnalytics from '@/components/ProviderAnalytics'
+import LabTemplateEntry from '@/components/LabTemplateEntry'
 
-type DashboardSection = 'overview' | 'appointments' | 'patients' | 'availability' | 'prescriptions' | 'lab-analysis' | 'messages' | 'analytics' | 'settings'
+type DashboardSection = 'overview' | 'appointments' | 'patients' | 'availability' | 'prescriptions' | 'lab-analysis' | 'lab-entry' | 'messages' | 'analytics' | 'settings'
 
 export default function ProviderDashboard() {
   const { data: session, status } = useSession()
@@ -170,6 +171,7 @@ export default function ProviderDashboard() {
     { id: 'availability', label: 'Availability', icon: Clock, description: 'Schedule & time slots' },
     { id: 'prescriptions', label: 'Prescriptions', icon: Pill, description: 'Medication management' },
     { id: 'lab-analysis', label: 'AI Lab Analysis', icon: Brain, description: 'AI-powered lab insights' },
+    { id: 'lab-entry', label: 'Lab Templates', icon: TestTube, description: 'Standardized lab entry' },
     { id: 'messages', label: 'Messages', icon: MessageSquare, description: 'Patient communications' },
     { id: 'analytics', label: 'Analytics', icon: BarChart3, description: 'Practice insights' },
     { id: 'settings', label: 'Settings', icon: Settings, description: 'Practice preferences' }
@@ -190,6 +192,8 @@ export default function ProviderDashboard() {
         return renderPrescriptions()
       case 'lab-analysis':
         return renderLabAnalysis()
+      case 'lab-entry':
+        return renderLabEntry()
       case 'messages':
         return renderMessages()
       case 'analytics':
@@ -509,6 +513,10 @@ export default function ProviderDashboard() {
 
   const renderLabAnalysis = () => (
     <AILabAnalyzer />
+  )
+
+  const renderLabEntry = () => (
+    <LabTemplateEntry />
   )
 
   const renderMessages = () => (
