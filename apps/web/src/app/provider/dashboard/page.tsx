@@ -41,6 +41,7 @@ import { MessageProvider } from '@/components/MessageProvider'
 import AppointmentSchedulingModal from '@/components/AppointmentSchedulingModal'
 import ProviderPatientRequests from '@/components/ProviderPatientRequests'
 import AILabAnalyzer from '@/components/AILabAnalyzer'
+import ProviderAnalytics from '@/components/ProviderAnalytics'
 
 type DashboardSection = 'overview' | 'appointments' | 'patients' | 'availability' | 'prescriptions' | 'lab-analysis' | 'messages' | 'analytics' | 'settings'
 
@@ -515,38 +516,7 @@ export default function ProviderDashboard() {
   )
 
   const renderAnalytics = () => (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-gray-900">Practice Analytics</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <TrendingUp className="h-5 w-5" />
-              <span>Performance Metrics</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-gray-600">
-              Track appointment volume, patient satisfaction, and revenue trends.
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <BarChart3 className="h-5 w-5" />
-              <span>Clinical Insights</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-gray-600">
-              Analyze treatment outcomes and patient demographics.
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+    <ProviderAnalytics />
   )
 
   const renderSettings = () => (
