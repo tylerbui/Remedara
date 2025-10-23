@@ -10,8 +10,10 @@
   "scripts": {
     "dev": "turbo run dev",
     "dev:web": "turbo run dev --filter=web",
+    "dev:mobile": "turbo run dev --filter=mobile",
     "build": "turbo run build",
     "build:web": "turbo run build --filter=web",
+    "build:mobile": "turbo run build --filter=mobile",
     "lint": "turbo run lint",
     "test": "turbo run test",
     "clean": "turbo run clean",
@@ -71,5 +73,13 @@
     "*.{json,md,yml,yaml}": [
       "prettier --write"
     ]
+  },
+  "overrides": {
+    "react": "18.2.0",
+    "@types/react": "~18.2.0"
+  },
+  "resolutions": {
+    "react": "18.2.0",
+    "@types/react": "~18.2.0"
   }
 }
