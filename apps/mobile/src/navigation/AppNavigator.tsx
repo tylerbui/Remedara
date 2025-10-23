@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Colors } from '../constants/colors';
 import { HomeScreen } from '../screens/HomeScreen';
 import { AppointmentsScreen } from '../screens/AppointmentsScreen';
 import { MessagesScreen } from '../screens/MessagesScreen';
@@ -45,11 +46,11 @@ export function AppNavigator() {
           <Ionicons
             name={activeTab === 'Appointments' ? 'calendar' : 'calendar-outline'}
             size={22}
-            color={activeTab === 'Appointments' ? '#3B82F6' : '#6B7280'}
+            color={activeTab === 'Appointments' ? Colors.primary : Colors.textLight}
           />
           <Text style={[
             styles.tabLabel,
-            { color: activeTab === 'Appointments' ? '#3B82F6' : '#6B7280' }
+            { color: activeTab === 'Appointments' ? Colors.primary : Colors.textLight }
           ]}>
             Appts
           </Text>
@@ -62,11 +63,11 @@ export function AppNavigator() {
           <Ionicons
             name={activeTab === 'Messages' ? 'chatbubbles' : 'chatbubbles-outline'}
             size={22}
-            color={activeTab === 'Messages' ? '#3B82F6' : '#6B7280'}
+            color={activeTab === 'Messages' ? 'Colors.primary' : 'Colors.textLight'}
           />
           <Text style={[
             styles.tabLabel,
-            { color: activeTab === 'Messages' ? '#3B82F6' : '#6B7280' }
+            { color: activeTab === 'Messages' ? 'Colors.primary' : 'Colors.textLight' }
           ]}>
             Messages
           </Text>
@@ -79,11 +80,11 @@ export function AppNavigator() {
           <Ionicons
             name={activeTab === 'Home' ? 'home' : 'home-outline'}
             size={24}
-            color={activeTab === 'Home' ? '#3B82F6' : '#6B7280'}
+            color={activeTab === 'Home' ? 'Colors.primary' : 'Colors.textLight'}
           />
           <Text style={[
             styles.tabLabel,
-            { color: activeTab === 'Home' ? '#3B82F6' : '#6B7280' }
+            { color: activeTab === 'Home' ? 'Colors.primary' : 'Colors.textLight' }
           ]}>
             Home
           </Text>
@@ -96,11 +97,11 @@ export function AppNavigator() {
           <Ionicons
             name={activeTab === 'Records' ? 'document-text' : 'document-text-outline'}
             size={22}
-            color={activeTab === 'Records' ? '#3B82F6' : '#6B7280'}
+            color={activeTab === 'Records' ? 'Colors.primary' : 'Colors.textLight'}
           />
           <Text style={[
             styles.tabLabel,
-            { color: activeTab === 'Records' ? '#3B82F6' : '#6B7280' }
+            { color: activeTab === 'Records' ? 'Colors.primary' : 'Colors.textLight' }
           ]}>
             Records
           </Text>
@@ -113,11 +114,11 @@ export function AppNavigator() {
           <Ionicons
             name={activeTab === 'Providers' ? 'link' : 'link-outline'}
             size={22}
-            color={activeTab === 'Providers' ? '#3B82F6' : '#6B7280'}
+            color={activeTab === 'Providers' ? 'Colors.primary' : 'Colors.textLight'}
           />
           <Text style={[
             styles.tabLabel,
-            { color: activeTab === 'Providers' ? '#3B82F6' : '#6B7280' }
+            { color: activeTab === 'Providers' ? 'Colors.primary' : 'Colors.textLight' }
           ]}>
             Providers
           </Text>

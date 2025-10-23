@@ -1,14 +1,17 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { ChooseTimeScreen } from './ChooseTimeScreen';
 
 interface ProviderCardProps {
   name: string;
   specialty: string;
   address: string;
+  onBook: () => void;
+  onDetails: () => void;
 }
 
-function ProviderCard({ name, specialty, address }: ProviderCardProps) {
+function ProviderCard({ name, specialty, address, onBook, onDetails }: ProviderCardProps) {
   return (
     <View style={styles.providerCard}>
       <View style={styles.avatar} />
@@ -18,10 +21,10 @@ function ProviderCard({ name, specialty, address }: ProviderCardProps) {
       </View>
       <Text style={styles.providerAddress}>{address}</Text>
       <View style={styles.buttonRow}>
-        <TouchableOpacity style={styles.bookButton}>
+        <TouchableOpacity style={styles.bookButton} onPress={onBook}>
           <Text style={styles.bookButtonText}>Book</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.detailsButton}>
+        <TouchableOpacity style={styles.detailsButton} onPress={onDetails}>
           <Text style={styles.detailsButtonText}>Details</Text>
         </TouchableOpacity>
       </View>
@@ -34,6 +37,11 @@ interface SelectProviderScreenProps {
 }
 
 export function SelectProviderScreen({ onBack }: SelectProviderScreenProps) {
+  const [selectedProvider, setSelectedProvider] = useState<string | null>(null);
+  const [showChooseTime, setShowChooseTime] = useState(false);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [detailsProvider, setDetailsProvider] = useState<any>(null);
+
   const providers = [
     {
       name: 'Dr. Sarah Johnson',
@@ -57,11 +65,33 @@ export function SelectProviderScreen({ onBack }: SelectProviderScreenProps) {
     },
   ];
 
+  const handleBook = (provider: any) => {
+    setSelectedProvider(provider.name);
+    setShowChooseTime(true);
+  };
+
+  const handleDetails = (provider: any) => {
+    setDetailsProvider(provider);
+    setShowDetailsModal(true);
+  };
+
+  if (showChooseTime && selectedProvider) {
+    return (
+      <ChooseTimeScreen 
+        onBack={() => setShowChooseTime(false)} 
+        providerName={selectedProvider}
+      />
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
         {/* Header */}
         <View style={styles.header}>
+          <TouchableOpacity onPress={onBack}>
+            <Text style={styles.backButton}>← Back</Text>
+          </TouchableOpacity>
           <Text style={styles.headerTitle}>Appointments</Text>
         </View>
 
@@ -83,6 +113,8 @@ export function SelectProviderScreen({ onBack }: SelectProviderScreenProps) {
               name={provider.name}
               specialty={provider.specialty}
               address={provider.address}
+              onBook={() => handleBook(provider)}
+              onDetails={() => handleDetails(provider)}
             />
           ))}
         </View>
@@ -104,7 +136,10 @@ export function SelectProviderScreen({ onBack }: SelectProviderScreenProps) {
               <Text style={styles.quickBookName}>Dr. Sarah Johnson</Text>
               <Text style={styles.quickBookSpecialty}>Cardiology</Text>
               <View style={styles.quickBookDivider} />
-              <TouchableOpacity style={styles.quickBookButton}>
+              <TouchableOpacity 
+                style={styles.quickBookButton}
+                onPress={() => handleBook({ name: 'Dr. Sarah Johnson' })}
+              >
                 <Text style={styles.quickBookButtonText}>Book</Text>
               </TouchableOpacity>
             </View>
@@ -114,7 +149,10 @@ export function SelectProviderScreen({ onBack }: SelectProviderScreenProps) {
               <Text style={styles.quickBookName}>Dr. Michael Chen</Text>
               <Text style={styles.quickBookSpecialty}>Dermatology</Text>
               <View style={styles.quickBookDivider} />
-              <TouchableOpacity style={styles.quickBookButton}>
+              <TouchableOpacity 
+                style={styles.quickBookButton}
+                onPress={() => handleBook({ name: 'Dr. Michael Chen' })}
+              >
                 <Text style={styles.quickBookButtonText}>Book</Text>
               </TouchableOpacity>
             </View>
@@ -124,7 +162,10 @@ export function SelectProviderScreen({ onBack }: SelectProviderScreenProps) {
               <Text style={styles.quickBookName}>Dr. Emily Rodriguez</Text>
               <Text style={styles.quickBookSpecialty}>Pediatrics</Text>
               <View style={styles.quickBookDivider} />
-              <TouchableOpacity style={styles.quickBookButton}>
+              <TouchableOpacity 
+                style={styles.quickBookButton}
+                onPress={() => handleBook({ name: 'Dr. Emily Rodriguez' })}
+              >
                 <Text style={styles.quickBookButtonText}>Book</Text>
               </TouchableOpacity>
             </View>
@@ -134,7 +175,10 @@ export function SelectProviderScreen({ onBack }: SelectProviderScreenProps) {
               <Text style={styles.quickBookName}>Dr. James Wilson</Text>
               <Text style={styles.quickBookSpecialty}>Orthopedics</Text>
               <View style={styles.quickBookDivider} />
-              <TouchableOpacity style={styles.quickBookButton}>
+              <TouchableOpacity 
+                style={styles.quickBookButton}
+                onPress={() => handleBook({ name: 'Dr. James Wilson' })}
+              >
                 <Text style={styles.quickBookButtonText}>Book</Text>
               </TouchableOpacity>
             </View>
@@ -156,6 +200,11 @@ const styles = StyleSheet.create({
   header: {
     padding: 20,
     paddingTop: 10,
+  },
+  backButton: {
+    fontSize: 16,
+    color: '#3B82F6',
+    marginBottom: 10,
   },
   headerTitle: {
     fontSize: 28,

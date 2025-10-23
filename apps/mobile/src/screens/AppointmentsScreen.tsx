@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SelectProviderScreen } from './SelectProviderScreen';
 import { ChooseTimeScreen } from './ChooseTimeScreen';
+import { Colors } from '../constants/colors';
 
 export function AppointmentsScreen() {
   const [showSelectProvider, setShowSelectProvider] = useState(false);
@@ -57,7 +58,7 @@ export function AppointmentsScreen() {
         </View>
 
         {/* Book an Appointment Section */}
-        <View style={styles.section}>
+        <View style={[styles.section, styles.bookingSection]}>
           <Text style={styles.sectionTitle}>Book an Appointment</Text>
           <Text style={styles.sectionSubtitle}>
             Schedule your visit with our health care provider.
@@ -122,13 +123,13 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   recentBanner: {
-    backgroundColor: '#D8B4E2',
+    backgroundColor: Colors.appointmentRecent,
     marginHorizontal: 0,
     borderRadius: 0,
     overflow: 'hidden',
   },
   recentLabel: {
-    backgroundColor: '#C89FD9',
+    backgroundColor: Colors.accent,
     paddingVertical: 8,
     paddingHorizontal: 20,
   },
@@ -165,6 +166,12 @@ const styles = StyleSheet.create({
   section: {
     padding: 20,
   },
+  bookingSection: {
+    backgroundColor: Colors.background,
+    marginHorizontal: 0,
+    paddingHorizontal: 20,
+    paddingVertical: 24,
+  },
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
@@ -178,7 +185,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   appointmentCard: {
-    backgroundColor: '#D8B4E2',
+    backgroundColor: Colors.appointmentCard,
     borderRadius: 12,
     padding: 16,
   },
@@ -205,15 +212,17 @@ const styles = StyleSheet.create({
   stepButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F3F4F6',
+    backgroundColor: Colors.appointmentCard,
     padding: 16,
     borderRadius: 12,
+    borderWidth: 1,
+    borderColor: Colors.border,
   },
   stepNumber: {
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: '#000000',
+    backgroundColor: Colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
@@ -226,7 +235,7 @@ const styles = StyleSheet.create({
   stepText: {
     fontSize: 15,
     fontWeight: '500',
-    color: '#000000',
+    color: Colors.text,
     flex: 1,
   },
 });
