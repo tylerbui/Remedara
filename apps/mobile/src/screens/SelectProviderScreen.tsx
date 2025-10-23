@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChooseTimeScreen } from './ChooseTimeScreen';
+import { Colors } from '../constants/colors';
 
 interface ProviderCardProps {
   name: string;
@@ -192,7 +193,7 @@ export function SelectProviderScreen({ onBack }: SelectProviderScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.background,
   },
   scrollView: {
     flex: 1,
@@ -203,13 +204,13 @@ const styles = StyleSheet.create({
   },
   backButton: {
     fontSize: 16,
-    color: '#3B82F6',
+    color: Colors.primary,
     marginBottom: 10,
   },
   headerTitle: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#000000',
+    color: Colors.text,
   },
   selectProviderSection: {
     paddingHorizontal: 20,
@@ -218,15 +219,17 @@ const styles = StyleSheet.create({
   selectProviderButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#E5E7EB',
+    backgroundColor: Colors.appointmentCard,
     padding: 16,
     borderRadius: 12,
+    borderWidth: 1,
+    borderColor: Colors.border,
   },
   stepNumber: {
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: '#000000',
+    backgroundColor: Colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
@@ -239,7 +242,7 @@ const styles = StyleSheet.create({
   selectProviderText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#000000',
+    color: Colors.text,
   },
   providerGrid: {
     flexDirection: 'row',
@@ -249,27 +252,29 @@ const styles = StyleSheet.create({
   },
   providerCard: {
     width: '47%',
-    backgroundColor: '#E5E7EB',
+    backgroundColor: Colors.surface,
     borderRadius: 12,
     padding: 16,
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: Colors.border,
   },
   avatar: {
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#000000',
+    backgroundColor: Colors.primary,
     marginBottom: 12,
   },
   providerName: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#000000',
+    color: Colors.text,
     textAlign: 'center',
     marginBottom: 8,
   },
   specialtyBadge: {
-    backgroundColor: '#000000',
+    backgroundColor: Colors.accent,
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 12,
@@ -282,7 +287,7 @@ const styles = StyleSheet.create({
   },
   providerAddress: {
     fontSize: 11,
-    color: '#4B5563',
+    color: Colors.textSecondary,
     textAlign: 'center',
     marginBottom: 12,
     lineHeight: 16,
@@ -292,7 +297,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   bookButton: {
-    backgroundColor: '#000000',
+    backgroundColor: Colors.primary,
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 8,
@@ -303,15 +308,15 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   detailsButton: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.surface,
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#D1D5DB',
+    borderColor: Colors.border,
   },
   detailsButtonText: {
-    color: '#000000',
+    color: Colors.text,
     fontSize: 12,
     fontWeight: '600',
   },
@@ -322,12 +327,12 @@ const styles = StyleSheet.create({
   bookTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#000000',
+    color: Colors.text,
     marginBottom: 8,
   },
   bookSubtitle: {
     fontSize: 14,
-    color: '#6B7280',
+    color: Colors.textSecondary,
     marginBottom: 16,
     lineHeight: 20,
   },
@@ -337,40 +342,42 @@ const styles = StyleSheet.create({
   },
   quickBookCard: {
     width: 140,
-    backgroundColor: '#E5E7EB',
+    backgroundColor: Colors.surface,
     borderRadius: 12,
     padding: 16,
     alignItems: 'center',
     marginRight: 12,
+    borderWidth: 1,
+    borderColor: Colors.border,
   },
   quickBookAvatar: {
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#000000',
+    backgroundColor: Colors.primary,
     marginBottom: 12,
   },
   quickBookName: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#000000',
+    color: Colors.text,
     textAlign: 'center',
     marginBottom: 4,
   },
   quickBookSpecialty: {
     fontSize: 11,
-    color: '#6B7280',
+    color: Colors.textSecondary,
     textAlign: 'center',
     marginBottom: 12,
   },
   quickBookDivider: {
     width: '100%',
     height: 2,
-    backgroundColor: '#000000',
+    backgroundColor: Colors.primary,
     marginBottom: 12,
   },
   quickBookButton: {
-    backgroundColor: '#000000',
+    backgroundColor: Colors.primary,
     paddingHorizontal: 24,
     paddingVertical: 8,
     borderRadius: 8,

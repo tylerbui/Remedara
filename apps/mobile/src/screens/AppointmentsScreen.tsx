@@ -3,11 +3,13 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SelectProviderScreen } from './SelectProviderScreen';
 import { ChooseTimeScreen } from './ChooseTimeScreen';
+import { YourDetailsScreen } from './YourDetailsScreen';
 import { Colors } from '../constants/colors';
 
 export function AppointmentsScreen() {
   const [showSelectProvider, setShowSelectProvider] = useState(false);
   const [showChooseTime, setShowChooseTime] = useState(false);
+  const [showYourDetails, setShowYourDetails] = useState(false);
 
   if (showSelectProvider) {
     return <SelectProviderScreen onBack={() => setShowSelectProvider(false)} />;
@@ -15,6 +17,10 @@ export function AppointmentsScreen() {
 
   if (showChooseTime) {
     return <ChooseTimeScreen onBack={() => setShowChooseTime(false)} />;
+  }
+
+  if (showYourDetails) {
+    return <YourDetailsScreen onBack={() => setShowYourDetails(false)} />;
   }
   return (
     <SafeAreaView style={styles.container}>
@@ -85,7 +91,10 @@ export function AppointmentsScreen() {
               <Text style={styles.stepText}>Choose Time</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.stepButton}>
+            <TouchableOpacity 
+              style={styles.stepButton}
+              onPress={() => setShowYourDetails(true)}
+            >
               <View style={styles.stepNumber}>
                 <Text style={styles.stepNumberText}>3</Text>
               </View>

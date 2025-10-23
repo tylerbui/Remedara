@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Colors } from '../constants/colors';
+import { YourDetailsScreen } from './YourDetailsScreen';
 
 interface ChooseTimeScreenProps {
   onBack?: () => void;
@@ -10,6 +12,18 @@ interface ChooseTimeScreenProps {
 export function ChooseTimeScreen({ onBack, providerName = 'Dr. Sarah Johnson' }: ChooseTimeScreenProps) {
   const [selectedDate, setSelectedDate] = useState<number | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [showYourDetails, setShowYourDetails] = useState(false);
+
+  if (showYourDetails && selectedDate && selectedTime) {
+    return (
+      <YourDetailsScreen 
+        onBack={() => setShowYourDetails(false)}
+        providerName={providerName}
+        selectedDate={`December ${selectedDate}, 2025`}
+        selectedTime={selectedTime}
+      />
+    );
+  }
 
   // Generate calendar dates for the current month
   const generateDates = () => {
@@ -142,6 +156,7 @@ export function ChooseTimeScreen({ onBack, providerName = 'Dr. Sarah Johnson' }:
               (!selectedDate || !selectedTime) && styles.continueButtonDisabled,
             ]}
             disabled={!selectedDate || !selectedTime}
+            onPress={() => setShowYourDetails(true)}
           >
             <Text style={styles.continueButtonText}>Continue</Text>
           </TouchableOpacity>
@@ -154,7 +169,7 @@ export function ChooseTimeScreen({ onBack, providerName = 'Dr. Sarah Johnson' }:
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.background,
   },
   scrollView: {
     flex: 1,
@@ -165,13 +180,13 @@ const styles = StyleSheet.create({
   },
   backButton: {
     fontSize: 16,
-    color: '#3B82F6',
+    color: Colors.primary,
     marginBottom: 10,
   },
   headerTitle: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#000000',
+    color: Colors.text,
   },
   providerInfo: {
     flexDirection: 'row',
@@ -179,26 +194,28 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginBottom: 20,
     padding: 16,
-    backgroundColor: '#F9FAFB',
+    backgroundColor: Colors.surface,
     marginHorizontal: 20,
     borderRadius: 12,
+    borderWidth: 1,
+    borderColor: Colors.border,
   },
   avatar: {
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: '#000000',
+    backgroundColor: Colors.primary,
     marginRight: 12,
   },
   providerName: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#000000',
+    color: Colors.text,
     marginBottom: 4,
   },
   providerSpecialty: {
     fontSize: 14,
-    color: '#6B7280',
+    color: Colors.textSecondary,
   },
   monthHeader: {
     flexDirection: 'row',
@@ -209,13 +226,13 @@ const styles = StyleSheet.create({
   },
   monthArrow: {
     fontSize: 24,
-    color: '#3B82F6',
+    color: Colors.primary,
     fontWeight: 'bold',
   },
   monthText: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#000000',
+    color: Colors.text,
   },
   calendarSection: {
     marginBottom: 30,
@@ -223,7 +240,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#000000',
+    color: Colors.text,
     paddingHorizontal: 20,
     marginBottom: 16,
   },
@@ -234,26 +251,26 @@ const styles = StyleSheet.create({
   dateCard: {
     width: 70,
     padding: 12,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: Colors.surface,
     borderRadius: 12,
     alignItems: 'center',
     borderWidth: 2,
-    borderColor: 'transparent',
+    borderColor: Colors.border,
   },
   dateCardSelected: {
-    backgroundColor: '#3B82F6',
-    borderColor: '#3B82F6',
+    backgroundColor: Colors.primary,
+    borderColor: Colors.primary,
   },
   dateDay: {
     fontSize: 12,
-    color: '#6B7280',
+    color: Colors.textSecondary,
     marginBottom: 4,
     fontWeight: '500',
   },
   dateNumber: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#000000',
+    color: Colors.text,
   },
   dateTextSelected: {
     color: '#FFFFFF',
@@ -270,35 +287,37 @@ const styles = StyleSheet.create({
   timeSlot: {
     width: '31%',
     paddingVertical: 12,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: Colors.surface,
     borderRadius: 8,
     alignItems: 'center',
     borderWidth: 2,
-    borderColor: 'transparent',
+    borderColor: Colors.border,
   },
   timeSlotSelected: {
-    backgroundColor: '#3B82F6',
-    borderColor: '#3B82F6',
+    backgroundColor: Colors.primary,
+    borderColor: Colors.primary,
   },
   timeText: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#000000',
+    color: Colors.text,
   },
   timeTextSelected: {
     color: '#FFFFFF',
     fontWeight: '600',
   },
   selectedInfo: {
-    backgroundColor: '#EFF6FF',
+    backgroundColor: Colors.accentLight,
     padding: 16,
     marginHorizontal: 20,
     borderRadius: 12,
     marginBottom: 20,
+    borderWidth: 1,
+    borderColor: Colors.accent,
   },
   selectedText: {
     fontSize: 14,
-    color: '#3B82F6',
+    color: Colors.text,
     fontWeight: '600',
     textAlign: 'center',
   },
@@ -307,13 +326,13 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   continueButton: {
-    backgroundColor: '#3B82F6',
+    backgroundColor: Colors.primary,
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
   },
   continueButtonDisabled: {
-    backgroundColor: '#D1D5DB',
+    backgroundColor: Colors.disabled,
   },
   continueButtonText: {
     color: '#FFFFFF',

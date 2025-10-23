@@ -6,7 +6,7 @@ import { HomeScreen } from '../screens/HomeScreen';
 import { AppointmentsScreen } from '../screens/AppointmentsScreen';
 import { MessagesScreen } from '../screens/MessagesScreen';
 import { RecordsScreen } from '../screens/RecordsScreen';
-import { ProvidersScreen } from '../screens/ProvidersScreen';
+import { LinkProvidersScreen } from '../screens/LinkProvidersScreen';
 
 type TabName = 'Appointments' | 'Messages' | 'Home' | 'Records' | 'Providers';
 
@@ -24,7 +24,7 @@ export function AppNavigator() {
       case 'Records':
         return <RecordsScreen />;
       case 'Providers':
-        return <ProvidersScreen />;
+        return <LinkProvidersScreen />;
       default:
         return <HomeScreen />;
     }
@@ -63,11 +63,11 @@ export function AppNavigator() {
           <Ionicons
             name={activeTab === 'Messages' ? 'chatbubbles' : 'chatbubbles-outline'}
             size={22}
-            color={activeTab === 'Messages' ? 'Colors.primary' : 'Colors.textLight'}
+            color={activeTab === 'Messages' ? Colors.primary : Colors.textLight}
           />
           <Text style={[
             styles.tabLabel,
-            { color: activeTab === 'Messages' ? 'Colors.primary' : 'Colors.textLight' }
+            { color: activeTab === 'Messages' ? Colors.primary : Colors.textLight }
           ]}>
             Messages
           </Text>
@@ -80,11 +80,11 @@ export function AppNavigator() {
           <Ionicons
             name={activeTab === 'Home' ? 'home' : 'home-outline'}
             size={24}
-            color={activeTab === 'Home' ? 'Colors.primary' : 'Colors.textLight'}
+            color={activeTab === 'Home' ? Colors.primary : Colors.textLight}
           />
           <Text style={[
             styles.tabLabel,
-            { color: activeTab === 'Home' ? 'Colors.primary' : 'Colors.textLight' }
+            { color: activeTab === 'Home' ? Colors.primary : Colors.textLight }
           ]}>
             Home
           </Text>
@@ -97,11 +97,11 @@ export function AppNavigator() {
           <Ionicons
             name={activeTab === 'Records' ? 'document-text' : 'document-text-outline'}
             size={22}
-            color={activeTab === 'Records' ? 'Colors.primary' : 'Colors.textLight'}
+            color={activeTab === 'Records' ? Colors.primary : Colors.textLight}
           />
           <Text style={[
             styles.tabLabel,
-            { color: activeTab === 'Records' ? 'Colors.primary' : 'Colors.textLight' }
+            { color: activeTab === 'Records' ? Colors.primary : Colors.textLight }
           ]}>
             Records
           </Text>
@@ -114,11 +114,11 @@ export function AppNavigator() {
           <Ionicons
             name={activeTab === 'Providers' ? 'link' : 'link-outline'}
             size={22}
-            color={activeTab === 'Providers' ? 'Colors.primary' : 'Colors.textLight'}
+            color={activeTab === 'Providers' ? Colors.primary : Colors.textLight}
           />
           <Text style={[
             styles.tabLabel,
-            { color: activeTab === 'Providers' ? 'Colors.primary' : 'Colors.textLight' }
+            { color: activeTab === 'Providers' ? Colors.primary : Colors.textLight }
           ]}>
             Providers
           </Text>
