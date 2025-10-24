@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '../providers/SimpleAuthProvider';
 import { Colors } from '../constants/colors';
 import { Ionicons } from '@expo/vector-icons';
+import { SettingsScreen } from './SettingsScreen';
 
-export function HomeScreen() {
+interface HomeScreenProps {
+  onLogout?: () => void;
+  onNavigateToRecords?: () => void;
+}
+
+export function HomeScreen({ onLogout, onNavigateToRecords }: HomeScreenProps) {
   const { user } = useAuth();
+  const [showSettings, setShowSettings] = useState(false);
+
+  if (showSettings) {
+    return <SettingsScreen onLogout={onLogout} />;
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -17,7 +28,15 @@ export function HomeScreen() {
             <Text style={styles.welcomeText}>Welcome</Text>
             <Text style={styles.userName}>(Name)</Text>
           </View>
-          <View style={styles.profileCircle} />
+          <View style={styles.headerActions}>
+            <TouchableOpacity 
+              style={styles.settingsButton}
+              onPress={() => setShowSettings(true)}
+            >
+              <Ionicons name="settings-outline" size={24} color={Colors.text} />
+            </TouchableOpacity>
+            <View style={styles.profileCircle} />
+          </View>
         </View>
 
         {/* Quick Stats Grid */}
@@ -115,9 +134,54 @@ export function HomeScreen() {
             <Text style={styles.activityDate}>10/26/2025</Text>
           </View>
 
-          <TouchableOpacity style={styles.viewAllButton}>
+          <TouchableOpacity style={styles.viewAllButton} onPress={onNavigateToRecords}>
             <Ionicons name="document-text" size={16} color={Colors.primary} />
             <Text style={styles.viewAllText}>View All Records</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Lab/Imaging Results */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeaderRow}>
+            <Text style={styles.sectionTitleLarge}>Lab/Imaging Results</Text>
+            <TouchableOpacity onPress={onNavigateToRecords}>
+              <Text style={styles.refillLink}>View All</Text>
+            </TouchableOpacity>
+          </View>
+          
+          <View style={styles.labResultCard}>
+            <View style={styles.labResultHeader}>
+              <Ionicons name="flask" size={24} color={Colors.primary} />
+              <View style={styles.labResultInfo}>
+                <Text style={styles.labResultTitle}>Complete Blood Count</Text>
+                <Text style={styles.labResultDate}>January 15, 2024</Text>
+              </View>
+              <View style={styles.statusBadgeNormal}>
+                <Text style={styles.statusBadgeText}>NORMAL</Text>
+              </View>
+            </View>
+            <Text style={styles.labResultFacility}>LabCorp</Text>
+          </View>
+
+          <View style={styles.labResultCard}>
+            <View style={styles.labResultHeader}>
+              <Ionicons name="flask" size={24} color={Colors.error} />
+              <View style={styles.labResultInfo}>
+                <Text style={styles.labResultTitle}>Hemoglobin A1C</Text>
+                <Text style={styles.labResultDate}>January 15, 2024</Text>
+              </View>
+              <View style={styles.statusBadgeAbnormal}>
+                <Ionicons name="alert-circle" size={12} color={Colors.error} style={{ marginRight: 4 }} />
+                <Text style={styles.statusBadgeText}>ABNORMAL</Text>
+              </View>
+            </View>
+            <Text style={styles.labResultFacility}>LabCorp</Text>
+            <Text style={styles.labResultNote}>⚠️ Result: 7.2% (elevated)</Text>
+          </View>
+
+          <TouchableOpacity style={styles.primaryButton} onPress={onNavigateToRecords}>
+            <Ionicons name="flask" size={16} color="#FFFFFF" />
+            <Text style={styles.primaryButtonText}>View All Lab Results</Text>
           </TouchableOpacity>
         </View>
 
@@ -168,6 +232,19 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 16,
     color: Colors.textSecondary,
+  },
+  headerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  settingsButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: Colors.surface,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   profileCircle: {
     width: 50,
@@ -363,5 +440,64 @@ const styles = StyleSheet.create({
     color: Colors.text,
     fontSize: 15,
     fontWeight: '600',
+  },
+  labResultCard: {
+    backgroundColor: Colors.surface,
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: Colors.border,
+  },
+  labResultHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  labResultInfo: {
+    flex: 1,
+    marginLeft: 12,
+  },
+  labResultTitle: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: Colors.text,
+  },
+  labResultDate: {
+    fontSize: 12,
+    color: Colors.textSecondary,
+    marginTop: 2,
+  },
+  labResultFacility: {
+    fontSize: 13,
+    color: Colors.textSecondary,
+    marginLeft: 36,
+  },
+  labResultNote: {
+    fontSize: 13,
+    color: Colors.error,
+    marginLeft: 36,
+    marginTop: 4,
+  },
+  statusBadgeNormal: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#D1FAE5',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  statusBadgeAbnormal: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FEE2E2',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  statusBadgeText: {
+    fontSize: 10,
+    fontWeight: '600',
+    color: Colors.text,
   },
 });

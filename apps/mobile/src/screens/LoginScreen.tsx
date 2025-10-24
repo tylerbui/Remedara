@@ -38,7 +38,7 @@ export function LoginScreen({ onLogin, onNavigateToSignup }: LoginScreenProps) {
         {/* Logo Section */}
         <View style={styles.logoSection}>
           <View style={styles.logoCircle}>
-            <Text style={styles.logoText}>R</Text>
+            <Text style={styles.logoText}>🌿</Text>
           </View>
           <Text style={styles.appName}>Remedara</Text>
           <Text style={styles.tagline}>Your Health, Connected</Text>
@@ -165,9 +165,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   logoText: {
-    fontSize: 40,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
+    fontSize: 48,
   },
   appName: {
     fontSize: 28,

@@ -39,7 +39,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <SimpleAuthProvider>
-        <AppNavigator />
+        <AppNavigator onLogout={() => setIsAuthenticated(false)} />
       </SimpleAuthProvider>
     </SafeAreaProvider>
   );

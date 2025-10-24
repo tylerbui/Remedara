@@ -10,7 +10,11 @@ import { LinkProvidersScreen } from '../screens/LinkProvidersScreen';
 
 type TabName = 'Appointments' | 'Messages' | 'Home' | 'Records' | 'Providers';
 
-export function AppNavigator() {
+interface AppNavigatorProps {
+  onLogout?: () => void;
+}
+
+export function AppNavigator({ onLogout }: AppNavigatorProps) {
   const [activeTab, setActiveTab] = useState<TabName>('Home');
 
   const renderScreen = () => {
@@ -20,13 +24,13 @@ export function AppNavigator() {
       case 'Messages':
         return <MessagesScreen />;
       case 'Home':
-        return <HomeScreen />;
+        return <HomeScreen onLogout={onLogout} onNavigateToRecords={() => setActiveTab('Records')} />;
       case 'Records':
         return <RecordsScreen />;
       case 'Providers':
         return <LinkProvidersScreen />;
       default:
-        return <HomeScreen />;
+        return <HomeScreen onLogout={onLogout} onNavigateToRecords={() => setActiveTab('Records')} />;
     }
   };
 
