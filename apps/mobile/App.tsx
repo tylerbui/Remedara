@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { SimpleAuthProvider } from './src/providers/SimpleAuthProvider';
+import { ThemeProvider } from './src/providers/ThemeProvider';
 import { AppNavigator } from './src/navigation/AppNavigator';
 import { SplashScreen } from './src/screens/SplashScreen';
 import { LoginScreen } from './src/screens/LoginScreen';
@@ -38,9 +39,11 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <SimpleAuthProvider>
-        <AppNavigator onLogout={() => setIsAuthenticated(false)} />
-      </SimpleAuthProvider>
+      <ThemeProvider>
+        <SimpleAuthProvider>
+          <AppNavigator onLogout={() => setIsAuthenticated(false)} />
+        </SimpleAuthProvider>
+      </ThemeProvider>
     </SafeAreaProvider>
   );
 }
