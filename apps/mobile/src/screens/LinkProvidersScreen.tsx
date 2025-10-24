@@ -1,10 +1,126 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '../constants/colors';
+import { ProviderSelectionModal } from '../components/ProviderSelectionModal';
+import { FHIRProvider, LinkedProvider } from '../constants/fhirProviders';
 
 export function LinkProvidersScreen() {
-  const [connectedProviders, setConnectedProviders] = useState<any[]>([]);
+  const [connectedProviders, setConnectedProviders] = useState<LinkedProvider[]>([]);
+  const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [syncing, setSyncing] = useState(false);
+
+  useEffect(() => {
+    fetchLinkedProviders();
+  }, []);
+
+  const fetchLinkedProviders = async () => {
+    try {
+      setLoading(true);
+      // TODO: Replace with actual API endpoint
+      // const response = await fetch('YOUR_API_URL/api/fhir/providers');
+      // const data = await response.json();
+      // setConnectedProviders(data.providers);
+      
+      // Mock data for now
+      setConnectedProviders([]);
+    } catch (error) {
+      console.error('Error fetching providers:', error);
+      Alert.alert('Error', 'Failed to load linked providers');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLinkProvider = async (provider: FHIRProvider) => {
+    try {
+      setShowModal(false);
+      
+      // TODO: Replace with actual API URL
+      const apiUrl = 'YOUR_API_URL'; // e.g., https://yourapp.com
+      const authUrl = `${apiUrl}/api/fhir/authorize?provider=${provider.id}`;
+      
+      Alert.alert(
+        'Connect Provider',
+        `Opening browser to connect to ${provider.name}. You'll be redirected back to the app after authorization.`,
+        [
+          { text: 'Cancel', style: 'cancel' },
+          {
+            text: 'Continue',
+            onPress: async () => {
+              const supported = await Linking.canOpenURL(authUrl);
+              if (supported) {
+                await Linking.openURL(authUrl);
+              } else {
+                Alert.alert('Error', 'Cannot open authorization URL');
+              }
+            },
+          },
+        ]
+      );
+    } catch (error) {
+      console.error('Error linking provider:', error);
+      Alert.alert('Error', 'Failed to initiate provider linking');
+    }
+  };
+
+  const handleSync = async (providerId?: string) => {
+    try {
+      setSyncing(true);
+      // TODO: Implement sync with backend
+      Alert.alert('Sync Started', 'Syncing your medical data...');
+      
+      // Simulate sync
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      Alert.alert('Success', 'Data synced successfully!');
+      await fetchLinkedProviders();
+    } catch (error) {
+      console.error('Sync error:', error);
+      Alert.alert('Error', 'Failed to sync data');
+    } finally {
+      setSyncing(false);
+    }
+  };
+
+  const handleUnlink = async (providerId: string, providerName: string) => {
+    Alert.alert(
+      'Unlink Provider',
+      `Are you sure you want to unlink ${providerName}? This will remove all synced data from this provider.`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Unlink',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              // TODO: Implement unlink API call
+              Alert.alert('Success', `Unlinked ${providerName}`);
+              await fetchLinkedProviders();
+            } catch (error) {
+              console.error('Unlink error:', error);
+              Alert.alert('Error', 'Failed to unlink provider');
+            }
+          },
+        },
+      ]
+    );
+  };
+
+  const getStatusColor = (status: LinkedProvider['status']) => {
+    switch (status) {
+      case 'active':
+        return Colors.success;
+      case 'expired':
+        return Colors.error;
+      case 'error':
+        return Colors.warning;
+      default:
+        return Colors.textSecondary;
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -12,8 +128,12 @@ export function LinkProvidersScreen() {
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Healthcare Providers</Text>
-          <TouchableOpacity style={styles.linkButton}>
-            <Text style={styles.linkButtonText}>+ Link External Provider</Text>
+          <TouchableOpacity 
+            style={styles.linkButton}
+            onPress={() => setShowModal(true)}
+          >
+            <Ionicons name="add" size={20} color="#FFFFFF" style={{ marginRight: 4 }} />
+            <Text style={styles.linkButtonText}>Link Provider</Text>
           </TouchableOpacity>
         </View>
 
@@ -52,15 +172,43 @@ export function LinkProvidersScreen() {
           {/* Connected Providers List */}
           {connectedProviders.length > 0 && (
             <View style={styles.providersList}>
-              {connectedProviders.map((provider, index) => (
-                <View key={index} style={styles.providerCard}>
-                  <View style={styles.providerInfo}>
-                    <Text style={styles.providerName}>{provider.name}</Text>
-                    <Text style={styles.providerSystem}>{provider.system}</Text>
+              {connectedProviders.map((provider) => (
+                <View key={provider._id} style={styles.providerCard}>
+                  <View style={styles.providerHeader}>
+                    <View style={styles.providerInfo}>
+                      <Text style={styles.providerName}>{provider.organizationName}</Text>
+                      <Text style={styles.providerSystem}>{provider.baseUrl}</Text>
+                      {provider.lastSyncAt && (
+                        <Text style={styles.lastSync}>
+                          Last synced: {new Date(provider.lastSyncAt).toLocaleDateString()}
+                        </Text>
+                      )}
+                    </View>
+                    <View style={[styles.statusBadge, { backgroundColor: getStatusColor(provider.status) + '20' }]}>
+                      <View style={[styles.statusDot, { backgroundColor: getStatusColor(provider.status) }]} />
+                      <Text style={[styles.statusText, { color: getStatusColor(provider.status) }]}>
+                        {provider.status.charAt(0).toUpperCase() + provider.status.slice(1)}
+                      </Text>
+                    </View>
                   </View>
-                  <View style={styles.statusBadge}>
-                    <View style={styles.statusDot} />
-                    <Text style={styles.statusText}>Connected</Text>
+                  
+                  {/* Provider Actions */}
+                  <View style={styles.providerActions}>
+                    <TouchableOpacity
+                      style={styles.actionButton}
+                      onPress={() => handleSync(provider._id)}
+                      disabled={syncing}
+                    >
+                      <Ionicons name="sync" size={16} color={Colors.primary} />
+                      <Text style={styles.actionButtonText}>Sync</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[styles.actionButton, styles.actionButtonDanger]}
+                      onPress={() => handleUnlink(provider._id, provider.organizationName)}
+                    >
+                      <Ionicons name="unlink" size={16} color={Colors.error} />
+                      <Text style={[styles.actionButtonText, { color: Colors.error }]}>Unlink</Text>
+                    </TouchableOpacity>
                   </View>
                 </View>
               ))}
@@ -106,6 +254,13 @@ export function LinkProvidersScreen() {
           </View>
         </View>
       </ScrollView>
+
+      {/* Provider Selection Modal */}
+      <ProviderSelectionModal
+        visible={showModal}
+        onClose={() => setShowModal(false)}
+        onSelectProvider={handleLinkProvider}
+      />
     </SafeAreaView>
   );
 }
@@ -136,6 +291,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderRadius: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   linkButtonText: {
     color: '#FFFFFF',
@@ -239,14 +396,17 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   providerCard: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
     padding: 16,
     backgroundColor: Colors.background,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: Colors.border,
+  },
+  providerHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 12,
   },
   providerInfo: {
     flex: 1,
@@ -258,8 +418,14 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   providerSystem: {
-    fontSize: 14,
+    fontSize: 13,
     color: Colors.textSecondary,
+    marginTop: 2,
+  },
+  lastSync: {
+    fontSize: 12,
+    color: Colors.textLight,
+    marginTop: 4,
   },
   statusBadge: {
     flexDirection: 'row',
@@ -278,6 +444,29 @@ const styles = StyleSheet.create({
   },
   statusText: {
     fontSize: 12,
+    fontWeight: '600',
+  },
+  providerActions: {
+    flexDirection: 'row',
+    gap: 8,
+    marginTop: 8,
+  },
+  actionButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 6,
+    backgroundColor: Colors.surface,
+    borderWidth: 1,
+    borderColor: Colors.primary,
+    gap: 4,
+  },
+  actionButtonDanger: {
+    borderColor: Colors.error,
+  },
+  actionButtonText: {
+    fontSize: 13,
     fontWeight: '600',
     color: Colors.primary,
   },
