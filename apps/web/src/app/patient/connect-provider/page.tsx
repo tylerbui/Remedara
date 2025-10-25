@@ -293,8 +293,8 @@ export default function ConnectProviderPage() {
                   return (
                     <div key={provider.id} className="flex items-center justify-between p-6 border rounded-lg hover:bg-gray-50 transition-colors">
                       <div className="flex items-center space-x-4">
-                        <div className="h-16 w-16 bg-blue-100 rounded-full flex items-center justify-center">
-                          <SpecIcon className="h-8 w-8 text-blue-600" />
+                        <div className="h-16 w-16 bg-[#E8EBE4] rounded-full flex items-center justify-center">
+                          <SpecIcon className="h-8 w-8 text-[#5A7965]" />
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center space-x-2">
@@ -310,7 +310,7 @@ export default function ConnectProviderPage() {
                           </div>
                           
                           {provider.specialization && (
-                            <p className="text-blue-600 font-medium mt-1">{provider.specialization}</p>
+                            <p className="text-[#5A7965] font-medium mt-1">{provider.specialization}</p>
                           )}
                           
                           <div className="space-y-1 mt-2">

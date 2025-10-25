@@ -191,8 +191,8 @@ export default function SupportPage() {
             </CardHeader>
             <CardContent className="grid md:grid-cols-3 gap-8">
               <div className="text-center">
-                <div className="w-20 h-20 bg-blue-100 rounded-full mx-auto mb-6 flex items-center justify-center">
-                  <Phone className="h-10 w-10 text-blue-600" />
+                <div className="w-20 h-20 bg-[#E8EBE4] rounded-full mx-auto mb-6 flex items-center justify-center">
+                  <Phone className="h-10 w-10 text-[#5A7965]" />
                 </div>
                 <h3 className="text-2xl font-medium text-gray-900 mb-4">Phone Support</h3>
                 <p className="text-lg text-gray-600 mb-6">Speak with our support team</p>
@@ -204,8 +204,8 @@ export default function SupportPage() {
               </div>
 
               <div className="text-center">
-                <div className="w-20 h-20 bg-green-100 rounded-full mx-auto mb-6 flex items-center justify-center">
-                  <Mail className="h-10 w-10 text-green-600" />
+                <div className="w-20 h-20 bg-[#E8EBE4] rounded-full mx-auto mb-6 flex items-center justify-center">
+                  <Mail className="h-10 w-10 text-[#4A7C59]" />
                 </div>
                 <h3 className="text-2xl font-medium text-gray-900 mb-4">Email Support</h3>
                 <p className="text-lg text-gray-600 mb-6">Send us your questions</p>
@@ -217,8 +217,8 @@ export default function SupportPage() {
               </div>
 
               <div className="text-center">
-                <div className="w-20 h-20 bg-purple-100 rounded-full mx-auto mb-6 flex items-center justify-center">
-                  <MessageSquare className="h-10 w-10 text-purple-600" />
+                <div className="w-20 h-20 bg-[#E8EBE4] rounded-full mx-auto mb-6 flex items-center justify-center">
+                  <MessageSquare className="h-10 w-10 text-[#6B8E7D]" />
                 </div>
                 <h3 className="text-2xl font-medium text-gray-900 mb-4">Live Chat</h3>
                 <p className="text-lg text-gray-600 mb-6">Chat with our support team</p>
@@ -242,8 +242,8 @@ export default function SupportPage() {
           {/* Patient FAQ */}
           <div>
             <div className="text-center mb-12">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-blue-100 rounded-full mb-6">
-                <User className="h-10 w-10 text-blue-600" />
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-[#E8EBE4] rounded-full mb-6">
+                <User className="h-10 w-10 text-[#5A7965]" />
               </div>
               <h2 className="text-4xl font-bold text-gray-900 mb-4">Patient FAQ</h2>
               <p className="text-xl text-gray-600">Common questions for patients using Remedara</p>
@@ -254,8 +254,8 @@ export default function SupportPage() {
                 <Card key={categoryIndex} className="border-gray-200 p-8">
                   <CardHeader className="pb-10">
                     <div className="flex items-center space-x-6 mb-6">
-                      <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-                        <category.icon className="h-8 w-8 text-blue-600" />
+                      <div className="w-16 h-16 bg-[#E8EBE4] rounded-full flex items-center justify-center">
+                        <category.icon className="h-8 w-8 text-[#5A7965]" />
                       </div>
                       <div>
                         <CardTitle className="text-3xl text-gray-900">{category.category}</CardTitle>
@@ -269,7 +269,7 @@ export default function SupportPage() {
                     {category.questions.map((faq, faqIndex) => (
                       <div key={faqIndex} className="space-y-4">
                         <div className="flex items-start space-x-4">
-                          <HelpCircle className="h-6 w-6 text-blue-600 mt-1 flex-shrink-0" />
+                          <HelpCircle className="h-6 w-6 text-[#5A7965] mt-1 flex-shrink-0" />
                           <h3 className="text-xl font-medium text-gray-900">{faq.question}</h3>
                         </div>
                         <p className="text-lg text-gray-600 pl-10 leading-relaxed">{faq.answer}</p>
@@ -287,8 +287,8 @@ export default function SupportPage() {
           {/* Provider FAQ */}
           <div>
             <div className="text-center mb-12">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-6">
-                <Stethoscope className="h-10 w-10 text-green-600" />
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-[#E8EBE4] rounded-full mb-6">
+                <Stethoscope className="h-10 w-10 text-[#4A7C59]" />
               </div>
               <h2 className="text-4xl font-bold text-gray-900 mb-4">Provider FAQ</h2>
               <p className="text-xl text-gray-600">Common questions for healthcare providers using Remedara</p>
@@ -299,8 +299,8 @@ export default function SupportPage() {
                 <Card key={categoryIndex} className="border-gray-200 p-8">
                   <CardHeader className="pb-10">
                     <div className="flex items-center space-x-6 mb-6">
-                      <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-                        <category.icon className="h-8 w-8 text-green-600" />
+                      <div className="w-16 h-16 bg-[#E8EBE4] rounded-full flex items-center justify-center">
+                        <category.icon className="h-8 w-8 text-[#4A7C59]" />
                       </div>
                       <div>
                         <CardTitle className="text-3xl text-gray-900">{category.category}</CardTitle>
@@ -314,7 +314,7 @@ export default function SupportPage() {
                     {category.questions.map((faq, faqIndex) => (
                       <div key={faqIndex} className="space-y-4">
                         <div className="flex items-start space-x-4">
-                          <HelpCircle className="h-6 w-6 text-green-600 mt-1 flex-shrink-0" />
+                          <HelpCircle className="h-6 w-6 text-[#4A7C59] mt-1 flex-shrink-0" />
                           <h3 className="text-xl font-medium text-gray-900">{faq.question}</h3>
                         </div>
                         <p className="text-lg text-gray-600 pl-10 leading-relaxed">{faq.answer}</p>

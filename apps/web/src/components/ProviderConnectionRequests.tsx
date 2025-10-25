@@ -192,11 +192,11 @@ export default function ProviderConnectionRequests() {
               return (
                 <div key={connection.id} className="flex items-center justify-between p-4 border rounded-lg">
                   <div className="flex items-center space-x-4">
-                    <div className="h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center">
+                    <div className="h-12 w-12 bg-[#E8EBE4] rounded-full flex items-center justify-center">
                       {isFromProvider ? (
-                        <Stethoscope className="h-6 w-6 text-blue-600" />
+                        <Stethoscope className="h-6 w-6 text-[#5A7965]" />
                       ) : (
-                        <UserCheck className="h-6 w-6 text-green-600" />
+                        <UserCheck className="h-6 w-6 text-[#4A7C59]" />
                       )}
                     </div>
                     <div className="flex-1">
@@ -267,18 +267,18 @@ export default function ProviderConnectionRequests() {
                 return (
                   <div key={connection.id} className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex items-center space-x-4">
-                      <div className="h-12 w-12 bg-green-100 rounded-full flex items-center justify-center">
+                      <div className="h-12 w-12 bg-[#E8EBE4] rounded-full flex items-center justify-center">
                         {isFromProvider ? (
-                          <Stethoscope className="h-6 w-6 text-green-600" />
+                          <Stethoscope className="h-6 w-6 text-[#4A7C59]" />
                         ) : (
-                          <UserCheck className="h-6 w-6 text-green-600" />
+                          <UserCheck className="h-6 w-6 text-[#4A7C59]" />
                         )}
                       </div>
                       <div>
                         <div className="flex items-center space-x-2">
                           <h3 className="font-semibold text-gray-900">{displayName}</h3>
                           {connection.initiatedBy && (
-                            <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded">
+                            <span className="text-xs px-2 py-1 bg-[#E8EBE4] text-green-700 rounded">
                               Connected via {connection.initiatedBy === 'PROVIDER' ? 'Provider' : 'Patient'} Request
                             </span>
                           )}

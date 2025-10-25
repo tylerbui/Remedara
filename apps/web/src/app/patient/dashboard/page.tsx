@@ -55,7 +55,7 @@ export default function PatientDashboard() {
   if (status === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2" style={{ borderColor: '#2D4A3E' }}></div>
       </div>
     )
   }
@@ -175,7 +175,7 @@ export default function PatientDashboard() {
   const renderOverview = () => (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-gray-900">Health Overview</h2>
+        <h2 className="text-2xl font-bold" style={{ color: '#2D4A3E' }}>Health Overview</h2>
         <div className="flex items-center space-x-4">
           <Button variant="outline" size="lg" asChild className="px-6 py-3">
             <Link href="/book">
@@ -213,7 +213,7 @@ export default function PatientDashboard() {
               }`}>
                 <div className="flex items-start justify-between">
                   <div>
-                    <h3 className="font-semibold text-gray-900">{alert.title}</h3>
+                    <h3 className="font-semibold" style={{ color: '#2D4A3E' }}>{alert.title}</h3>
                     <p className="text-sm text-gray-600 mt-1">{alert.description}</p>
                   </div>
                   <Badge variant={alert.priority === 'high' ? 'destructive' : 'secondary'}>
@@ -231,7 +231,7 @@ export default function PatientDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Upcoming Appointments</CardTitle>
-            <Calendar className="h-4 w-4 text-blue-500" />
+            <Calendar className="h-4 w-4" style={{ color: '#5A7965' }} />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{quickStats.appointments}</div>
@@ -253,7 +253,7 @@ export default function PatientDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Lab Results</CardTitle>
-            <TestTube className="h-4 w-4 text-purple-500" />
+            <TestTube className="h-4 w-4" style={{ color: '#6B8E7D' }} />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{quickStats.labResults}</div>
@@ -264,7 +264,7 @@ export default function PatientDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Documents</CardTitle>
-            <FileText className="h-4 w-4 text-orange-500" />
+            <FileText className="h-4 w-4" style={{ color: '#B8956A' }} />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{quickStats.documents}</div>
@@ -317,11 +317,12 @@ export default function PatientDashboard() {
           <CardContent className="space-y-4">
             {recentActivity.map((activity) => (
               <div key={activity.id} className="flex items-center space-x-3 p-3 border rounded-lg">
-                <div className={`p-2 rounded-full ${
-                  activity.type === 'lab_result' ? 'bg-purple-100 text-purple-600' :
-                  activity.type === 'prescription' ? 'bg-green-100 text-green-600' :
-                  'bg-blue-100 text-blue-600'
-                }`}>
+                <div className="p-2 rounded-full" style={{
+                  backgroundColor: activity.type === 'lab_result' ? '#E8EBE4' :
+                                 activity.type === 'prescription' ? '#E8EBE4' : '#E8EBE4',
+                  color: activity.type === 'lab_result' ? '#6B8E7D' :
+                        activity.type === 'prescription' ? '#4A7C59' : '#5A7965'
+                }}>
                   {activity.type === 'lab_result' ? <TestTube className="h-4 w-4" /> :
                    activity.type === 'prescription' ? <Pill className="h-4 w-4" /> :
                    <Calendar className="h-4 w-4" />}
@@ -350,7 +351,7 @@ export default function PatientDashboard() {
 
   const renderAppointments = () => (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-gray-900">Appointments</h2>
+      <h2 className="text-2xl font-bold" style={{ color: '#2D4A3E' }}>Appointments</h2>
       <Card>
         <CardHeader>
           <CardTitle>This section will show appointment management</CardTitle>
@@ -367,7 +368,7 @@ export default function PatientDashboard() {
 
   const renderRecords = () => (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-gray-900">Medical Records</h2>
+      <h2 className="text-2xl font-bold" style={{ color: '#2D4A3E' }}>Medical Records</h2>
       <Card>
         <CardHeader>
           <CardTitle>Access Your Medical Records</CardTitle>
@@ -384,7 +385,7 @@ export default function PatientDashboard() {
 
   const renderPrescriptions = () => (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-gray-900">Prescriptions</h2>
+      <h2 className="text-2xl font-bold" style={{ color: '#2D4A3E' }}>Prescriptions</h2>
       <Card>
         <CardHeader>
           <CardTitle>Current Medications</CardTitle>
@@ -401,7 +402,7 @@ export default function PatientDashboard() {
 
   const renderResults = () => (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-gray-900">Test Results</h2>
+      <h2 className="text-2xl font-bold" style={{ color: '#2D4A3E' }}>Test Results</h2>
       <Card>
         <CardHeader>
           <CardTitle>Lab & Imaging Results</CardTitle>
@@ -423,7 +424,7 @@ export default function PatientDashboard() {
   const renderVisits = () => (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-gray-900">Past Visits</h2>
+        <h2 className="text-2xl font-bold" style={{ color: '#2D4A3E' }}>Past Visits</h2>
         <Button asChild>
           <Link href="/patient/visits">
             <Eye className="h-4 w-4 mr-2" />
@@ -465,7 +466,7 @@ export default function PatientDashboard() {
   const renderPastPrescriptions = () => (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-gray-900">Past Prescriptions</h2>
+        <h2 className="text-2xl font-bold" style={{ color: '#2D4A3E' }}>Past Prescriptions</h2>
         <Button asChild>
           <Link href="/patient/prescriptions">
             <Eye className="h-4 w-4 mr-2" />
@@ -507,7 +508,7 @@ export default function PatientDashboard() {
   const renderProviders = () => (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-gray-900">Healthcare Providers</h2>
+        <h2 className="text-2xl font-bold" style={{ color: '#2D4A3E' }}>Healthcare Providers</h2>
         <Button asChild>
           <Link href="/patient/link-provider">
             <Plus className="h-4 w-4 mr-2" />
@@ -552,12 +553,12 @@ export default function PatientDashboard() {
   )
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen" style={{ backgroundColor: '#F5F1E8' }}>
       <div className="flex">
         {/* Sidebar */}
         <div className="w-64 bg-white shadow-sm border-r min-h-screen flex flex-col">
           <div className="p-6">
-            <h1 className="text-xl font-bold text-gray-900">Patient Portal</h1>
+            <h1 className="text-xl font-bold" style={{ color: '#2D4A3E' }}>Patient Portal</h1>
             <p className="text-sm text-gray-600 mt-1">
               Welcome, {session.user.name?.split(' ')[0]}
             </p>
@@ -571,11 +572,12 @@ export default function PatientDashboard() {
                   <button
                     key={item.id}
                     onClick={() => setActiveSection(item.id as DashboardSection)}
-                    className={`w-full flex items-start space-x-3 px-6 py-4 text-left hover:bg-gray-50 transition-colors ${
-                      activeSection === item.id
-                        ? 'bg-blue-50 border-r-2 border-blue-500 text-blue-700'
-                        : 'text-gray-700'
-                    }`}
+                    className="w-full flex items-start space-x-3 px-6 py-4 text-left transition-colors"
+                    style={{
+                      backgroundColor: activeSection === item.id ? '#E8EBE4' : 'transparent',
+                      borderRight: activeSection === item.id ? '2px solid #5A7965' : 'none',
+                      color: activeSection === item.id ? '#2D4A3E' : '#5A6B5F'
+                    }}
                   >
                     <Icon className="h-5 w-5 mt-0.5 flex-shrink-0" />
                     <div className="flex-1">

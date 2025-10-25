@@ -189,7 +189,7 @@ export default function PastVisitsPage() {
   const getStatusColor = (status: PastVisit['status']) => {
     switch (status) {
       case 'completed':
-        return 'bg-green-100 text-green-800'
+        return 'bg-[#E8EBE4] text-[#2D4A3E]'
       case 'cancelled':
         return 'bg-red-100 text-red-800'
       case 'no-show':
@@ -457,7 +457,7 @@ export default function PastVisitsPage() {
                         
                         <div>
                           <h4 className="font-semibold text-gray-900 mb-2">Provider Notes</h4>
-                          <p className="text-gray-700 text-sm leading-relaxed bg-blue-50 p-3 rounded-lg border-l-4 border-blue-200">
+                          <p className="text-gray-700 text-sm leading-relaxed bg-[#E8EBE4] p-3 rounded-lg border-l-4 border-blue-200">
                             {visit.providerNotes}
                           </p>
                         </div>

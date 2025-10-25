@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { LayoutDashboard, User, Stethoscope } from 'lucide-react'
 
 export function HomeNavbar() {
@@ -17,9 +18,12 @@ export function HomeNavbar() {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <div className="flex items-center">
-            <Link href="/" className="text-3xl font-bold text-gray-900">
-              Remedara
+          <div className="flex items-center space-x-3">
+            <Link href="/" className="flex items-center space-x-3">
+              <Image src="/logo.png" alt="Remedara" width={48} height={48} className="h-12 w-auto" />
+              <span className="text-3xl font-bold" style={{ color: '#2D4A3E' }}>
+                Remedara
+              </span>
             </Link>
           </div>
 
@@ -53,7 +57,8 @@ export function HomeNavbar() {
                       variant="ghost"
                       asChild
                       size="lg"
-                      className="text-blue-700 hover:bg-blue-50 px-6 py-3 text-base font-medium"
+                      className="hover:bg-[#E8EBE4] px-6 py-3 text-base font-medium"
+                      style={{ color: '#2D4A3E' }}
                     >
                       <Link href="/patient/dashboard">
                         <LayoutDashboard className="h-4 w-4 mr-2" />
@@ -64,7 +69,8 @@ export function HomeNavbar() {
                       variant="ghost"
                       asChild
                       size="lg"
-                      className="text-gray-600 hover:bg-gray-50 px-6 py-3 text-base font-medium"
+                      className="hover:bg-[#E8EBE4] px-6 py-3 text-base font-medium"
+                      style={{ color: '#5A7965' }}
                     >
                       <Link href="/records">
                         <User className="h-4 w-4 mr-2" />
@@ -79,7 +85,8 @@ export function HomeNavbar() {
                     variant="ghost"
                     asChild
                     size="lg"
-                    className="text-green-700 hover:bg-green-50 px-6 py-3 text-base font-medium"
+                    className="hover:bg-[#E8EBE4] px-6 py-3 text-base font-medium"
+                    style={{ color: '#5A7965' }}
                   >
                     <Link href="/provider">
                       <Stethoscope className="h-4 w-4 mr-2" />
@@ -117,14 +124,16 @@ export function HomeNavbar() {
                   variant="ghost"
                   asChild
                   size="lg"
-                  className="text-gray-700 hover:bg-gray-100 px-8 py-3 text-lg font-medium"
+                  className="hover:bg-[#E8EBE4] px-8 py-3 text-lg font-medium"
+                  style={{ color: '#2D4A3E' }}
                 >
                   <Link href="/login">Sign In</Link>
                 </Button>
                 <Button
                   asChild
                   size="lg"
-                  className="bg-gray-900 hover:bg-gray-800 px-8 py-3 text-lg font-medium"
+                  className="px-8 py-3 text-lg font-medium text-white"
+                  style={{ backgroundColor: '#2D4A3E' }}
                 >
                   <Link href="/register">Sign Up</Link>
                 </Button>

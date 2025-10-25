@@ -485,8 +485,8 @@ export default function BookAppointmentPage() {
         {currentStep === 'confirmation' && (
           <div className="space-y-6">
             <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center">
-                <CheckCircle className="h-8 w-8 text-green-600" />
+              <div className="w-16 h-16 bg-[#E8EBE4] rounded-full mx-auto mb-4 flex items-center justify-center">
+                <CheckCircle className="h-8 w-8 text-[#4A7C59]" />
               </div>
               <h2 className="text-2xl font-bold text-gray-900 mb-2">Appointment Confirmed!</h2>
               <p className="text-gray-600">Your appointment has been successfully booked</p>
@@ -535,7 +535,7 @@ export default function BookAppointmentPage() {
                       </div>
                       <div>
                         <Label className="text-sm font-medium text-gray-600">Status</Label>
-                        <Badge variant="default" className="bg-green-100 text-green-800">
+                        <Badge variant="default" className="bg-[#E8EBE4] text-[#2D4A3E]">
                           {bookedAppointment.status}
                         </Badge>
                       </div>

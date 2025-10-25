@@ -17,6 +17,7 @@ import {
   LogOut
 } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { signOut, useSession } from 'next-auth/react'
 
@@ -126,19 +127,20 @@ export function Sidebar({ userType }: SidebarProps) {
       {/* Header */}
       <div className="p-6 border-b border-gray-200">
         <Link href="/" className="flex items-center space-x-3 mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Remedara</h1>
+          <Image src="/logo.png" alt="Remedara" width={40} height={40} className="h-10 w-auto" />
+          <h1 className="text-2xl font-bold" style={{ color: '#2D4A3E' }}>Remedara</h1>
         </Link>
         
         {/* User Info */}
         <div className="flex items-center space-x-3">
           <div className={cn(
             "w-12 h-12 rounded-full flex items-center justify-center",
-            userType === 'patient' ? 'bg-blue-100' : 'bg-green-100'
+            userType === 'patient' ? 'bg-[#E8EBE4]' : 'bg-[#E8EBE4]'
           )}>
             {React.createElement(userIcon, {
               className: cn(
                 "h-6 w-6",
-                userType === 'patient' ? 'text-blue-600' : 'text-green-600'
+                userType === 'patient' ? 'text-[#2D4A3E]' : 'text-[#5A7965]'
               )
             })}
           </div>
@@ -148,7 +150,7 @@ export function Sidebar({ userType }: SidebarProps) {
             </p>
             <p className={cn(
               "text-sm capitalize",
-              userType === 'patient' ? 'text-blue-600' : 'text-green-600'
+              userType === 'patient' ? 'text-[#2D4A3E]' : 'text-[#5A7965]'
             )}>
               {userType}
             </p>
@@ -168,8 +170,8 @@ export function Sidebar({ userType }: SidebarProps) {
                 "flex items-start space-x-3 px-4 py-3 rounded-lg text-left transition-colors group",
                 isActive 
                   ? userType === 'patient'
-                    ? 'bg-blue-50 border border-blue-200' 
-                    : 'bg-green-50 border border-green-200'
+                    ? 'bg-[#E8EBE4] border border-[#5A7965]' 
+                    : 'bg-[#E8EBE4] border border-[#5A7965]'
                   : 'hover:bg-gray-50 border border-transparent'
               )}
             >
@@ -177,8 +179,8 @@ export function Sidebar({ userType }: SidebarProps) {
                 "h-5 w-5 mt-0.5 flex-shrink-0",
                 isActive 
                   ? userType === 'patient' 
-                    ? 'text-blue-600' 
-                    : 'text-green-600'
+                    ? 'text-[#2D4A3E]' 
+                    : 'text-[#2D4A3E]'
                   : 'text-gray-400 group-hover:text-gray-500'
               )} />
               <div className="flex-1 min-w-0">
@@ -186,8 +188,8 @@ export function Sidebar({ userType }: SidebarProps) {
                   "text-base font-medium",
                   isActive 
                     ? userType === 'patient' 
-                      ? 'text-blue-600' 
-                      : 'text-green-600'
+                      ? 'text-[#2D4A3E]' 
+                      : 'text-[#2D4A3E]'
                     : 'text-gray-900'
                 )}>
                   {item.label}

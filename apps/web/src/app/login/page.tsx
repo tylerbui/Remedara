@@ -89,10 +89,10 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#F5F1E8] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-900">Sign in to Remedara</h2>
+          <h2 className="text-3xl font-bold" style={{ color: '#2D4A3E' }}>Sign in to Remedara</h2>
           <p className="mt-2 text-sm text-gray-600">Access your healthcare scheduling portal</p>
         </div>
 
@@ -138,7 +138,7 @@ export default function LoginPage() {
 
               <Button
                 type="submit"
-                className="w-full bg-gray-900 hover:bg-gray-800"
+                className="w-full"
                 disabled={isLoading}
               >
                 {isLoading ? 'Signing in...' : 'Sign In'}
@@ -167,7 +167,7 @@ export default function LoginPage() {
 
             <div className="text-center text-sm">
               <span className="text-gray-600">Don&apos;t have an account? </span>
-              <Link href="/register" className="text-gray-900 hover:underline font-medium">
+              <Link href="/register" className="hover:underline font-medium" style={{ color: '#2D4A3E' }}>
                 Create an account
               </Link>
             </div>
@@ -175,7 +175,8 @@ export default function LoginPage() {
             <div className="text-center text-sm">
               <Link
                 href="/forgot-password"
-                className="text-gray-600 hover:text-gray-900 hover:underline"
+                className="text-gray-600 hover:underline"
+                style={{ color: '#5A6B5F' }}
               >
                 Forgot your password?
               </Link>

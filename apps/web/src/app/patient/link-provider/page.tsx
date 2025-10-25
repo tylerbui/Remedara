@@ -219,9 +219,9 @@ export default function LinkProviderPage() {
         )}
 
         {success && (
-          <Alert className="border-green-200 bg-green-50 mb-6">
-            <CheckCircle className="h-4 w-4 text-green-600" />
-            <AlertTitle className="text-green-800">Success!</AlertTitle>
+          <Alert className="border-green-200 bg-[#FAF8F3] mb-6">
+            <CheckCircle className="h-4 w-4 text-[#4A7C59]" />
+            <AlertTitle className="text-[#2D4A3E]">Success!</AlertTitle>
             <AlertDescription className="text-green-700">{success}</AlertDescription>
           </Alert>
         )}
@@ -251,7 +251,7 @@ export default function LinkProviderPage() {
                   <div className="flex items-start justify-between">
                     <div>
                       <CardTitle className="flex items-center space-x-2">
-                        <Building2 className="h-5 w-5 text-blue-600" />
+                        <Building2 className="h-5 w-5 text-[#5A7965]" />
                         <span>{provider.name}</span>
                       </CardTitle>
                       <CardDescription className="mt-2">
@@ -308,14 +308,14 @@ export default function LinkProviderPage() {
                   <div className="flex items-start justify-between">
                     <div>
                       <CardTitle className="flex items-center space-x-2">
-                        <Globe className="h-5 w-5 text-green-600" />
+                        <Globe className="h-5 w-5 text-[#4A7C59]" />
                         <span>{provider.name}</span>
                       </CardTitle>
                       <CardDescription className="mt-2">
                         {provider.description}
                       </CardDescription>
                     </div>
-                    <Badge variant="outline" className="bg-green-50 text-green-700">
+                    <Badge variant="outline" className="bg-[#FAF8F3] text-green-700">
                       Testing
                     </Badge>
                   </div>
@@ -323,9 +323,9 @@ export default function LinkProviderPage() {
                 <CardContent>
                   <div className="space-y-4">
                     {provider.testCredentials && (
-                      <Alert className="border-blue-200 bg-blue-50">
-                        <Info className="h-4 w-4 text-blue-600" />
-                        <AlertDescription className="text-blue-700 text-sm">
+                      <Alert className="border-blue-200 bg-[#E8EBE4]">
+                        <Info className="h-4 w-4 text-[#5A7965]" />
+                        <AlertDescription className="text-[#2D4A3E] text-sm">
                           {provider.testCredentials.info}
                           {provider.testCredentials.demoPatientId && (
                             <div className="mt-2">
@@ -376,7 +376,7 @@ export default function LinkProviderPage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
-              <Plus className="h-5 w-5 text-purple-600" />
+              <Plus className="h-5 w-5 text-[#6B8E7D]" />
               <span>Custom FHIR Server</span>
             </CardTitle>
             <CardDescription>
@@ -426,7 +426,7 @@ export default function LinkProviderPage() {
         <Card className="mt-8 border-gray-200 bg-gray-50">
           <CardContent className="p-6">
             <div className="flex items-start space-x-3">
-              <Shield className="h-6 w-6 text-blue-600 flex-shrink-0 mt-1" />
+              <Shield className="h-6 w-6 text-[#5A7965] flex-shrink-0 mt-1" />
               <div>
                 <h3 className="font-semibold text-gray-900 mb-2">Security & Privacy</h3>
                 <div className="text-sm text-gray-600 space-y-2">

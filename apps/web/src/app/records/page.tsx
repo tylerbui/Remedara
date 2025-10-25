@@ -510,18 +510,18 @@ export default function RecordsPage() {
       case 'LIFE_THREATENING': return 'bg-red-100 text-red-800 border-red-200'
       case 'SEVERE': return 'bg-orange-100 text-orange-800 border-orange-200'
       case 'MODERATE': return 'bg-yellow-100 text-yellow-800 border-yellow-200'
-      case 'MILD': return 'bg-green-100 text-green-800 border-green-200'
+      case 'MILD': return 'bg-[#E8EBE4] text-[#2D4A3E] border-green-200'
       default: return 'bg-gray-100 text-gray-800 border-gray-200'
     }
   }
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'COMPLETED': return 'bg-green-100 text-green-800'
+      case 'COMPLETED': return 'bg-[#E8EBE4] text-[#2D4A3E]'
       case 'PENDING': return 'bg-yellow-100 text-yellow-800'
       case 'ABNORMAL': return 'bg-red-100 text-red-800'
       case 'OVERDUE': return 'bg-red-100 text-red-800'
-      case 'UPCOMING': return 'bg-blue-100 text-blue-800'
+      case 'UPCOMING': return 'bg-[#E8EBE4] text-blue-800'
       default: return 'bg-gray-100 text-gray-800'
     }
   }
@@ -531,8 +531,8 @@ export default function RecordsPage() {
       <CardHeader>
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-              <User className="h-6 w-6 text-blue-600" />
+            <div className="w-12 h-12 bg-[#E8EBE4] rounded-full flex items-center justify-center">
+              <User className="h-6 w-6 text-[#5A7965]" />
             </div>
             <div>
               <CardTitle className="text-lg">{userProfile?.name}</CardTitle>
@@ -865,7 +865,7 @@ export default function RecordsPage() {
                 {medicalForms.filter(f => f.status === 'PENDING' || f.status === 'OVERDUE').slice(0, 2).map((form) => (
                   <div key={form.id} className="text-sm">
                     <div className={`font-medium ${
-                      form.status === 'OVERDUE' ? 'text-red-600' : 'text-blue-600'
+                      form.status === 'OVERDUE' ? 'text-red-600' : 'text-[#5A7965]'
                     }`}>
                       {form.formName} {form.status === 'OVERDUE' ? '(Overdue)' : '(Pending)'}
                     </div>
@@ -1076,7 +1076,7 @@ export default function RecordsPage() {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-3">
                   <div className={`w-3 h-3 rounded-full ${
-                    vaccine.status === 'COMPLETED' ? 'bg-green-500' :
+                    vaccine.status === 'COMPLETED' ? 'bg-[#FAF8F3]0' :
                     vaccine.status === 'OVERDUE' ? 'bg-red-500' : 'bg-yellow-500'
                   }`} />
                   <div>
@@ -1453,7 +1453,7 @@ export default function RecordsPage() {
             </div>
           </div>
           
-          <div className="border-l-4 border-blue-400 bg-blue-50 p-4">
+          <div className="border-l-4 border-blue-400 bg-[#E8EBE4] p-4">
             <div className="flex">
               <div className="ml-3">
                 <p className="text-sm text-blue-800">
@@ -1492,7 +1492,7 @@ export default function RecordsPage() {
             </div>
             
             <div className="flex items-center space-x-3 p-3 border rounded">
-              <Activity className="h-5 w-5 text-purple-500" />
+              <Activity className="h-5 w-5 text-[#6B8E7D]" />
               <div>
                 <p className="font-medium">Imaging Study</p>
                 <p className="text-sm text-gray-600">Chest X-Ray completed - January 10, 2024</p>
@@ -1637,7 +1637,7 @@ export default function RecordsPage() {
           {medicalForms
             .filter(form => form.status === 'COMPLETED')
             .map((form) => (
-              <div key={form.id} className="border rounded-lg p-4 bg-green-50 border-green-200">
+              <div key={form.id} className="border rounded-lg p-4 bg-[#FAF8F3] border-green-200">
                 <div className="flex items-center justify-between mb-3">
                   <div>
                     <h3 className="font-semibold">{form.formName}</h3>
@@ -1711,7 +1711,7 @@ export default function RecordsPage() {
             
             <div className="p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
               <div className="flex items-center space-x-3">
-                <FileText className="h-8 w-8 text-purple-500" />
+                <FileText className="h-8 w-8 text-[#6B8E7D]" />
                 <div>
                   <h3 className="font-semibold">Insurance</h3>
                   <p className="text-sm text-gray-600">Coverage information</p>
@@ -1814,7 +1814,7 @@ export default function RecordsPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Images</CardTitle>
-            <Activity className="h-4 w-4 text-purple-500" />
+            <Activity className="h-4 w-4 text-[#6B8E7D]" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -1854,9 +1854,9 @@ export default function RecordsPage() {
               <div key={document.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
                 <div className="flex items-center space-x-3">
                   <div className={`p-2 rounded-lg ${
-                    document.documentType === 'REPORT' ? 'bg-green-100 text-green-600' :
-                    document.documentType === 'IMAGE' ? 'bg-purple-100 text-purple-600' :
-                    document.documentType === 'INSURANCE' ? 'bg-blue-100 text-blue-600' :
+                    document.documentType === 'REPORT' ? 'bg-[#E8EBE4] text-[#4A7C59]' :
+                    document.documentType === 'IMAGE' ? 'bg-[#E8EBE4] text-[#6B8E7D]' :
+                    document.documentType === 'INSURANCE' ? 'bg-[#E8EBE4] text-[#5A7965]' :
                     document.documentType === 'REFERRAL' ? 'bg-orange-100 text-orange-600' :
                     'bg-gray-100 text-gray-600'
                   }`}>
@@ -1931,7 +1931,7 @@ export default function RecordsPage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
-              <Activity className="h-5 w-5 text-purple-500" />
+              <Activity className="h-5 w-5 text-[#6B8E7D]" />
               <span>Imaging & Scans</span>
             </CardTitle>
           </CardHeader>
@@ -1975,9 +1975,9 @@ export default function RecordsPage() {
               <div key={document.id} className="flex items-center justify-between p-4 border rounded-lg">
                 <div className="flex items-center space-x-4">
                   <div className={`p-3 rounded-lg ${
-                    document.documentType === 'REPORT' ? 'bg-green-100 text-green-600' :
-                    document.documentType === 'IMAGE' ? 'bg-purple-100 text-purple-600' :
-                    document.documentType === 'INSURANCE' ? 'bg-blue-100 text-blue-600' :
+                    document.documentType === 'REPORT' ? 'bg-[#E8EBE4] text-[#4A7C59]' :
+                    document.documentType === 'IMAGE' ? 'bg-[#E8EBE4] text-[#6B8E7D]' :
+                    document.documentType === 'INSURANCE' ? 'bg-[#E8EBE4] text-[#5A7965]' :
                     document.documentType === 'REFERRAL' ? 'bg-orange-100 text-orange-600' :
                     document.documentType === 'LAB' ? 'bg-red-100 text-red-600' :
                     'bg-gray-100 text-gray-600'
@@ -2152,7 +2152,7 @@ export default function RecordsPage() {
                   onClick={() => setActiveSection(item.id as RecordSection)}
                   className={`w-full flex items-start space-x-3 px-6 py-4 text-left hover:bg-gray-50 transition-colors ${
                     activeSection === item.id
-                      ? 'bg-blue-50 border-r-2 border-blue-500 text-blue-700'
+                      ? 'bg-[#E8EBE4] border-r-2 border-[#5A7965] text-[#2D4A3E]'
                       : 'text-gray-700'
                   }`}
                 >

@@ -221,19 +221,19 @@ export default function RegisterPage() {
   const renderRoleSelection = () => (
     <div className="space-y-8">
       <div className="text-center">
-        <h2 className="text-3xl font-bold text-gray-900 mb-3">Join Remedara</h2>
+        <h2 className="text-3xl font-bold mb-3" style={{ color: '#2D4A3E' }}>Join Remedara</h2>
         <p className="text-lg text-gray-600">Choose your account type to get started</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Patient Registration */}
         <Card 
-          className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:border-blue-300 p-6"
+          className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:border-[#5A7965] p-6"
           onClick={() => handleRoleSelect('PATIENT')}
         >
           <CardHeader className="text-center">
-            <div className="w-20 h-20 bg-blue-100 rounded-full mx-auto mb-6 flex items-center justify-center">
-              <User className="h-10 w-10 text-blue-600" />
+            <div className="w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center" style={{ backgroundColor: '#E8EBE4' }}>
+              <User className="h-10 w-10" style={{ color: '#2D4A3E' }} />
             </div>
             <CardTitle className="text-2xl mb-2">I&apos;m a Patient</CardTitle>
             <CardDescription className="text-base">
@@ -243,19 +243,19 @@ export default function RegisterPage() {
           <CardContent className="text-center">
             <div className="space-y-3 text-base text-gray-600">
               <div className="flex items-center justify-center space-x-2">
-                <CheckCircle2 className="h-4 w-4 text-green-600" />
+                <CheckCircle2 className="h-4 w-4" style={{ color: '#4A7C59' }} />
                 <span>Book appointments online</span>
               </div>
               <div className="flex items-center justify-center space-x-2">
-                <CheckCircle2 className="h-4 w-4 text-green-600" />
+                <CheckCircle2 className="h-4 w-4" style={{ color: '#4A7C59' }} />
                 <span>Access medical records</span>
               </div>
               <div className="flex items-center justify-center space-x-2">
-                <CheckCircle2 className="h-4 w-4 text-green-600" />
+                <CheckCircle2 className="h-4 w-4" style={{ color: '#4A7C59' }} />
                 <span>Receive appointment reminders</span>
               </div>
               <div className="flex items-center justify-center space-x-2">
-                <CheckCircle2 className="h-4 w-4 text-green-600" />
+                <CheckCircle2 className="h-4 w-4" style={{ color: '#4A7C59' }} />
                 <span>Complete intake forms</span>
               </div>
             </div>
@@ -264,12 +264,12 @@ export default function RegisterPage() {
 
         {/* Provider Registration */}
         <Card 
-          className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:border-green-300 p-6"
+          className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:border-[#5A7965] p-6"
           onClick={() => handleRoleSelect('PROVIDER')}
         >
           <CardHeader className="text-center">
-            <div className="w-20 h-20 bg-green-100 rounded-full mx-auto mb-6 flex items-center justify-center">
-              <Stethoscope className="h-10 w-10 text-green-600" />
+            <div className="w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center" style={{ backgroundColor: '#E8EBE4' }}>
+              <Stethoscope className="h-10 w-10" style={{ color: '#5A7965' }} />
             </div>
             <CardTitle className="text-2xl mb-2">I&apos;m a Provider</CardTitle>
             <CardDescription className="text-base">
@@ -279,19 +279,19 @@ export default function RegisterPage() {
           <CardContent className="text-center">
             <div className="space-y-3 text-base text-gray-600">
               <div className="flex items-center justify-center space-x-2">
-                <CheckCircle2 className="h-4 w-4 text-green-600" />
+                <CheckCircle2 className="h-4 w-4" style={{ color: '#4A7C59' }} />
                 <span>Manage your schedule</span>
               </div>
               <div className="flex items-center justify-center space-x-2">
-                <CheckCircle2 className="h-4 w-4 text-green-600" />
+                <CheckCircle2 className="h-4 w-4" style={{ color: '#4A7C59' }} />
                 <span>View patient information</span>
               </div>
               <div className="flex items-center justify-center space-x-2">
-                <CheckCircle2 className="h-4 w-4 text-green-600" />
+                <CheckCircle2 className="h-4 w-4" style={{ color: '#4A7C59' }} />
                 <span>Set availability</span>
               </div>
               <div className="flex items-center justify-center space-x-2">
-                <CheckCircle2 className="h-4 w-4 text-green-600" />
+                <CheckCircle2 className="h-4 w-4" style={{ color: '#4A7C59' }} />
                 <span>Patient communication</span>
               </div>
             </div>
@@ -302,7 +302,7 @@ export default function RegisterPage() {
       <div className="text-center">
         <p className="text-base text-gray-600">
           Already have an account?{' '}
-          <Link href="/login" className="text-gray-900 hover:underline font-medium text-lg">
+          <Link href="/login" className="hover:underline font-medium text-lg" style={{ color: '#2D4A3E' }}>
             Sign in here
           </Link>
         </p>
@@ -314,7 +314,7 @@ export default function RegisterPage() {
     <form onSubmit={handleSubmit} className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-bold text-gray-900 flex items-center space-x-2">
+          <h2 className="text-3xl font-bold flex items-center space-x-2" style={{ color: '#2D4A3E' }}>
             <User className="h-8 w-8" />
             <span>Patient Registration</span>
           </h2>
@@ -742,12 +742,12 @@ export default function RegisterPage() {
 
   const renderSuccess = () => (
     <div className="text-center space-y-6">
-      <div className="w-20 h-20 bg-green-100 rounded-full mx-auto flex items-center justify-center">
-        <CheckCircle2 className="h-10 w-10 text-green-600" />
+      <div className="w-20 h-20 rounded-full mx-auto flex items-center justify-center" style={{ backgroundColor: '#E8EBE4' }}>
+        <CheckCircle2 className="h-10 w-10" style={{ color: '#4A7C59' }} />
       </div>
       
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+        <h2 className="text-2xl font-bold mb-2" style={{ color: '#2D4A3E' }}>
           {selectedRole === 'PROVIDER' ? 'Registration Submitted!' : 'Welcome to Remedara!'}
         </h2>
         {selectedRole === 'PROVIDER' ? (
@@ -766,7 +766,7 @@ export default function RegisterPage() {
       <div className="space-y-4">
         <Button 
           onClick={() => router.push('/login')}
-          className="w-full bg-gray-900 hover:bg-gray-800"
+          className="w-full"
         >
           Sign In to Your Account
         </Button>
@@ -816,10 +816,10 @@ export default function RegisterPage() {
   )
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#F5F1E8] py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900">Create Your Account</h1>
+          <h1 className="text-4xl font-bold" style={{ color: '#2D4A3E' }}>Create Your Account</h1>
         </div>
 
         <Card>

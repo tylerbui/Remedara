@@ -5,19 +5,19 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2D4A3E] disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
-        default: "bg-gray-900 text-gray-50 shadow hover:bg-gray-800",
+        default: "bg-[#2D4A3E] text-white shadow hover:bg-[#3D5A4E]",
         destructive:
-          "bg-red-500 text-gray-50 shadow-sm hover:bg-red-400",
+          "bg-[#A65A52] text-white shadow-sm hover:bg-[#96504A]",
         outline:
-          "border border-gray-200 bg-white shadow-sm hover:bg-gray-100 hover:text-gray-900",
+          "border border-[#D4C9B8] bg-white shadow-sm hover:bg-[#FAF8F3] hover:text-[#2D4A3E]",
         secondary:
-          "bg-gray-100 text-gray-900 shadow-sm hover:bg-gray-200",
-        ghost: "hover:bg-gray-100 hover:text-gray-900",
-        link: "text-gray-900 underline-offset-4 hover:underline",
+          "bg-[#E8EBE4] text-[#2D4A3E] shadow-sm hover:bg-[#D4C9B8]",
+        ghost: "hover:bg-[#E8EBE4] hover:text-[#2D4A3E]",
+        link: "text-[#2D4A3E] underline-offset-4 hover:underline",
       },
       size: {
         default: "h-9 px-4 py-2",

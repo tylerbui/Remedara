@@ -144,7 +144,7 @@ export function LinkedProvidersManager() {
   const getStatusColor = (status: LinkedProvider['status']) => {
     switch (status) {
       case 'active':
-        return 'bg-green-100 text-green-800'
+        return 'bg-[#E8EBE4] text-[#2D4A3E]'
       case 'expired':
         return 'bg-red-100 text-red-800'
       case 'revoked':
@@ -220,9 +220,9 @@ export function LinkedProvidersManager() {
       )}
 
       {success && (
-        <Alert className="border-green-200 bg-green-50">
-          <CheckCircle className="h-4 w-4 text-green-600" />
-          <AlertTitle className="text-green-800">Success</AlertTitle>
+        <Alert className="border-green-200 bg-[#FAF8F3]">
+          <CheckCircle className="h-4 w-4 text-[#4A7C59]" />
+          <AlertTitle className="text-[#2D4A3E]">Success</AlertTitle>
           <AlertDescription className="text-green-700">{success}</AlertDescription>
         </Alert>
       )}
@@ -233,8 +233,8 @@ export function LinkedProvidersManager() {
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center space-x-3">
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <Building2 className="h-6 w-6 text-blue-600" />
+                <div className="p-2 bg-[#E8EBE4] rounded-lg">
+                  <Building2 className="h-6 w-6 text-[#5A7965]" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-600">Total Providers</p>
@@ -247,8 +247,8 @@ export function LinkedProvidersManager() {
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center space-x-3">
-                <div className="p-2 bg-green-100 rounded-lg">
-                  <CheckCircle className="h-6 w-6 text-green-600" />
+                <div className="p-2 bg-[#E8EBE4] rounded-lg">
+                  <CheckCircle className="h-6 w-6 text-[#4A7C59]" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-600">Active</p>
@@ -279,8 +279,8 @@ export function LinkedProvidersManager() {
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center space-x-3">
-                <div className="p-2 bg-purple-100 rounded-lg">
-                  <RotateCw className="h-6 w-6 text-purple-600" />
+                <div className="p-2 bg-[#E8EBE4] rounded-lg">
+                  <RotateCw className="h-6 w-6 text-[#6B8E7D]" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-600">Recent Syncs</p>

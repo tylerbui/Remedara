@@ -286,7 +286,7 @@ export default function ProviderDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Pending Lab Results</CardTitle>
-            <TestTube className="h-4 w-4 text-purple-500" />
+            <TestTube className="h-4 w-4 text-[#6B8E7D]" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{quickStats.pendingLabResults}</div>
@@ -360,9 +360,9 @@ export default function ProviderDashboard() {
             {recentActivity.map((activity) => (
               <div key={activity.id} className="flex items-center space-x-3 p-3 border rounded-lg">
                 <div className={`p-2 rounded-full ${
-                  activity.type === 'lab_order' ? 'bg-purple-100 text-purple-600' :
-                  activity.type === 'prescription' ? 'bg-green-100 text-green-600' :
-                  'bg-blue-100 text-blue-600'
+                  activity.type === 'lab_order' ? 'bg-[#E8EBE4] text-[#6B8E7D]' :
+                  activity.type === 'prescription' ? 'bg-[#E8EBE4] text-[#4A7C59]' :
+                  'bg-[#E8EBE4] text-[#5A7965]'
                 }`}>
                   {activity.type === 'lab_order' ? <TestTube className="h-4 w-4" /> :
                    activity.type === 'prescription' ? <Pill className="h-4 w-4" /> :
@@ -600,7 +600,7 @@ export default function ProviderDashboard() {
                     onClick={() => setActiveSection(item.id as DashboardSection)}
                     className={`w-full flex items-start space-x-3 px-6 py-4 text-left hover:bg-gray-50 transition-colors ${
                       activeSection === item.id
-                        ? 'bg-blue-50 border-r-2 border-blue-500 text-blue-700'
+                        ? 'bg-[#E8EBE4] border-r-2 border-[#5A7965] text-[#2D4A3E]'
                         : 'text-gray-700'
                     }`}
                   >

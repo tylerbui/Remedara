@@ -10,15 +10,15 @@ import { HomeNavbar } from '@/components/HomeNavbar'
 export default function HomePage() {
   const { data: session } = useSession()
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#F5F1E8]">
       <HomeNavbar />
       <div className="container mx-auto px-4 py-16">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold text-gray-900 mb-4">
+          <h1 className="text-5xl font-bold text-[#2D5F4C] mb-4">
             {session ? `Welcome back, ${session.user.name?.split(' ')[0]}!` : 'Remedara'}
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-[#5A7366] max-w-3xl mx-auto">
             {session ? (
               session.user.role === 'PATIENT' ? 
                 'Your health records and appointments are just a click away. Manage your care with ease.' :
@@ -31,7 +31,7 @@ export default function HomePage() {
           </p>
           <div className="mt-8 flex justify-center gap-4">
             {!session ? (
-              <Button asChild className="bg-gray-900 hover:bg-gray-800 text-lg px-12 py-4 h-auto">
+              <Button asChild className="bg-[#3D7A5F] hover:bg-[#2D5F4C] text-white text-lg px-12 py-4 h-auto">
                 <Link href="/login">Get Started</Link>
               </Button>
             ) : (
@@ -39,13 +39,13 @@ export default function HomePage() {
                 {/* Patient Dashboard */}
                 {session.user.role === 'PATIENT' && (
                   <>
-                    <Button asChild className="bg-gray-900 hover:bg-gray-800 text-lg px-12 py-4 h-auto">
+                    <Button asChild className="bg-[#3D7A5F] hover:bg-[#2D5F4C] text-white text-lg px-12 py-4 h-auto">
                       <Link href="/patient/dashboard">
                         <LayoutDashboard className="h-5 w-5 mr-2" />
                         Dashboard
                       </Link>
                     </Button>
-                    <Button variant="outline" asChild className="border-gray-300 text-gray-700 hover:bg-gray-100 text-lg px-12 py-4 h-auto">
+                    <Button variant="outline" asChild className="border-[#3D7A5F] text-[#3D7A5F] hover:bg-[#E8E2D5] text-lg px-12 py-4 h-auto">
                       <Link href="/records">
                         <User className="h-5 w-5 mr-2" />
                         My Records
@@ -57,13 +57,13 @@ export default function HomePage() {
                 {/* Provider Dashboard */}
                 {session.user.role === 'PROVIDER' && (
                   <>
-                    <Button asChild className="bg-gray-900 hover:bg-gray-800 text-lg px-12 py-4 h-auto">
+                    <Button asChild className="bg-[#3D7A5F] hover:bg-[#2D5F4C] text-white text-lg px-12 py-4 h-auto">
                       <Link href="/provider">
                         <Stethoscope className="h-5 w-5 mr-2" />
                         Provider Dashboard
                       </Link>
                     </Button>
-                    <Button variant="outline" asChild className="border-gray-300 text-gray-700 hover:bg-gray-100 text-lg px-12 py-4 h-auto">
+                    <Button variant="outline" asChild className="border-[#3D7A5F] text-[#3D7A5F] hover:bg-[#E8E2D5] text-lg px-12 py-4 h-auto">
                       <Link href="/records">
                         <FileText className="h-5 w-5 mr-2" />
                         Patient Records
@@ -75,13 +75,13 @@ export default function HomePage() {
                 {/* Admin Dashboard */}
                 {(session.user.role === 'ADMIN' || session.user.role === 'FRONT_DESK') && (
                   <>
-                    <Button asChild className="bg-gray-900 hover:bg-gray-800 text-lg px-12 py-4 h-auto">
+                    <Button asChild className="bg-[#3D7A5F] hover:bg-[#2D5F4C] text-white text-lg px-12 py-4 h-auto">
                       <Link href="/provider">
                         <LayoutDashboard className="h-5 w-5 mr-2" />
                         Admin Dashboard
                       </Link>
                     </Button>
-                    <Button variant="outline" asChild className="border-gray-300 text-gray-700 hover:bg-gray-100 text-lg px-12 py-4 h-auto">
+                    <Button variant="outline" asChild className="border-[#3D7A5F] text-[#3D7A5F] hover:bg-[#E8E2D5] text-lg px-12 py-4 h-auto">
                       <Link href="/records">
                         <Users className="h-5 w-5 mr-2" />
                         Manage Records
@@ -96,16 +96,16 @@ export default function HomePage() {
 
         {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-24">
-          <Card className="border-gray-200 hover:shadow-lg transition-shadow p-8">
+          <Card className="border-[#D4C9B3] bg-white hover:shadow-lg transition-shadow p-8">
             <CardHeader className="pb-8">
-              <Calendar className="h-14 w-14 text-gray-700 mb-6" />
-              <CardTitle className="text-3xl text-gray-900 mb-4">Smart Scheduling</CardTitle>
-              <CardDescription className="text-xl text-gray-600 leading-relaxed">
+              <Calendar className="h-14 w-14 text-[#3D7A5F] mb-6" />
+              <CardTitle className="text-3xl text-[#2D5F4C] mb-4">Smart Scheduling</CardTitle>
+              <CardDescription className="text-xl text-[#5A7366] leading-relaxed">
                 Automated appointment scheduling with provider availability management
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <ul className="text-lg text-gray-600 space-y-3">
+              <ul className="text-lg text-[#5A7366] space-y-3">
                 <li>• Real-time availability</li>
                 <li>• Conflict prevention</li>
                 <li>• Automated reminders</li>
@@ -113,11 +113,11 @@ export default function HomePage() {
             </CardContent>
           </Card>
 
-          <Card className="border-gray-200 hover:shadow-lg transition-shadow p-8">
+          <Card className="border-[#D4C9B3] bg-white hover:shadow-lg transition-shadow p-8">
             <CardHeader className="pb-8">
-              <FileText className="h-14 w-14 text-gray-700 mb-6" />
-              <CardTitle className="text-3xl text-gray-900 mb-4">Digital Intake</CardTitle>
-              <CardDescription className="text-xl text-gray-600 leading-relaxed">
+              <FileText className="h-14 w-14 text-[#3D7A5F] mb-6" />
+              <CardTitle className="text-3xl text-[#2D5F4C] mb-4">Digital Intake</CardTitle>
+              <CardDescription className="text-xl text-[#5A7366] leading-relaxed">
                 Comprehensive digital forms with e-signatures and document management
               </CardDescription>
             </CardHeader>
@@ -130,11 +130,11 @@ export default function HomePage() {
             </CardContent>
           </Card>
 
-          <Card className="border-gray-200 hover:shadow-lg transition-shadow p-8">
+          <Card className="border-[#D4C9B3] bg-white hover:shadow-lg transition-shadow p-8">
             <CardHeader className="pb-8">
-              <Shield className="h-14 w-14 text-gray-700 mb-6" />
-              <CardTitle className="text-3xl text-gray-900 mb-4">HIPAA Compliant</CardTitle>
-              <CardDescription className="text-xl text-gray-600 leading-relaxed">
+              <Shield className="h-14 w-14 text-[#3D7A5F] mb-6" />
+              <CardTitle className="text-3xl text-[#2D5F4C] mb-4">HIPAA Compliant</CardTitle>
+              <CardDescription className="text-xl text-[#5A7366] leading-relaxed">
                 Enterprise-grade security with encrypted PHI storage and audit logs
               </CardDescription>
             </CardHeader>
@@ -147,11 +147,11 @@ export default function HomePage() {
             </CardContent>
           </Card>
 
-          <Card className="border-gray-200 hover:shadow-lg transition-shadow p-8">
+          <Card className="border-[#D4C9B3] bg-white hover:shadow-lg transition-shadow p-8">
             <CardHeader className="pb-8">
-              <Users className="h-14 w-14 text-gray-700 mb-6" />
-              <CardTitle className="text-3xl text-gray-900 mb-4">Role-Based Access</CardTitle>
-              <CardDescription className="text-xl text-gray-600 leading-relaxed">
+              <Users className="h-14 w-14 text-[#3D7A5F] mb-6" />
+              <CardTitle className="text-3xl text-[#2D5F4C] mb-4">Role-Based Access</CardTitle>
+              <CardDescription className="text-xl text-[#5A7366] leading-relaxed">
                 Secure access control for patients, providers, front desk, and admins
               </CardDescription>
             </CardHeader>
@@ -164,11 +164,11 @@ export default function HomePage() {
             </CardContent>
           </Card>
 
-          <Card className="border-gray-200 hover:shadow-lg transition-shadow p-8">
+          <Card className="border-[#D4C9B3] bg-white hover:shadow-lg transition-shadow p-8">
             <CardHeader className="pb-8">
-              <MessageSquare className="h-14 w-14 text-gray-700 mb-6" />
-              <CardTitle className="text-3xl text-gray-900 mb-4">Communication Hub</CardTitle>
-              <CardDescription className="text-xl text-gray-600 leading-relaxed">
+              <MessageSquare className="h-14 w-14 text-[#3D7A5F] mb-6" />
+              <CardTitle className="text-3xl text-[#2D5F4C] mb-4">Communication Hub</CardTitle>
+              <CardDescription className="text-xl text-[#5A7366] leading-relaxed">
                 Integrated messaging system with automated notifications
               </CardDescription>
             </CardHeader>
@@ -181,11 +181,11 @@ export default function HomePage() {
             </CardContent>
           </Card>
 
-          <Card className="border-gray-200 hover:shadow-lg transition-shadow p-8">
+          <Card className="border-[#D4C9B3] bg-white hover:shadow-lg transition-shadow p-8">
             <CardHeader className="pb-8">
-              <UserCheck className="h-14 w-14 text-gray-700 mb-6" />
-              <CardTitle className="text-3xl text-gray-900 mb-4">Check-in Kiosk</CardTitle>
-              <CardDescription className="text-xl text-gray-600 leading-relaxed">
+              <UserCheck className="h-14 w-14 text-[#3D7A5F] mb-6" />
+              <CardTitle className="text-3xl text-[#2D5F4C] mb-4">Check-in Kiosk</CardTitle>
+              <CardDescription className="text-xl text-[#5A7366] leading-relaxed">
                 Self-service check-in with digital consent and form completion
               </CardDescription>
             </CardHeader>
@@ -201,9 +201,9 @@ export default function HomePage() {
 
         {/* CTA Section */}
         <div className="text-center">
-          <Card className="max-w-4xl mx-auto border-gray-200 p-8">
+          <Card className="max-w-4xl mx-auto border-[#D4C9B3] bg-white p-8">
             <CardHeader className="pb-8">
-              <CardTitle className="text-3xl text-gray-900 mb-4">
+              <CardTitle className="text-3xl text-[#2D5F4C] mb-4">
                 {session ? (
                   session.user.role === 'PATIENT' ? 'Your Health, Simplified' :
                   session.user.role === 'PROVIDER' ? 'Streamline Your Practice' :
@@ -212,7 +212,7 @@ export default function HomePage() {
                   'Ready to Transform Your Clinic?'
                 )}
               </CardTitle>
-              <CardDescription className="text-xl text-gray-600 leading-relaxed">
+              <CardDescription className="text-xl text-[#5A7366] leading-relaxed">
                 {session ? (
                   session.user.role === 'PATIENT' ? 'Access your complete medical history, schedule appointments, and stay connected with your healthcare providers.' :
                   session.user.role === 'PROVIDER' ? 'Manage patient records, appointments, and practice operations all in one secure platform.' :
@@ -224,10 +224,10 @@ export default function HomePage() {
             </CardHeader>
             {!session && (
               <CardContent className="flex flex-col sm:flex-row justify-center gap-6">
-                <Button asChild size="lg" className="bg-gray-900 hover:bg-gray-800 px-8 py-4 text-lg font-medium">
+                <Button asChild size="lg" className="bg-[#3D7A5F] hover:bg-[#2D5F4C] text-white px-8 py-4 text-lg font-medium">
                   <Link href="/register">Start Free Trial</Link>
                 </Button>
-                <Button variant="outline" asChild size="lg" className="border-gray-300 text-gray-700 hover:bg-gray-100 px-8 py-4 text-lg font-medium">
+                <Button variant="outline" asChild size="lg" className="border-[#3D7A5F] text-[#3D7A5F] hover:bg-[#E8E2D5] px-8 py-4 text-lg font-medium">
                   <Link href="/contact">Contact Sales</Link>
                 </Button>
               </CardContent>
@@ -236,13 +236,13 @@ export default function HomePage() {
               <CardContent className="flex flex-col sm:flex-row justify-center gap-6">
                 {session.user.role === 'PATIENT' && (
                   <>
-                    <Button asChild size="lg" className="bg-blue-600 hover:bg-blue-700 px-8 py-4 text-lg font-medium">
+                    <Button asChild size="lg" className="bg-[#3D7A5F] hover:bg-[#2D5F4C] text-white px-8 py-4 text-lg font-medium">
                       <Link href="/patient/dashboard">
                         <LayoutDashboard className="h-5 w-5 mr-2" />
                         Go to Dashboard
                       </Link>
                     </Button>
-                    <Button variant="outline" asChild size="lg" className="border-blue-300 text-blue-700 hover:bg-blue-50 px-8 py-4 text-lg font-medium">
+                    <Button variant="outline" asChild size="lg" className="border-[#3D7A5F] text-[#3D7A5F] hover:bg-[#E8E2D5] px-8 py-4 text-lg font-medium">
                       <Link href="/records">
                         <FileText className="h-5 w-5 mr-2" />
                         View Records
@@ -252,13 +252,13 @@ export default function HomePage() {
                 )}
                 {session.user.role === 'PROVIDER' && (
                   <>
-                    <Button asChild size="lg" className="bg-green-600 hover:bg-green-700 px-8 py-4 text-lg font-medium">
+                    <Button asChild size="lg" className="bg-[#3D7A5F] hover:bg-[#2D5F4C] text-white px-8 py-4 text-lg font-medium">
                       <Link href="/provider">
                         <Stethoscope className="h-5 w-5 mr-2" />
                         Go to Dashboard
                       </Link>
                     </Button>
-                    <Button variant="outline" asChild size="lg" className="border-green-300 text-green-700 hover:bg-green-50 px-8 py-4 text-lg font-medium">
+                    <Button variant="outline" asChild size="lg" className="border-[#3D7A5F] text-[#3D7A5F] hover:bg-[#E8E2D5] px-8 py-4 text-lg font-medium">
                       <Link href="/records">
                         <Users className="h-5 w-5 mr-2" />
                         Patient Records
@@ -268,13 +268,13 @@ export default function HomePage() {
                 )}
                 {(session.user.role === 'ADMIN' || session.user.role === 'FRONT_DESK') && (
                   <>
-                    <Button asChild size="lg" className="bg-purple-600 hover:bg-purple-700 px-8 py-4 text-lg font-medium">
+                    <Button asChild size="lg" className="bg-[#3D7A5F] hover:bg-[#2D5F4C] text-white px-8 py-4 text-lg font-medium">
                       <Link href="/provider">
                         <LayoutDashboard className="h-5 w-5 mr-2" />
                         Admin Dashboard
                       </Link>
                     </Button>
-                    <Button variant="outline" asChild size="lg" className="border-purple-300 text-purple-700 hover:bg-purple-50 px-8 py-4 text-lg font-medium">
+                    <Button variant="outline" asChild size="lg" className="border-[#3D7A5F] text-[#3D7A5F] hover:bg-[#E8E2D5] px-8 py-4 text-lg font-medium">
                       <Link href="/records">
                         <FileText className="h-5 w-5 mr-2" />
                         All Records

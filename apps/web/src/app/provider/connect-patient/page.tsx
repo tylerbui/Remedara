@@ -614,7 +614,7 @@ export default function ConnectPatientPage() {
                                 return (
                                   <div key={index} className="flex-1 flex flex-col items-center">
                                     <div 
-                                      className="w-4 bg-blue-500 rounded-t" 
+                                      className="w-4 bg-[#E8EBE4]0 rounded-t" 
                                       style={{ height: `${height}%` }}
                                       title={`${reading.value} BPM`}
                                     />
@@ -646,7 +646,7 @@ export default function ConnectPatientPage() {
                                 return (
                                   <div key={index} className="flex-1 flex flex-col items-center">
                                     <div 
-                                      className="w-4 bg-green-500 rounded-t" 
+                                      className="w-4 bg-[#FAF8F3]0 rounded-t" 
                                       style={{ height: `${height}%` }}
                                       title={`${reading.value} lbs`}
                                     />
@@ -665,7 +665,7 @@ export default function ConnectPatientPage() {
                         <Card>
                           <CardHeader className="pb-2">
                             <CardTitle className="text-sm flex items-center">
-                              <Droplets className="h-4 w-4 mr-1 text-purple-500" />
+                              <Droplets className="h-4 w-4 mr-1 text-[#6B8E7D]" />
                               Blood Glucose (mg/dL)
                             </CardTitle>
                           </CardHeader>
@@ -724,7 +724,7 @@ export default function ConnectPatientPage() {
                                     <div className="flex items-center space-x-2">
                                       <div className="w-16 h-2 bg-gray-200 rounded">
                                         <div 
-                                          className={`h-2 rounded ${result.total > 200 ? 'bg-red-500' : result.total > 180 ? 'bg-orange-500' : 'bg-green-500'}`}
+                                          className={`h-2 rounded ${result.total > 200 ? 'bg-red-500' : result.total > 180 ? 'bg-orange-500' : 'bg-[#FAF8F3]0'}`}
                                           style={{ width: `${Math.min((result.total / 300) * 100, 100)}%` }}
                                         />
                                       </div>
@@ -736,7 +736,7 @@ export default function ConnectPatientPage() {
                                     <div className="flex items-center space-x-2">
                                       <div className="w-16 h-2 bg-gray-200 rounded">
                                         <div 
-                                          className={`h-2 rounded ${result.hdl < 40 ? 'bg-red-500' : result.hdl > 60 ? 'bg-green-500' : 'bg-orange-500'}`}
+                                          className={`h-2 rounded ${result.hdl < 40 ? 'bg-red-500' : result.hdl > 60 ? 'bg-[#FAF8F3]0' : 'bg-orange-500'}`}
                                           style={{ width: `${(result.hdl / 100) * 100}%` }}
                                         />
                                       </div>
@@ -748,7 +748,7 @@ export default function ConnectPatientPage() {
                                     <div className="flex items-center space-x-2">
                                       <div className="w-16 h-2 bg-gray-200 rounded">
                                         <div 
-                                          className={`h-2 rounded ${result.ldl > 130 ? 'bg-red-500' : result.ldl > 100 ? 'bg-orange-500' : 'bg-green-500'}`}
+                                          className={`h-2 rounded ${result.ldl > 130 ? 'bg-red-500' : result.ldl > 100 ? 'bg-orange-500' : 'bg-[#FAF8F3]0'}`}
                                           style={{ width: `${Math.min((result.ldl / 200) * 100, 100)}%` }}
                                         />
                                       </div>
@@ -838,12 +838,12 @@ export default function ConnectPatientPage() {
                         Health Trends Summary
                       </h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <Card className="bg-blue-50 border-blue-200">
+                        <Card className="bg-[#E8EBE4] border-blue-200">
                           <CardContent className="pt-4">
                             <div className="flex items-center justify-between">
                               <div>
                                 <p className="text-sm text-blue-800 font-medium">Blood Pressure Status</p>
-                                <p className="text-xs text-blue-600">
+                                <p className="text-xs text-[#5A7965]">
                                   {selectedPatient.healthMetrics.vitals.bloodPressure[0]?.systolic > 140 || 
                                    selectedPatient.healthMetrics.vitals.bloodPressure[0]?.diastolic > 90 
                                     ? 'Above target range' : 'Within normal range'}
@@ -852,7 +852,7 @@ export default function ConnectPatientPage() {
                               <div className={`p-2 rounded-full ${
                                 selectedPatient.healthMetrics.vitals.bloodPressure[0]?.systolic > 140 || 
                                 selectedPatient.healthMetrics.vitals.bloodPressure[0]?.diastolic > 90
-                                  ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'
+                                  ? 'bg-red-100 text-red-600' : 'bg-[#E8EBE4] text-[#4A7C59]'
                               }`}>
                                 <Heart className="h-4 w-4" />
                               </div>
@@ -860,18 +860,18 @@ export default function ConnectPatientPage() {
                           </CardContent>
                         </Card>
 
-                        <Card className="bg-green-50 border-green-200">
+                        <Card className="bg-[#FAF8F3] border-green-200">
                           <CardContent className="pt-4">
                             <div className="flex items-center justify-between">
                               <div>
-                                <p className="text-sm text-green-800 font-medium">Weight Trend</p>
-                                <p className="text-xs text-green-600">
+                                <p className="text-sm text-[#2D4A3E] font-medium">Weight Trend</p>
+                                <p className="text-xs text-[#4A7C59]">
                                   {selectedPatient.healthMetrics.vitals.weight[0]?.value < 
                                    selectedPatient.healthMetrics.vitals.weight[1]?.value 
                                     ? 'Decreasing trend' : 'Stable/Increasing'}
                                 </p>
                               </div>
-                              <div className="p-2 rounded-full bg-green-100 text-green-600">
+                              <div className="p-2 rounded-full bg-[#E8EBE4] text-[#4A7C59]">
                                 <TrendingUp className="h-4 w-4" />
                               </div>
                             </div>

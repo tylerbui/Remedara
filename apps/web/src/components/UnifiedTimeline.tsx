@@ -211,15 +211,15 @@ export function UnifiedTimeline() {
   const getCategoryColor = (category: string) => {
     switch (category) {
       case 'lab':
-        return 'bg-blue-100 text-blue-800'
+        return 'bg-[#E8EBE4] text-blue-800'
       case 'medication':
-        return 'bg-green-100 text-green-800'
+        return 'bg-[#E8EBE4] text-[#2D4A3E]'
       case 'vital':
         return 'bg-red-100 text-red-800'
       case 'allergy':
         return 'bg-yellow-100 text-yellow-800'
       case 'immunization':
-        return 'bg-purple-100 text-purple-800'
+        return 'bg-[#E8EBE4] text-purple-800'
       case 'procedure':
         return 'bg-indigo-100 text-indigo-800'
       case 'encounter':
@@ -400,7 +400,7 @@ export function UnifiedTimeline() {
                     <div key={entry._id} className="relative">
                       {/* Timeline dot */}
                       <div className="absolute -left-8 top-6 w-4 h-4 bg-white border-2 border-gray-300 rounded-full flex items-center justify-center">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                        <div className="w-2 h-2 bg-[#E8EBE4]0 rounded-full"></div>
                       </div>
 
                       <Card className="ml-4">

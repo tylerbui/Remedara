@@ -87,7 +87,7 @@ export default function ProviderAnalytics() {
       change: 12.5,
       trend: 'up',
       icon: Users,
-      color: 'text-blue-600'
+      color: 'text-[#5A7965]'
     },
     {
       title: 'Monthly Revenue',
@@ -95,7 +95,7 @@ export default function ProviderAnalytics() {
       change: 8.2,
       trend: 'up',
       icon: DollarSign,
-      color: 'text-green-600'
+      color: 'text-[#4A7C59]'
     },
     {
       title: 'Appointments This Month',
@@ -103,7 +103,7 @@ export default function ProviderAnalytics() {
       change: -3.1,
       trend: 'down',
       icon: Calendar,
-      color: 'text-purple-600'
+      color: 'text-[#6B8E7D]'
     },
     {
       title: 'Patient Satisfaction',
@@ -202,7 +202,7 @@ export default function ProviderAnalytics() {
   const getTrendColor = (trend: 'up' | 'down' | 'stable', change: number, isPositive = true) => {
     if (trend === 'stable') return 'text-gray-600'
     const isGoodChange = isPositive ? change > 0 : change < 0
-    return isGoodChange ? 'text-green-600' : 'text-red-600'
+    return isGoodChange ? 'text-[#4A7C59]' : 'text-red-600'
   }
 
   const CustomTooltip = ({ active, payload, label }: any) => {
@@ -287,7 +287,7 @@ export default function ProviderAnalytics() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <TrendingUp className="h-5 w-5 text-green-600" />
+                  <TrendingUp className="h-5 w-5 text-[#4A7C59]" />
                   <span>Revenue Trends</span>
                 </CardTitle>
               </CardHeader>
@@ -308,7 +308,7 @@ export default function ProviderAnalytics() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <Calendar className="h-5 w-5 text-blue-600" />
+                  <Calendar className="h-5 w-5 text-[#5A7965]" />
                   <span>Monthly Appointments</span>
                 </CardTitle>
               </CardHeader>
@@ -329,7 +329,7 @@ export default function ProviderAnalytics() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <Users className="h-5 w-5 text-purple-600" />
+                  <Users className="h-5 w-5 text-[#6B8E7D]" />
                   <span>Patient Growth</span>
                 </CardTitle>
               </CardHeader>
@@ -406,7 +406,7 @@ export default function ProviderAnalytics() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <Target className="h-5 w-5 text-green-600" />
+                  <Target className="h-5 w-5 text-[#4A7C59]" />
                   <span>Treatment Outcomes</span>
                 </CardTitle>
               </CardHeader>
@@ -424,7 +424,7 @@ export default function ProviderAnalytics() {
                 </ResponsiveContainer>
                 <div className="flex items-center justify-center space-x-6 mt-4 text-sm">
                   <div className="flex items-center space-x-1">
-                    <div className="w-3 h-3 bg-green-500 rounded-full" />
+                    <div className="w-3 h-3 bg-[#FAF8F3]0 rounded-full" />
                     <span>Improved</span>
                   </div>
                   <div className="flex items-center space-x-1">
@@ -447,10 +447,10 @@ export default function ProviderAnalytics() {
                 <CardTitle className="text-sm font-medium text-gray-600">Med Adherence</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-green-600">87.3%</div>
+                <div className="text-2xl font-bold text-[#4A7C59]">87.3%</div>
                 <div className="flex items-center space-x-1 mt-2">
                   <ArrowUpRight className="h-4 w-4 text-green-500" />
-                  <span className="text-xs text-green-600">+2.1% this month</span>
+                  <span className="text-xs text-[#4A7C59]">+2.1% this month</span>
                 </div>
               </CardContent>
             </Card>
@@ -460,10 +460,10 @@ export default function ProviderAnalytics() {
                 <CardTitle className="text-sm font-medium text-gray-600">Preventive Care</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-blue-600">92.5%</div>
+                <div className="text-2xl font-bold text-[#5A7965]">92.5%</div>
                 <div className="flex items-center space-x-1 mt-2">
                   <ArrowUpRight className="h-4 w-4 text-green-500" />
-                  <span className="text-xs text-green-600">+4.2% this month</span>
+                  <span className="text-xs text-[#4A7C59]">+4.2% this month</span>
                 </div>
               </CardContent>
             </Card>
@@ -473,7 +473,7 @@ export default function ProviderAnalytics() {
                 <CardTitle className="text-sm font-medium text-gray-600">Follow-up Rate</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-purple-600">78.9%</div>
+                <div className="text-2xl font-bold text-[#6B8E7D]">78.9%</div>
                 <div className="flex items-center space-x-1 mt-2">
                   <ArrowDownRight className="h-4 w-4 text-red-500" />
                   <span className="text-xs text-red-600">-1.3% this month</span>
@@ -489,7 +489,7 @@ export default function ProviderAnalytics() {
                 <div className="text-2xl font-bold text-orange-600">15.2%</div>
                 <div className="flex items-center space-x-1 mt-2">
                   <ArrowUpRight className="h-4 w-4 text-green-500" />
-                  <span className="text-xs text-green-600">+0.8% this month</span>
+                  <span className="text-xs text-[#4A7C59]">+0.8% this month</span>
                 </div>
               </CardContent>
             </Card>
@@ -503,7 +503,7 @@ export default function ProviderAnalytics() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <PieChartIcon className="h-5 w-5 text-blue-600" />
+                  <PieChartIcon className="h-5 w-5 text-[#5A7965]" />
                   <span>Appointment Types</span>
                 </CardTitle>
               </CardHeader>
@@ -534,7 +534,7 @@ export default function ProviderAnalytics() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <BarChart3 className="h-5 w-5 text-green-600" />
+                  <BarChart3 className="h-5 w-5 text-[#4A7C59]" />
                   <span>Monthly Patient Flow</span>
                 </CardTitle>
               </CardHeader>
@@ -637,7 +637,7 @@ export default function ProviderAnalytics() {
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-600">Operating Margin</span>
-                    <span className="font-medium text-green-600">51.7%</span>
+                    <span className="font-medium text-[#4A7C59]">51.7%</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-600">Monthly Overhead</span>
@@ -656,7 +656,7 @@ export default function ProviderAnalytics() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <Users className="h-5 w-5 text-blue-600" />
+                  <Users className="h-5 w-5 text-[#5A7965]" />
                   <span>Patient Age Distribution</span>
                 </CardTitle>
               </CardHeader>
@@ -687,7 +687,7 @@ export default function ProviderAnalytics() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <Shield className="h-5 w-5 text-green-600" />
+                  <Shield className="h-5 w-5 text-[#4A7C59]" />
                   <span>Insurance Coverage</span>
                 </CardTitle>
               </CardHeader>
@@ -722,7 +722,7 @@ export default function ProviderAnalytics() {
                 <CardTitle className="text-sm font-medium text-gray-600">Average Patient Age</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-blue-600">47.2</div>
+                <div className="text-2xl font-bold text-[#5A7965]">47.2</div>
                 <div className="text-xs text-gray-500 mt-1">years</div>
               </CardContent>
             </Card>
@@ -768,7 +768,7 @@ export default function ProviderAnalytics() {
                 <CardTitle className="text-sm font-medium text-gray-600">Avg Distance</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-green-600">8.7</div>
+                <div className="text-2xl font-bold text-[#4A7C59]">8.7</div>
                 <div className="text-xs text-gray-500 mt-1">miles from practice</div>
               </CardContent>
             </Card>

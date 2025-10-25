@@ -169,7 +169,7 @@ export function MessageProvider() {
       case 'read':
         return <CheckCircle className="h-4 w-4 text-green-500" />
       case 'replied':
-        return <MessageSquare className="h-4 w-4 text-green-600" />
+        return <MessageSquare className="h-4 w-4 text-[#4A7C59]" />
       default:
         return <Clock className="h-4 w-4 text-gray-500" />
     }
@@ -201,9 +201,9 @@ export function MessageProvider() {
 
       {/* Success Alert */}
       {success && (
-        <Alert className="border-green-200 bg-green-50">
-          <CheckCircle className="h-4 w-4 text-green-600" />
-          <AlertTitle className="text-green-800">Message Sent Successfully!</AlertTitle>
+        <Alert className="border-green-200 bg-[#FAF8F3]">
+          <CheckCircle className="h-4 w-4 text-[#4A7C59]" />
+          <AlertTitle className="text-[#2D4A3E]">Message Sent Successfully!</AlertTitle>
           <AlertDescription className="text-green-700">
             Your message has been sent to your provider. You should receive a response within 24-48 hours.
           </AlertDescription>

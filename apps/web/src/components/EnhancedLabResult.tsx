@@ -186,7 +186,7 @@ export default function EnhancedLabResult({
     switch (status) {
       case 'ABNORMAL': return 'border-l-orange-500 bg-orange-50'
       case 'PENDING': return 'border-l-yellow-500 bg-yellow-50'
-      default: return 'border-l-green-500 bg-green-50'
+      default: return 'border-l-green-500 bg-[#FAF8F3]'
     }
   }
   
@@ -290,9 +290,9 @@ export default function EnhancedLabResult({
 
                       {/* Patient-Specific Factors */}
                       {showFactors && patientFactors && (
-                        <Card className="border-blue-200 bg-blue-50">
+                        <Card className="border-blue-200 bg-[#E8EBE4]">
                           <CardHeader className="pb-3">
-                            <CardTitle className="text-sm text-blue-700 flex items-center">
+                            <CardTitle className="text-sm text-[#2D4A3E] flex items-center">
                               <User className="h-4 w-4 mr-2" />
                               Your Specific Factors
                             </CardTitle>
@@ -301,15 +301,15 @@ export default function EnhancedLabResult({
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                               {getRelevantFactors(explanation.affectingFactors).map((factor, index) => (
                                 <div key={index} className="flex items-center space-x-2">
-                                  {factor.type === 'medication' && <Pill className="h-3 w-3 text-blue-600" />}
-                                  {factor.type === 'condition' && <AlertCircle className="h-3 w-3 text-blue-600" />}
-                                  {factor.type === 'age' && <User className="h-3 w-3 text-blue-600" />}
+                                  {factor.type === 'medication' && <Pill className="h-3 w-3 text-[#5A7965]" />}
+                                  {factor.type === 'condition' && <AlertCircle className="h-3 w-3 text-[#5A7965]" />}
+                                  {factor.type === 'age' && <User className="h-3 w-3 text-[#5A7965]" />}
                                   <span className="text-sm font-medium text-blue-800">{factor.value}</span>
                                 </div>
                               ))}
                             </div>
                             {getRelevantFactors(explanation.affectingFactors).length === 0 && (
-                              <p className="text-sm text-blue-700">No specific factors identified based on your profile.</p>
+                              <p className="text-sm text-[#2D4A3E]">No specific factors identified based on your profile.</p>
                             )}
                           </CardContent>
                         </Card>

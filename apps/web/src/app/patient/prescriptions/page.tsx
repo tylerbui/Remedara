@@ -235,13 +235,13 @@ export default function PastPrescriptionsPage() {
   const getStatusColor = (status: PastPrescription['status']) => {
     switch (status) {
       case 'active':
-        return 'bg-green-100 text-green-800'
+        return 'bg-[#E8EBE4] text-[#2D4A3E]'
       case 'expired':
         return 'bg-red-100 text-red-800'
       case 'discontinued':
         return 'bg-yellow-100 text-yellow-800'
       case 'completed':
-        return 'bg-blue-100 text-blue-800'
+        return 'bg-[#E8EBE4] text-blue-800'
       default:
         return 'bg-gray-100 text-gray-800'
     }
@@ -309,8 +309,8 @@ export default function PastPrescriptionsPage() {
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center space-x-3">
-                <div className="p-2 bg-green-100 rounded-lg">
-                  <CheckCircle className="h-6 w-6 text-green-600" />
+                <div className="p-2 bg-[#E8EBE4] rounded-lg">
+                  <CheckCircle className="h-6 w-6 text-[#4A7C59]" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-600">Active</p>
@@ -341,8 +341,8 @@ export default function PastPrescriptionsPage() {
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center space-x-3">
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <RefreshCw className="h-6 w-6 text-blue-600" />
+                <div className="p-2 bg-[#E8EBE4] rounded-lg">
+                  <RefreshCw className="h-6 w-6 text-[#5A7965]" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-600">Total Refills</p>
@@ -357,8 +357,8 @@ export default function PastPrescriptionsPage() {
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center space-x-3">
-                <div className="p-2 bg-purple-100 rounded-lg">
-                  <Pill className="h-6 w-6 text-purple-600" />
+                <div className="p-2 bg-[#E8EBE4] rounded-lg">
+                  <Pill className="h-6 w-6 text-[#6B8E7D]" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-600">Total Meds</p>
@@ -481,7 +481,7 @@ export default function PastPrescriptionsPage() {
                   <div className="flex items-start justify-between">
                     <div className="space-y-2">
                       <div className="flex items-center space-x-2">
-                        <Pill className="h-5 w-5 text-purple-500" />
+                        <Pill className="h-5 w-5 text-[#6B8E7D]" />
                         <h3 className="text-xl font-semibold text-gray-900">{prescription.medicationName}</h3>
                         {prescription.genericName && prescription.genericName !== prescription.medicationName && (
                           <span className="text-sm text-gray-600">({prescription.genericName})</span>
@@ -618,7 +618,7 @@ export default function PastPrescriptionsPage() {
                         {prescription.notes && (
                           <div>
                             <h4 className="font-semibold text-gray-900 mb-2">Provider Notes</h4>
-                            <p className="text-gray-700 text-sm leading-relaxed bg-blue-50 p-3 rounded-lg border-l-4 border-blue-200">
+                            <p className="text-gray-700 text-sm leading-relaxed bg-[#E8EBE4] p-3 rounded-lg border-l-4 border-blue-200">
                               {prescription.notes}
                             </p>
                           </div>
